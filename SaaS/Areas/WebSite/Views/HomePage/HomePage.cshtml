@@ -12,377 +12,69 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/WebSite.css">
     <title>Accueil</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-    <style>
-        .display-3 {
-            font-weight: 700;
-        }
-
-        .purple {
-            color: rgb(108,99,255);
-        }
-
-        /*.btn {
-                    border-radius: 30px
-                }*/
-
-        /*client images */
-        .client {
-            height: 60px;
-            width: 60px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        /*quote svgs*/
-        .bi-chat-square-quote {
-            color: rgb(108,99,255, 0.3);
-        }
-
-        /*stars color */
-        .bi-star, .bi-star-fill, .bi-star-half {
-            color: #ffc107;
-        }
-
-        .card {
-            border: none;
-        }
-
-            .card:hover {
-                box-shadow: 0 1rem 3rem rgba(0,0,0,.75) !important;
-            }
-
-                .card:hover .btn-outline-dark {
-                    color: white;
-                    background: #212529;
-                }
-
-                .card:hover .bg-light {
-                    color: white;
-                    background: #6C63FF !important;
-                }
-
-        .footer {
-            background: linear-gradient(to bottom left, #D2D0FF, #6C63FF);
-        }
-
-        .footer-link {
-            color: white;
-            text-decoration: none
-        }
-
-            .footer-link:hover {
-                color: white;
-                text-decoration: underline;
-            }
-    </style>
 </head>
 <body>
     <!--Navbar-->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height:100px">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Pets-R-us</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="False" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarScroll">
-                <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/#services">Services</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Pricing</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="False">
-                            Resources
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-                            <li><a class="dropdown-item" href="#">Insurances</a></li>
-                            <li><a class="dropdown-item" href="#">Blog</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Share your experience</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="True">Link</a>
-                    </li>
-                </ul>
-                <div class="d-flex">
-                    @*@if (SignInManager.IsSignedIn(User))
-                    {
-                        <a asp-area="WebSite" asp-controller="HomePage" asp-action="Login" class="btn btn-primary">Connexion</a>
-                        <a asp-area="WebSite" asp-controller="HomePage" asp-action="Signin" class="btn btn-secondary">Inscription</a>
-                    }
-                    else
-                    {
-                        
-                    }*@
-                    <a asp-area="WebSite" asp-controller="HomePage" asp-action="Login" class="btn btn-primary">Connexion</a>
-                    <a asp-area="WebSite" asp-controller="HomePage" asp-action="Signup" class="btn btn-secondary">Inscription</a>
-                    <a asp-area="SuperAdministration" asp-controller="Company" asp-action="Index" class="btn btn-success">Test</a>
+    <nav>
+        <div class="container">
+            <div class="navbar-wrapper">
+                <a href="#" class="navbar-logo">
+                    <img src="~/Logo_PIPL_Developpement.png" alt="Logo de l'entreprise" class="logo"/>
+                </a>
+                <div class="navbar-menu-wrapper">
+                    <div class="container">
+                        <div class="navbar-menu-box">
+                            <ul class="navbar-menu" role="list">
+                                <li>
+                                    <a href="#" class="navbar-menu-item active">Accueil</a>
+                                </li>
+                                <li>
+                                    <a href="#" class="navbar-menu-item">Services</a>
+                                </li>
+                                <li>
+                                    <a href="#" class="navbar-menu-item">Prix</a>
+                                </li>
+                                <li>
+                                    <a href="#" class="navbar-menu-item">Nous contacter</a>
+                                </li>
+                                @*<li class="navbar-submenu-wrapper">
+                                    <a href="#" class="navbar-menu-item navbar-toggle-submenu">More <i class="ri-arrow-down-s-line"></i></a>
+                                    <ul class="navbar-submenu" role="list">
+                                        <li>
+                                            <a href="#" class="navbar-submenu-item">About Us</a>
+                                        </li>
+                                        <li>
+                                            <a href="#business" class="navbar-submenu-item">Success Business</a>
+                                        </li>
+                                        <li>
+                                            <a href="#testimonial" class="navbar-submenu-item">Testimonials</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="navbar-submenu-item">Blog</a>
+                                        </li>
+                                    </ul>
+                                </li>*@
+                            </ul>
+                            <ul class="navbar-menu" role="list">
+                                <li>
+                                    <a asp-area="WebSite" asp-controller="HomePage" asp-action="Login" class="navbar-menu-item">Connexion</a>
+                                </li>
+                                <li>
+                                    <a asp-area="WebSite" asp-controller="HomePage" asp-action="Signup" class="btn btn-blue">Inscription</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </nav>
-
-    <!--CTA-->
-    <div class="container py-5 text-right text-dark">
-        <div class="row p-5">
-            <div class="col-lg-6 col-md-12 my-auto">
-                <h1 class="display-3">Manage your Clients with ease</h1>
-                <h5 class="purple">Pet daycare management software for easy booking and client management.</h5>
-                <br>
-                <a class="btn btn-dark btn-lg" href="#" role="button">Get A Quote</a>
-            </div>
-            <div class="col-lg-6 col-md-12">
-                <img src="~/Company_Managment.jpg" width="350" height="150" class="img-fluid align-self-center" alt="couple holding thier cat">
-            </div>
-        </div>
-    </div>
-
-    <!--Value Proposition-->
-    <div class="container-fluid py-5 bg-light">
-        <div class="container p-5">
-            <div class="row">
-                <div class="col-lg-6 col-md-12">
-                    <img src="{% static 'Group 75.png' %}" class="img-fluid" style="height:380px" alt="couple with dog">
-                </div>
-                <div class="col-lg-6 col-md-12 my-auto">
-                    <h2 class="font-weight-bold text-center">Organize, manage, and track in one app</h2>
-                    <h5 class="text-muted text-center lead">No need for separate spreadsheets and calenders. Use the all-in-one Pets-R-us app.</h5>
-                    <ul class="text-right">
-                        <li>Clean interface</li>
-                        <li>Upload contact information, behavioral, and grooming information</li>
-                        <li>No client limit</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!--Testimonials-->
-    <div class="container p-5">
-        <div class="row p-5">
-            <div class="col-lg-6 col-md-12">
-                <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" fill="currentColor" class="my-3 bi bi-chat-square-quote" viewBox="0 0 16 16">
-                    <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
-                    <path d="M7.066 4.76A1.665 1.665 0 0 0 4 5.668a1.667 1.667 0 0 0 2.561 1.406c-.131.389-.375.804-.777 1.22a.417.417 0 1 0 .6.58c1.486-1.54 1.293-3.214.682-4.112zm4 0A1.665 1.665 0 0 0 8 5.668a1.667 1.667 0 0 0 2.561 1.406c-.131.389-.375.804-.777 1.22a.417.417 0 1 0 .6.58c1.486-1.54 1.293-3.214.682-4.112z" />
-                </svg>
-                <h3 class="pb-3">Saves so much time!</h3>
-                <figure>
-                    <blockquote class="blockquote">
-                        <p>Great product. Love the easy-to-use interface. Saves my employees at least 2 hours by not having to constantly check up with one another and reference a spreadsheet.</p>
-                    </blockquote>
-                    <div class="row">
-                        <div class="col-lg-2 col-md-3 my-auto">
-                            <img src='john.jpg' class="img-fluid client">
-                        </div>
-                        <div class="col-lg-10 col-md-9 my-auto">
-                            <b>John Smith</b>
-                            <br><small>Founder, Clean Paws</small><br>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                            </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                            </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                            </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                            </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
-                            </svg>
-                        </div>
-                    </div>
-                </figure>
-            </div>
-            <div class="col-lg-6 col-md-12">
-                <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" fill="currentColor" class="my-3 bi bi-chat-square-quote" viewBox="0 0 16 16">
-                    <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
-                    <path d="M7.066 4.76A1.665 1.665 0 0 0 4 5.668a1.667 1.667 0 0 0 2.561 1.406c-.131.389-.375.804-.777 1.22a.417.417 0 1 0 .6.58c1.486-1.54 1.293-3.214.682-4.112zm4 0A1.665 1.665 0 0 0 8 5.668a1.667 1.667 0 0 0 2.561 1.406c-.131.389-.375.804-.777 1.22a.417.417 0 1 0 .6.58c1.486-1.54 1.293-3.214.682-4.112z" />
-                </svg>
-                <h3 class="pb-3">Would recommend</h3>
-                <figure>
-                    <blockquote class="blockquote">
-                        <p>I never need to worry about relaying special care instructions or freeing schedules. Everything is done instantly through the app.</p>
-                    </blockquote>
-                    <div class="row">
-                        <div class="col-lg-2 col-md-3 my-auto">
-                            <img src="karen.jpg" class="img-fluid client">
-                        </div>
-                        <div class="col-lg-10 col-md-9 my-auto">
-                            <b>Karen Adams</b>
-                            <br><small>Owner, Cat Cafe</small><br>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                            </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                            </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                            </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                            </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
-                            </svg>
-                        </div>
-                    </div>
-                </figure>
-            </div>
-        </div>
-    </div>
-
-    <!--Pricing Table-->
-    <div class="container p-5">
-        <div class="row">
-            <div class="col-lg-4 col-md-12 mb-4">
-                <div class="card h-100 shadow-lg">
-                    <div class="card-header text-center p-3 bg-light">
-                        <h5 class="card-title">Basic</h5>
-                        <small>Individual</small>
-                        <br><br>
-                        <span class="h2">$100</span>/month
-                        <br><br>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
-                                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
-                                </svg> 1 employee account
-                            </li>
-                            <li class="list-group-item">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
-                                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
-                                </svg> Unlimited clients
-                            </li>
-                        </ul>
-                        <div class="card-body text-center">
-                            <button class="btn btn-outline-dark" style="border-radius:30px">Select</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-12 mb-4">
-                <div class="card h-100 shadow">
-                    <div class="card-header text-center p-3 bg-light">
-                        <h5 class="card-title">Standard</h5>
-                        <small>Small Business</small>
-                        <br><br>
-                        <span class="h2">$200</span>/month
-                        <br><br>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
-                                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
-                                </svg> 15 employee accounts
-                            </li>
-                            <li class="list-group-item">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
-                                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
-                                </svg> Unlimited clients
-                            </li>
-                        </ul>
-                        <div class="card-body text-center">
-                            <button class="btn btn-outline-dark" style="border-radius:30px">Select</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-12 mb-4">
-                <div class="card h-100 shadow">
-                    <div class="card-header text-center p-3 bg-light">
-                        <h5 class="card-title">Premium</h5>
-                        <small>Large Companies</small>
-                        <br><br>
-                        <span class="h2">$1000</span>/month
-                        <br><br>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
-                                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
-                                </svg> Unlimited employee accounts
-                            </li>
-                            <li class="list-group-item">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
-                                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
-                                </svg> Unlimited clients
-                            </li>
-                        </ul>
-                        <div class="card-body text-center">
-                            <button class="btn btn-outline-dark" style="border-radius:30px">Select</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container-fluid footer mt-5 text-white">
-        <div class="container p-5">
-            <div class="row">
-                <div class="col-lg-4 col-md-12">
-                    <h6>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
-                        </svg>
-                        Pets-R-us
-                    </h6>
-                    <p>Let us handle the software so you can handle the pets.</p>
-                    <a href="/" class="footer-link">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
-                            <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z" />
-                        </svg>
-                    </a>
-                    <a href="/" class="footer-link">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" fill="currentColor" class="bi bi-twitter" viewBox="0 0 16 16">
-                            <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z" />
-                        </svg>
-                    </a>
-                    <a href="/" class="footer-link">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" fill="currentColor" class="bi bi-linkedin" viewBox="0 0 16 16">
-                            <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z" />
-                        </svg>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-md-12">
-                    <h6>Company</h6>
-                    <p><a href="/" class="footer-link">About</a></p>
-                    <p><a href="/" class="footer-link">Jobs</a></p>
-                    <p><a href="/" class="footer-link">Blog</a></p>
-                    <p><a href="/" class="footer-link">Case Studies</a></p>
-                </div>
-                <div class="col-lg-4 col-md-12">
-                    <h6>Resources</h6>
-                    <p><a href="/" class="footer-link">Contact</a></p>
-                    <p><a href="/" class="footer-link">Support</a></p>
-                    <p><a href="/" class="footer-link">Privacy & terms</a></p>
-                    <p><a href="/" class="footer-link">Cookie Policy</a></p>
-                    <p><a href="/" class="footer-link">Sitemap</a></p>
-                </div>
-            </div>
-
-            <div class="container p-2">
-                <p class="text-center">© 2021 SAAS. All Rights Reserved.</p>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+    <!--Navbar-->
+    <!--Header-->
+    <!--Header-->
+    @*<script src="script.js"></script>*@
 </body>
 </html>
