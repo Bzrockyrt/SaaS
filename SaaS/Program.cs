@@ -2,13 +2,25 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SaaS.DataAccess.Data;
 using SaaS.DataAccess.DbInitializer;
+using SaaS.DataAccess.Services;
+using SaaS.DataAccess.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.Configure<TenantSettings>((settings) =>
+{
+    builder.Configuration.GetSection("Tenants").Bind(settings);
+});
+
+builder.Services.AddScoped<TenantService>();
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(/*builder.Configuration.GetConnectionString("SuperUserConnectionString")*/));
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
         .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
@@ -52,7 +64,6 @@ app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
     pattern: "{area=WebSite}/{controller=HomePage}/{action=HomePage}/{id?}");
-
 app.Run();
 
 void SeedDatabase()

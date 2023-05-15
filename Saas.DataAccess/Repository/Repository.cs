@@ -7,8 +7,7 @@ namespace SaaS.DataAccess.Repository
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        //private readonly ApplicationDbContext context;
-        private readonly ApplicationDbContext context;
+        private readonly ApplicationDbContext? context;
         internal DbSet<T> dbSet;
 
         public Repository(ApplicationDbContext context)
