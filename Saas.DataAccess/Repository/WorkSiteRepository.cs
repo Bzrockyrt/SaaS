@@ -6,7 +6,6 @@ namespace SaaS.DataAccess.Repository
 {
     public class WorkSiteRepository : Repository<WorkSite>, IWorkSiteRepository
     {
-        //private readonly ApplicationDbContext context;
         private readonly ApplicationDbContext context;
 
         public WorkSiteRepository(ApplicationDbContext context) : base(context)

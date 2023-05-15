@@ -16,11 +16,11 @@ namespace SaaS.Domain.Models
 
         public string UserId { get; set; } = string.Empty;
 
-        public string Password { get; set; } = string.Empty; 
+        public string Password { get; set; } = string.Empty;
 
         public string Trusted_Connection { get; set; } = string.Empty;
 
-        public string Multiple_Active_Result_Sets { get; set; } = string.Empty;    
+        public string Multiple_Active_Result_Sets { get; set; } = string.Empty;
 
         public string ConnectionString
         {

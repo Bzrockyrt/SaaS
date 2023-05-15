@@ -1,20 +1,20 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using SaaS.DataAccess.Services;
 using SaaS.Domain.Models;
+using System.Reflection.Emit;
 
 namespace SaaS.DataAccess.Data
 {
     public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
-        public ApplicationDbContext()
-        {
-            
-        }
+        private readonly string ConnectionString;
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
+            TenantService tenantService) : base(options)
         {
-
+            this.ConnectionString = tenantService?.GetConnectionString();
         }
 
         public DbSet<Article> Article { get; set; }
@@ -36,16 +36,18 @@ namespace SaaS.DataAccess.Data
         public DbSet<WorkSite> WorkSite { get; set; }
         public DbSet<WorkSiteType> WorkSiteType { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+            /*if (!optionsBuilder.IsConfigured)
+                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=SaaS;Trusted_Connection=True;MultipleActiveResultSets=true");*/
+            if (this.ConnectionString != null)
+                optionsBuilder.UseSqlServer(this.ConnectionString);
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            /*Configures one-to-many relationships*/
-            modelBuilder.Entity<Article>().HasMany<ArticleImage>(a => a.ArticleImages).WithOne(ai => ai.Article).HasForeignKey(ai => ai.ArticleId).OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<Supplier_Article>().HasKey(sa => new { sa.SupplierId, sa.ArticleId });
-            modelBuilder.Entity<Supplier_Article>().HasOne<Supplier>(sa => sa.Supplier).WithMany(s => s.Supplier_Articles).HasForeignKey(sa => sa.SupplierId);
-            modelBuilder.Entity<Supplier_Article>().HasOne<Article>(sa => sa.Article).WithMany(a => a.Supplier_Articles).HasForeignKey(sa => sa.ArticleId);
 
             modelBuilder.Entity<Subscription>().HasMany<Company>(s => s.Companies).WithOne(c => c.Subscription).HasForeignKey(c => c.SubscriptionId).OnDelete(DeleteBehavior.Cascade);
 
@@ -59,6 +61,12 @@ namespace SaaS.DataAccess.Data
             modelBuilder.Entity<Subscription_Functionnality>().HasOne<Subscription>(sf => sf.Subscription).WithMany(s => s.Subscription_Functionnalities).HasForeignKey(sf => sf.SubscriptionId);
             modelBuilder.Entity<Subscription_Functionnality>().HasOne<Functionnality>(sf => sf.Functionnality).WithMany(f => f.Subscription_Functionnalities).HasForeignKey(sf => sf.FunctionnalityId);
 
+            modelBuilder.Entity<Article>().HasMany<ArticleImage>(a => a.ArticleImages).WithOne(ai => ai.Article).HasForeignKey(ai => ai.ArticleId).OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Supplier_Article>().HasKey(sa => new { sa.SupplierId, sa.ArticleId });
+            modelBuilder.Entity<Supplier_Article>().HasOne<Supplier>(sa => sa.Supplier).WithMany(s => s.Supplier_Articles).HasForeignKey(sa => sa.SupplierId);
+            modelBuilder.Entity<Supplier_Article>().HasOne<Article>(sa => sa.Article).WithMany(a => a.Supplier_Articles).HasForeignKey(sa => sa.ArticleId);
+
             modelBuilder.Entity<User>().HasOne<Gender>(u => u.Gender).WithMany(g => g.Users).HasForeignKey(u => u.GenderId).OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<WorkHour>().HasOne<User>(wh => wh.User).WithMany(u => u.WorkHours).HasForeignKey(wh => wh.UserId).OnDelete(DeleteBehavior.NoAction);
@@ -70,13 +78,6 @@ namespace SaaS.DataAccess.Data
             modelBuilder.Entity<WorkHour_WorkSite>().HasOne<WorkSite>(whws => whws.WorkSite).WithMany(ws => ws.WorkHour_WorkSites).HasForeignKey(whws => whws.WorkSiteId);
 
             modelBuilder.Entity<WorkSiteType>().HasMany<WorkSite>(wst => wst.WorkSites).WithOne(ws => ws.WorkSiteType).HasForeignKey(ws => ws.WorkSiteTypeId).OnDelete(DeleteBehavior.Cascade);
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-            if (!optionsBuilder.IsConfigured)
-                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=SaaS;Trusted_Connection=True;MultipleActiveResultSets=true");
         }
     }
 }

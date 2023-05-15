@@ -394,7 +394,7 @@ namespace SaaS.DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
                     Firstname = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true),
                     Lastname = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true),
                     StreetNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -429,8 +429,7 @@ namespace SaaS.DataAccess.Migrations
                         name: "FK_AspNetUsers_Department_DepartmentId",
                         column: x => x.DepartmentId,
                         principalTable: "Department",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_AspNetUsers_Gender_GenderId",
                         column: x => x.GenderId,
