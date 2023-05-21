@@ -15,23 +15,34 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0-preview.3.23206.5" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0-preview.4.23261.6" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Company\Controllers\" />
-    <Folder Include="Areas\Company\Data\" />
-    <Folder Include="Areas\Company\Models\" />
-    <Folder Include="Areas\Company\Views\" />
-    <Folder Include="Areas\Employee\Controllers\" />
-    <Folder Include="Areas\Employee\Data\" />
-    <Folder Include="Areas\Employee\Models\" />
-    <Folder Include="Areas\Employee\Views\" />
-    <Folder Include="Areas\User\Controllers\" />
-    <Folder Include="Areas\User\Data\" />
-    <Folder Include="Areas\User\Models\" />
-    <Folder Include="Areas\User\Views\" />
+    <Folder Include="Areas\Application\Views\Dashboard\" />
+    <Folder Include="Areas\Application\Views\WorkSite\" />
     <Folder Include="ViewComponents\" />
+    <Folder Include="ViewModels\Application\Account\" />
+    <Folder Include="ViewModels\Application\Company\" />
+    <Folder Include="ViewModels\Application\Dashboard\" />
+    <Folder Include="ViewModels\Application\Functionnality\" />
+    <Folder Include="ViewModels\Application\Home\" />
+    <Folder Include="ViewModels\Application\Messaging\" />
+    <Folder Include="ViewModels\Application\Worksite\" />
+    <Folder Include="ViewModels\Application\User\" />
+    <Folder Include="ViewModels\Application\Role\" />
+    <Folder Include="ViewModels\WebSite\" />
+    <Folder Include="wwwroot\css\Application\Account\" />
+    <Folder Include="wwwroot\css\Application\Company\" />
+    <Folder Include="wwwroot\css\Application\Connection\" />
+    <Folder Include="wwwroot\css\Application\Dashboard\" />
+    <Folder Include="wwwroot\css\Application\Functionnality\" />
+    <Folder Include="wwwroot\css\Application\Home\" />
+    <Folder Include="wwwroot\css\Application\Messaging\" />
+    <Folder Include="wwwroot\css\Application\Worksite\" />
+    <Folder Include="wwwroot\css\Application\User\" />
+    <Folder Include="wwwroot\css\Company\" />
+    <Folder Include="wwwroot\css\WebSite\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 

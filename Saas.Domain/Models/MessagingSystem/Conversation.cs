@@ -1,4 +1,6 @@
-﻿namespace SaaS.Domain.Models.MessagingSystem
+﻿using SaaS.Domain.Models.Account;
+
+namespace SaaS.Domain.Models.MessagingSystem
 {
     public class Conversation
     {

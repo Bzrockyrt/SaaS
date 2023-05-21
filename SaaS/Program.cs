@@ -2,8 +2,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SaaS.DataAccess.Data;
 using SaaS.DataAccess.DbInitializer;
+using SaaS.DataAccess.Repository;
+using SaaS.DataAccess.Repository.IRepository;
 using SaaS.DataAccess.Services;
 using SaaS.DataAccess.Utils;
+using SaaS.Domain.Models.Account;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,12 +21,15 @@ builder.Services.Configure<TenantSettings>((settings) =>
 builder.Services.AddScoped<TenantService>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(/*builder.Configuration.GetConnectionString("SuperUserConnectionString")*/));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString")));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-        .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+builder.Services.AddIdentity<User, IdentityRole>()
+        .AddEntityFrameworkStores<ApplicationDbContext>()
+        .AddDefaultUI()
+        .AddDefaultTokenProviders();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -41,7 +47,7 @@ builder.Services.AddSession(options => {
 
 //builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddRazorPages();
-//builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 //builder.Services.AddScoped<IEmailSender, EmailSender>();
 var app = builder.Build();
 
@@ -63,7 +69,7 @@ app.UseSession();
 app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
-    pattern: "{area=WebSite}/{controller=HomePage}/{action=HomePage}/{id?}");
+    pattern: "{area=Application}/{controller=DailyHours}/{action=DailyHours}/{id?}");
 app.Run();
 
 void SeedDatabase()

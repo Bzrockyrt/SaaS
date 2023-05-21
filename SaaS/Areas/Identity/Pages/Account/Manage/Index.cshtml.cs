@@ -9,16 +9,17 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SaaS.Domain.Models.Account;
 
 namespace SaaS.Areas.Identity.Pages.Account.Manage
 {
     public class IndexModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<User> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
         public IndexModel(
-            UserManager<IdentityUser> userManager,
+            UserManager<User> userManager,
             SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
@@ -51,25 +52,34 @@ namespace SaaS.Areas.Identity.Pages.Account.Manage
         /// </summary>
         public class InputModel
         {
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+            [Display(Name = "Username")]
+            public string Username { get; set; }
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+            [Display(Name = "Profile Picture")]
+            public byte[] ProfilePicture { get; set; }
         }
 
-        private async Task LoadAsync(IdentityUser user)
+        private async Task LoadAsync(User user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
+            var firstName = user.Firstname;
+            var lastName = user.Lastname;
+            /*var profilePicture = user.ProfilePicture;*/
             Username = userName;
-
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                Username = userName,
+                FirstName = firstName,
+                LastName = lastName,
+                /*ProfilePicture = profilePicture*/
             };
         }
 
@@ -97,6 +107,19 @@ namespace SaaS.Areas.Identity.Pages.Account.Manage
             {
                 await LoadAsync(user);
                 return Page();
+            }
+
+            var firstName = user.Firstname;
+            var lastName = user.Lastname;
+            if (Input.FirstName != firstName)
+            {
+                user.Firstname = Input.FirstName;
+                await _userManager.UpdateAsync(user);
+            }
+            if (Input.LastName != lastName)
+            {
+                user.Lastname = Input.LastName;
+                await _userManager.UpdateAsync(user);
             }
 
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);

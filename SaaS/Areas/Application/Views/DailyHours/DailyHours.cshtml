@@ -1,0 +1,170 @@
+﻿@using SaaS.ViewModels.Application.DailyHours;
+@model DailyHoursViewModel
+
+@*<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Heures journalières</h1>
+                </div>
+                <div class="col-sm-6">
+                    <h1>Date</h1>
+                    <div class="input-group date" id="date" data-target-input="nearest">
+                        <input type="date" class="form-control datetimepicker-input" data-target="#date" asp-for="@Model.Date"/>
+                        <div class="input-group-append" data-target="#date" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fade fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+                        <li class="breadcrumb-item active"><a href="#">Heures journalières</a></li>
+                    </ol>
+                    <a href="#">
+                        <li class=""></li>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="card">
+                    <div class="card-header">
+                        <p>Heures du matin</p>
+                    </div>
+                    <div class="card-body">
+                        <!--Heure de début du matin-->
+                        <div class="input-group date" id="startmorninghour" data-target-input="nearest">
+                            <input type="text" class="form-control datetimepicker-input" data-target="#startmorninghour" />
+                            <div class="input-group-append" data-target="#startmorninghour" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="far fa-clock"></i></div>
+                            </div>
+                        </div>
+                        <!--Heure de fin du matin-->
+                        <div class="input-group date" id="endmorninghour" data-target-input="nearest">
+                            <input type="text" class="form-control datetimepicker-input" data-target="#endmorninghour" />
+                            <div class="input-group-append" data-target="#endmorninghour" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="far fa-clock"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="card">
+                    <div class="card-header">
+                        <p>Heures de l'après-midi</p>
+                    </div>
+                    <div class="card-body">
+                    </div>
+                    <div class="card-footer">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="card">
+                    <div class="card-header">
+                        <p>Informations complémentaires</p>
+                    </div>
+                    <div class="card-body">
+                    </div>
+                    <div class="card-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>*@
+
+@*<h1 class="title">Heures journalières</h1>
+<ul class="breadcrumbs">
+    <li><a href="#">Home</a></li>
+    <li class="divider">/</li>
+    <li><a href="#" class="active">Dashboard</a></li>
+</ul>
+<div class="data">
+    <div class="card">
+        <div class="card-head">
+            <h3 class="card-title">Heures du matin</h3>
+            <div class="card-menu">
+                <i class="bx bx-dots-horizontal-rouded icon"></i>
+                <ul class="card-menu-link">
+                    <li><a href="#">Edit</a></li>
+                    <li><a href="#">Save</a></li>
+                    <li><a href="#">Remove</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-body">
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-head">
+            <h3 class="card-title">Heures de l'après-midi</h3>
+        </div>
+    </div>
+</div>*@
+
+<div class="content">
+    <div class="container-fluid">
+        <form asp-area="Application" asp-controller="DailyHours" asp-action="ValidHours">
+            <div class="row">
+                <h1 class="title">Heures journalières</h1>
+                <button class="help" asp-area="Application" asp-controller="DailyHours" asp-action="DailyHoursHelp">
+                    <i class="bx bx-help-circle icon"></i>
+                </button>
+                @*<ul class="breadcrumbs">
+                    <li><a href="#">Home</a></li>
+                    <li class="divider">/</li>
+                    <li><a href="#" class="active">Dashboard</a></li>
+                </ul>*@
+            </div>
+            <div class="row">
+                <div class="card">
+                    <div class="card-head">
+                        <h2 class="card-title">Heures du matin</h2>
+                    </div>
+                    <div class="card-body">
+                        <h3>Début :</h3>
+                        <h3>Fin :</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="card">
+                    <div class="card-head">
+                        <h2 class="card-title">Heures de l'après-midi</h2>
+                    </div>
+                    <div class="card-body">
+                        <h3>Début :</h3>
+                        <h3>Fin :</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="card">
+                    <div class="card-head">
+                        <h2 class="card-title">Informations complémentaires</h2>
+                    </div>
+                    <div class="card-body">
+                        <h3>Début :</h3>
+                        <h3>Fin :</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <button type="submit">
+                    Enregistrer
+                </but>
+            </div>
+        </form>
+    </div>
+</div>

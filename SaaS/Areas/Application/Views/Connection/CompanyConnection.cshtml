@@ -1,0 +1,51 @@
+﻿@model CompanyConnectionViewModel
+
+@{
+    Layout = null;
+    var company = (TenantSiteModel)ViewBag.CurrentCompany;
+    ViewData["Title"] = "Connexion entreprise";
+}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="~/css/CompanyConnection.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,600,0,0" />
+    <!-- Boxiocns CDN Link -->
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <title>@ViewData["Title"]</title>
+</head>
+
+<body>
+    <div class="login-card-container">
+        <div class="login-card">
+            <div class="login-card-logo">
+                <a asp-area="WebSite" asp-controller="HomePage" asp-action="HomePage">
+                    <img src="~/Logo_PIPL_Developpement.png" alt="PIPL Développement" />
+                </a>
+            </div>
+            <div class="login-card-header">
+                <h1>Connexion à votre entreprise</h1>
+                <div>Veuillez vous connecter à votre entreprise</div>
+            </div>
+            <form id="account" method="post" class="login-card-form" asp-area="Application" asp-controller="Connection" asp-action="CompanyConnection">
+                <div asp-validation-summary="ModelOnly" class="login-card-validation" role="alert"></div>
+                <div class="form-item">
+                    <i class='bx bxs-dashboard icon'></i>
+                    <input type="text" asp-for="CompanyCode" placeholder="Code entreprise" autofocus required />
+                    @*<input type="text" placeholder="Adresse mail" id="emailForm"
+                    autofocus required>*@
+                </div>
+                <button id="login-submit" type="submit">Accéder à mon entreprise</button>
+            </form>
+            <div class="login-card-footer">
+                Votre entreprise n'est pas encore enregistrée ? <a asp-area="WebSite" asp-controller="HomePage" asp-action="HomePage">Contactez-nous!</a>
+            </div>
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>

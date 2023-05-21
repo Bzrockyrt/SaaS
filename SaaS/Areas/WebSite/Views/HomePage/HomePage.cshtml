@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@*@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager*@
 
 @{
     Layout = null;
@@ -60,11 +60,11 @@
                             </ul>
                             <ul class="navbar-menu" role="list">
                                 <li>
-                                    <a asp-area="WebSite" asp-controller="HomePage" asp-action="Login" class="navbar-menu-item">Connexion</a>
+                                    <a asp-area="Application" asp-controller="Connection" asp-action="CompanyConnection" class="navbar-menu-item">Accéder à l'application</a>
                                 </li>
-                                <li>
+                                @*<li>
                                     <a asp-area="WebSite" asp-controller="HomePage" asp-action="Signup" class="btn btn-blue">Inscription</a>
-                                </li>
+                                </li>*@
                             </ul>
                         </div>
                     </div>

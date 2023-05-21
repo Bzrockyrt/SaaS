@@ -1,106 +1,146 @@
-﻿<!DOCTYPE html>
+﻿@using SaaS.DataAccess.Repository;
+@*@inject UserRepository userRepository*@
+
+@{
+    var Culture = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - SaaS</title>
-    <link rel="stylesheet" href="~/css/SuperAdminPanel.css" asp-append-version="true"/>
+
+    <link rel="stylesheet" href="~/css/Application/Layout/Layout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Application/DailyHours/DailyHours.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" />
+
+    @RenderSection("BootstrapSelect", required: false)
+
+    <!-- Boxiocns CDN Link -->
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
-    <div class="sidebar">
-        <div class="logo-details">
-            <i class='bx bxl-c-plus-plus icon'></i>
-            <div class="logo_name">Entreprise</div>
-            <i class='bx bx-menu' id="btn"></i>
-        </div>
-        <ul class="nav-list">
+    <!-- SIDEBAR -->
+    <section id="sidebar">
+        <a href="#" class="brand">
+            <i class='bx bxs-smile icon'></i>
+            AdminSite
+        </a>
+        <ul class="side-menu">
             <li>
-                @*<i class='bx bx-search'></i>*@
-                @*<span class="material-icons-sharp btnicon">search</span>*@
-                <input type="text" placeholder="Rechercher">
-                <span class="tooltip">Rechercher</span>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='bx bx-grid-alt'></i>
+                <a asp-area="Application" asp-controller="Home" asp-action="Index">
+                    <i class='bx bxs-dashboard icon'></i>
                     <span class="links_name">Tableau de bord</span>
                 </a>
-                <span class="tooltip">Tableau de bord</span>
             </li>
+            <li class="divider" data-text="super administration">Super Administration</li>
             @*<li>
-            <a href="#">
-            <i class='bx bx-user'></i>
-            <span class="links_name">Utilisateur</span>
-            </a>
-            <span class="tooltip">Utilisateur</span>
+                <a asp-area="SuperAdministration" asp-controller="Functionnality" asp-action="Index">
+                    <i class='bx bxs-inbox icon'></i>
+                    Elements 
+                    <i class='bx bx-chevron-right icon-right'></i>
+                </a>
+                <ul class="side-dropdown">
+                    <li><a href="#">Alert</a></li>
+                    <li><a href="#">Badges</a></li>
+                    <li><a href="#">Breadcrumbs</a></li>
+                    <li><a href="#">Button</a></li>
+                </ul>
             </li>*@
-            @*<li>
-            <a href="#">
-            <i class='bx bx-chat'></i>
-            <span class="links_name">Messages</span>
-            </a>
-            <span class="tooltip">Messages</span>
-            </li>*@
-            @*<li>
-            <a href="#">
-            <i class='bx bx-pie-chart-alt-2'></i>
-            <span class="links_name">Graphiques</span>
-            </a>
-            <span class="tooltip">Graphiques</span>
-            </li>*@
-            @*<li>
-            <a href="#">
-            <i class='bx bx-cog'></i>
-            <span class="links_name">Paramètres</span>
-            </a>
-            <span class="tooltip">Paramètres</span>
-            </li>*@
-            <li class="profile">
-                <div class="profile-details">
-                    <img src="profile.jpg" alt="profileImg">
-                    <div class="name_job">
-                        <div class="name">Nom prénom</div>
-                        <div class="job">Profession</div>
-                    </div>
-                </div>
-                <i class='bx bx-log-out' id="log_out"></i>
+            <li>
+                <a asp-area="Application" asp-controller="Functionnality" asp-action="Index">
+                    <i class="bx bxs-inbox icon"></i>
+                    <span class="links_name">Fonctionnalités</span>
+                </a>
             </li>
+            <li>
+                <a asp-area="Application" asp-controller="Company" asp-action="Index">
+                    <i class='bx bxs-chart icon'></i>
+                    <span class="links_name">Entreprises</span>
+                </a>
+            </li>
+            <li>
+                <a asp-area="Application" asp-controller="User" asp-action="Index">
+                    <i class='bx bxs-widget icon'></i>
+                    <span class="links_name">Utilisateurs</span>
+                </a>
+            </li>
+            <li>
+                <a asp-area="Application" asp-controller="DailyHours" asp-action="Index">
+                    <i class='bx bxs-widget icon'></i>
+                    <span class="links_name">Heures journalières</span>
+                </a>
+            </li>
+            <li>
+                <a asp-area="Application" asp-controller="Messaging" asp-action="Index">
+                    <i class='bx bxs-widget icon'></i>
+                    <span class="links_name">Messagerie</span>
+                </a>
+            </li>
+            <li class="divider" data-text="entreprise">Entreprise</li>
+            <li class="divider" data-text="employe">Employé</li>
         </ul>
-    </div>
-    <section class="home-section">
-        @RenderBody()
+    </section>
+
+    <!--CONTENT-->
+    <section id="content">
+        <!-- NAVBAR -->
+        <nav>
+            <i class='bx bx-menu toggle-sidebar'></i>
+            <form action="#">
+                <div class="form-group">
+                    <input type="text" placeholder="Search...">
+                    <i class='bx bx-search icon'></i>
+                </div>
+            </form>
+            <a href="#" class="nav-link">
+                <i class='bx bxs-bell icon'></i>
+                <span class="badge">5</span>
+            </a>
+            <a asp-area="SuperAdministration" asp-controller="Messaging" asp-action="Index" class="nav-link">
+                <i class='bx bxs-message-square-dots icon'></i>
+                <span class="badge">8</span>
+            </a>
+            <span class="divider"></span>
+            <div class="profile">
+                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8cGVvcGxlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="">
+                <ul class="profile-link">
+                    <li>
+                        @*<a asp-area="Identity" asp-page="/Account/Manage/Index">
+                            <i class='bx bxs-user-circle icon'></i>
+                            Profile
+                        </a>*@
+                        <a asp-area="Application" asp-controller="Account" asp-action="Manage">
+                            <i class='bx bxs-user-circle icon'></i>
+                            Profil
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class='bx bxs-cog'></i>
+                            Settings
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="WebSite" asp-controller="Connection" asp-action="Logout">
+                            <i class='bx bxs-log-out-circle'></i>
+                            Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- MAIN -->
+        <main>
+            @RenderBody()
+        </main>
     </section>
 
 
-
-    @*<header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SaaS</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>*@
-
-    @*<footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - SaaS - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>*@
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

@@ -17,6 +17,6 @@ namespace SaaS.Domain.Models
 
         public List<Subscription_Functionnality> Subscription_Functionnalities { get; set; } = new List<Subscription_Functionnality>();
 
-        public IList<Company> Companies { get; set; } = new List<Company>();
+        /*public IList<Company> Companies { get; set; } = new List<Company>();*/
     }
 }

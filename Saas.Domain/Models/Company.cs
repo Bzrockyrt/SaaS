@@ -45,20 +45,22 @@ namespace SaaS.Domain.Models
         [MaxLength(8, ErrorMessage = "Le code de l'entreprise doit comporter 8 caractères")]
         public string CompanyCode { get; set; } = string.Empty;
 
-        public int SubscriptionId { get; set; }
+        public string Company_Tenant_Description { get; set; } = string.Empty;
+
+        /*public int SubscriptionId { get; set; }
         [ForeignKey(nameof(SubscriptionId))]
         [ValidateNever]
-        public virtual Subscription Subscription { get; set; }
+        public virtual Subscription Subscription { get; set; }*/
 
-        public int TenantId { get; set; }
+        /*public int TenantId { get; set; }
         [ForeignKey(nameof(TenantId))]
         [ValidateNever]
-        public virtual Tenant Tenant { get; set; }
+        public virtual Tenant Tenant { get; set; }*/
 
-        public int CompanySettingId { get; set; }
+        /*public int CompanySettingId { get; set; }
         [ForeignKey(nameof(CompanySettingId))]
         [ValidateNever]
-        public virtual CompanySetting CompanySetting { get; set; }
+        public virtual CompanySetting CompanySetting { get; set; }*/
 
         public IList<Department> Departments { get; set; } = new List<Department>();
     }

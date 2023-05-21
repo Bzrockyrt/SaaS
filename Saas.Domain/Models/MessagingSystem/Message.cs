@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using SaaS.Domain.Models.Account;
 
 namespace SaaS.Domain.Models.MessagingSystem
 {

@@ -1,0 +1,28 @@
+﻿@using SaaS.DataAccess.Repository;
+@model List<TenantSiteModel>
+
+@*@inject UnitOfWork unitOfWork*@
+
+@{
+    ViewData["Title"] = "Home Page";
+    var company = (TenantSiteModel)ViewBag.SelectedSite;
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about</p>
+</div>
+
+@if (company != null)
+{
+    <h2>
+        @company.Name <a href="@Url.Action("UnselectSite", new { company = company.Key })">Logout from site</a>
+    </h2>
+}
+else
+{
+    foreach(var st in Model)
+    {
+        <p>@st.Name <a href="@Url.Action("SelectSite", new { company = st.Key })">Select</a></p>
+    }
+}

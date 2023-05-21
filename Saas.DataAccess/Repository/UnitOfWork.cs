@@ -22,6 +22,8 @@ namespace SaaS.DataAccess.Repository
         public UnitOfWork(ApplicationDbContext context)
         {
             this.context = context;
+            this.Company = new CompanyRepository(this.context);
+            this.User = new UserRepository(this.context);
         }
 
         public void Save()
