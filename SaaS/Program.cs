@@ -20,8 +20,15 @@ builder.Services.Configure<TenantSettings>((settings) =>
 
 builder.Services.AddScoped<TenantService>();
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString")));
+builder.Services.AddDbContext<SuperAdminDbContext>(options => 
+    options.UseSqlServer("CONNECTION_STRING", o => o.MigrationsHistoryTable(tableName: HistoryRepository.DefaultTableName, schema: "superadmin")));
+
+builder.Services.AddDbContext<ApplicationDbContext>((sp, options){
+    var tenantProvider = sp.GetRequiredService<TenantProvider>();
+
+    /*options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"));*/
+    options.UseSqlServer(tenantProvider.GetConnectionString());
+};
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

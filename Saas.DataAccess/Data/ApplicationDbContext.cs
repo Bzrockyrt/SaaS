@@ -124,6 +124,24 @@ namespace SaaS.DataAccess.Data
 
             modelBuilder.Entity<Company>().HasMany<Department>(c => c.Departments).WithOne(d => d.Company).HasForeignKey(d => d.CompanyId).OnDelete(DeleteBehavior.Cascade);*/
 
+            #region QueryFilters
+            modelBuilder.Entity<Article>().HasQueryFilter(a => a.IsEnable);
+            modelBuilder.Entity<ArticleImage>().HasQueryFilter(a => a.IsEnable);
+            modelBuilder.Entity<Company>().HasQueryFilter(a => a.IsEnable);
+            modelBuilder.Entity<CompanySettings>().HasQueryFilter(a => a.IsEnable);
+            modelBuilder.Entity<Department>().HasQueryFilter(a => a.IsEnable);
+            modelBuilder.Entity<Functionnality>().HasQueryFilter(a => a.IsEnable);
+            modelBuilder.Entity<Gender>().HasQueryFilter(a => a.IsEnable);
+            modelBuilder.Entity<Profile>().HasQueryFilter(a => a.IsEnable);
+            modelBuilder.Entity<Subscription>().HasQueryFilter(a => a.IsEnable);
+            modelBuilder.Entity<Supplier>().HasQueryFilter(a => a.IsEnable);
+            modelBuilder.Entity<Tenant>().HasQueryFilter(a => a.IsEnable);
+            modelBuilder.Entity<WorkHour>().HasQueryFilter(a => a.IsEnable);
+            modelBuilder.Entity<WorkHourImage>().HasQueryFilter(a => a.IsEnable);
+            modelBuilder.Entity<WorkSite>().HasQueryFilter(a => a.IsEnable);
+            modelBuilder.Entity<WorkSiteType>().HasQueryFilter(a => a.IsEnable);
+            #endregion
+
             modelBuilder.Entity<Subscription_Functionnality>().HasKey(sf => new { sf.SubscriptionId, sf.FunctionnalityId });
             modelBuilder.Entity<Subscription_Functionnality>().HasOne<Subscription>(sf => sf.Subscription).WithMany(s => s.Subscription_Functionnalities).HasForeignKey(sf => sf.SubscriptionId);
             modelBuilder.Entity<Subscription_Functionnality>().HasOne<Functionnality>(sf => sf.Functionnality).WithMany(f => f.Subscription_Functionnalities).HasForeignKey(sf => sf.FunctionnalityId);
