@@ -6,12 +6,16 @@ using SaaS.DataAccess.Repository;
 using SaaS.DataAccess.Repository.IRepository;
 using SaaS.DataAccess.Services;
 using SaaS.DataAccess.Utils;
-using SaaS.Domain.Models.Account;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<ApplicationDbContext>();
+
+builder.Services.AddDbContext<PIPLDeveloppementDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("PIPLDeveloppementConnectionString")));
 
 builder.Services.Configure<TenantSettings>((settings) =>
 {
@@ -20,20 +24,21 @@ builder.Services.Configure<TenantSettings>((settings) =>
 
 builder.Services.AddScoped<TenantService>();
 
-builder.Services.AddDbContext<SuperAdminDbContext>(options => 
+/*builder.Services.AddDbContext<SuperAdminDbContext>(options => 
     options.UseSqlServer("CONNECTION_STRING", o => o.MigrationsHistoryTable(tableName: HistoryRepository.DefaultTableName, schema: "superadmin")));
 
 builder.Services.AddDbContext<ApplicationDbContext>((sp, options){
     var tenantProvider = sp.GetRequiredService<TenantProvider>();
 
-    /*options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"));*/
+    *//*options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"));*//*
     options.UseSqlServer(tenantProvider.GetConnectionString());
-};
+};*/
+
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 
-builder.Services.AddIdentity<User, IdentityRole>()
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .AddDefaultUI()
         .AddDefaultTokenProviders();
@@ -45,14 +50,14 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
 });
 
-builder.Services.AddDistributedMemoryCache();
+/*builder.Services.AddDistributedMemoryCache();*/
 builder.Services.AddSession(options => {
-    options.IdleTimeout = TimeSpan.FromMinutes(100);
+    options.IdleTimeout = TimeSpan.FromMinutes(1);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
 
-//builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 //builder.Services.AddScoped<IEmailSender, EmailSender>();
@@ -72,11 +77,11 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSession();
-//SeedDatabase();
+SeedDatabase();
 app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
-    pattern: "{area=Application}/{controller=DailyHours}/{action=DailyHours}/{id?}");
+    pattern: "{area=application}/{controller=dailyhours}/{action=index}/{id?}");
 app.Run();
 
 void SeedDatabase()

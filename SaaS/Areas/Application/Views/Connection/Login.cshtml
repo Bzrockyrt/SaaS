@@ -2,7 +2,7 @@
 
 @{
     Layout = null;
-    var company = (TenantSiteModel)ViewBag.CurrentCompany;
+    var company = ViewData["CurrentCompany"] as TenantSiteModel;
     ViewData["Title"] = "Connexion";
 }
 
@@ -59,7 +59,7 @@
                 <button id="login-submit" type="submit">Se connecter</button>
             </form>
             <div class="login-card-footer">
-                Vous n'avez pas de compte? <a asp-area="WebSite" asp-controller="Connection" asp-action="Signup">Crééez votre compte personnel</a>
+                Vous n'avez pas de compte? <a asp-area="Application" asp-controller="Connection" asp-action="Signup">Crééez votre compte personnel</a>
             </div>
         </div>
         <div class="login-card-social">

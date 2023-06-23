@@ -5,10 +5,10 @@ namespace SaaS.Domain.Models
     public class Tenant
     {
         [Key]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
-        public int CompanyId { get; set; }
-        public virtual Company Company { get; set; }
+        /*public string CompanyId { get; set; }
+        public virtual Company Company { get; set; }*/
 
         public string ServerName { get; set; } = string.Empty;
 

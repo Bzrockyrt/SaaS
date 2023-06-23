@@ -1,0 +1,35 @@
+﻿@*@model *@
+
+<div class="header">
+    <h1 class="header-title">Entreprises</h1>
+    <a class="header-button" asp-area="SuperCompany" asp-controller="Company" asp-action="Create">
+        Créer une entreprise
+    </a>
+</div>
+<div class="container">
+    @*Afficher l'ensemble des entreprises dans un tableau
+      Il faut pouvoir le filtrer suivant une ou plusieurs descriptions
+    *@
+    <table id="tableCompany" class="table table-striped" style="width: 100%">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>SIRET</th>
+                <th>Email</th>
+                <th>Téléphone</th>
+                <th>Code d'entreprise</th>
+                <th>Tenant</th>
+                <th>Actif</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+</div>
+
+@section Scripts{
+    <script src="~/js/SuperCompany/Company/Company.js"></script>
+}

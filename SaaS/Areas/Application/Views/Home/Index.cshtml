@@ -18,6 +18,13 @@
     <h2>
         @company.Name <a href="@Url.Action("UnselectSite", new { company = company.Key })">Logout from site</a>
     </h2>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <img src="@company.Logo.ToString()" style="width: 150px"/>
 }
 else
 {
@@ -25,4 +32,10 @@ else
     {
         <p>@st.Name <a href="@Url.Action("SelectSite", new { company = st.Key })">Select</a></p>
     }
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
 }

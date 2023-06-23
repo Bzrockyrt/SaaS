@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace SaaS.Domain.Models
 {
-    public class WorkSite : BaseModel
+    public class WorkSite : ModelBase
     {
         [Required]
         [Display(Name = "Nom")]
@@ -38,12 +38,12 @@ namespace SaaS.Domain.Models
         [StringLength(50, ErrorMessage = "Le commentaire doit faire 50 caractères")]
         public string Comment { get; set; } = string.Empty;
 
-        public int CompanyId { get; set; }
+        /*public string CompanyId { get; set; }
         [ForeignKey(nameof(CompanyId))]
         [ValidateNever]
-        public virtual Company Company { get; set; }
+        public virtual Company Company { get; set; }*/
 
-        public int WorkSiteTypeId { get; set; }
+        public string WorkSiteTypeId { get; set; }
         [ForeignKey(nameof(WorkSiteTypeId))]
         [ValidateNever]
         public virtual WorkSiteType WorkSiteType { get; set; }

@@ -2,7 +2,7 @@
 
 namespace SaaS.Domain.Models
 {
-    public class Supplier : BaseModel
+    public class Supplier : ModelBase
     {
         [Required]
         [Display(Name = "Nom")]

@@ -2,7 +2,7 @@
 
 namespace SaaS.Domain.Models.MessagingSystem
 {
-    public class MessagePriority : BaseModel
+    public class MessagePriority : ModelBase
     {
         [Required]
         public string Name { get; set; } = string.Empty;

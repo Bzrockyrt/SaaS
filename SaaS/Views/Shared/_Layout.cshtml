@@ -1,8 +1,27 @@
 ﻿@using SaaS.DataAccess.Repository;
+@using SaaS.DataAccess.Repository.IRepository;
 @*@inject UserRepository userRepository*@
+@inject IUnitOfWork unitOfWork
 
 @{
     var Culture = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+    var company = (TenantSiteModel)ViewBag.SelectedSite;
+
+    /*Je vais vérifier si l'utilisateur a accès à chaque fonctionnalités de l'application
+     *Cela prends en compte si l'entreprise de l'utilisateur a accès à cette fonctionnalité
+     *Puis si l'utilisateur a accès lui également à cette fonctionnalité
+     *Si c'est le cas, l'utilisateur peut accéder à la fonctionnalité
+    */
+    //bool canAccessSuperAdmin = this.unitOfWork.User.CanUserAccessFunctionnality("Access_SuperAdmin", User);
+    bool canAccessSuperAdminDashboard = true;
+    bool canAccessDashboard = true;
+    bool canAccessFunctionnalities = true;
+    bool canAccessCompanies = true;
+    bool canAccessUsers = true;
+    bool canAccessDailyHours = true;
+    bool canAccessMessagingSystem = true;
+    bool canAccessWorkSites = true;
+    bool canAccessCompanyWorkers = true;
 }
 
 <!DOCTYPE html>
@@ -14,28 +33,59 @@
 
     <link rel="stylesheet" href="~/css/Application/Layout/Layout.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Application/DailyHours/DailyHours.css" />
+    <link rel="stylesheet" href="~/css/Page.css"/>
+    <link rel="stylesheet" href="~/css/Components/TabControl.css"/>
+    @*<link rel="stylesheet" href="~/lib/semantic/dist/css/semantic.min.css"/>*@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" />
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+    <link rel="stylesheet" href="~/css/Components/DatePicker.css" />
+    <link rel="stylesheet" href="~/css/Components/TimePicker.css" />
 
     @RenderSection("BootstrapSelect", required: false)
 
-    <!-- Boxiocns CDN Link -->
+    <!-- Boxicons CDN Link -->
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/themes/dark.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/cferdinandi/tabby/dist/css/tabby-ui.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.10/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://npmcdn.com/flatpickr/dist/themes/light.css">
+    <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css">
+    @*<link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css"/>*@
+    @*<link rel="stylesheet" href="https://unpkg.com/@djthoms/pretty-checkbox"/>*@
 </head>
 <body>
     <!-- SIDEBAR -->
     <section id="sidebar">
         <a href="#" class="brand">
             <i class='bx bxs-smile icon'></i>
-            AdminSite
+            @company?.Name
         </a>
         <ul class="side-menu">
             <li>
-                <a asp-area="Application" asp-controller="Home" asp-action="Index">
-                    <i class='bx bxs-dashboard icon'></i>
-                    <span class="links_name">Tableau de bord</span>
-                </a>
+                @if (canAccessSuperAdminDashboard)
+                {
+                    <a asp-area="SuperCompany" asp-controller="Dashboard" asp-action="Index">
+                        <i class='bx bxs-dashboard icon'></i>
+                        <span class="links_name">Tableau de bord</span>
+                    </a>
+                }
+                @if (canAccessDashboard)
+                {
+                    <a asp-area="Application" asp-controller="Dashboard" asp-action="Index">
+                        <i class='bx bxs-dashboard icon'></i>
+                        <span class="links_name">Tableau de bord</span>
+                    </a>
+                }
             </li>
-            <li class="divider" data-text="super administration">Super Administration</li>
+            @if (canAccessSuperAdminDashboard)
+            {
+                <li class="divider" data-text="super administration">Super Administration</li>
+            }
             @*<li>
                 <a asp-area="SuperAdministration" asp-controller="Functionnality" asp-action="Index">
                     <i class='bx bxs-inbox icon'></i>
@@ -49,38 +99,71 @@
                     <li><a href="#">Button</a></li>
                 </ul>
             </li>*@
-            <li>
-                <a asp-area="Application" asp-controller="Functionnality" asp-action="Index">
-                    <i class="bx bxs-inbox icon"></i>
-                    <span class="links_name">Fonctionnalités</span>
-                </a>
-            </li>
-            <li>
-                <a asp-area="Application" asp-controller="Company" asp-action="Index">
-                    <i class='bx bxs-chart icon'></i>
-                    <span class="links_name">Entreprises</span>
-                </a>
-            </li>
-            <li>
-                <a asp-area="Application" asp-controller="User" asp-action="Index">
-                    <i class='bx bxs-widget icon'></i>
-                    <span class="links_name">Utilisateurs</span>
-                </a>
-            </li>
-            <li>
-                <a asp-area="Application" asp-controller="DailyHours" asp-action="Index">
-                    <i class='bx bxs-widget icon'></i>
-                    <span class="links_name">Heures journalières</span>
-                </a>
-            </li>
-            <li>
-                <a asp-area="Application" asp-controller="Messaging" asp-action="Index">
-                    <i class='bx bxs-widget icon'></i>
-                    <span class="links_name">Messagerie</span>
-                </a>
-            </li>
+            @if (canAccessFunctionnalities)
+            {
+                <li>
+                    <a asp-area="SuperCompany" asp-controller="Functionnality" asp-action="Index">
+                        <i class="bx bxs-inbox icon"></i>
+                        <span class="links_name">Fonctionnalités</span>
+                    </a>
+                </li>
+            }
+            @if (canAccessCompanies)
+            {
+                <li>
+                    <a asp-area="SuperCompany" asp-controller="Company" asp-action="Index">
+                        <i class='bx bxs-chart icon'></i>
+                        <span class="links_name">Entreprises</span>
+                    </a>
+                </li>
+            }
+            @if (canAccessUsers)
+            {
+                <li>
+                    <a asp-area="SuperCompany" asp-controller="User" asp-action="Index">
+                        <i class='bx bxs-widget icon'></i>
+                        <span class="links_name">Utilisateurs</span>
+                    </a>
+                </li>
+            }
             <li class="divider" data-text="entreprise">Entreprise</li>
-            <li class="divider" data-text="employe">Employé</li>
+            @if (canAccessWorkSites)
+            {
+                <li>
+                    <a asp-area="Application" asp-controller="WorkSite" asp-action="Index">
+                        <i class='bx bxs-widget icon'></i>
+                        <span class="links_name">Chantiers</span>
+                    </a>
+                </li>
+            }
+            @if (canAccessCompanyWorkers)
+            {
+                <li>
+                    <a asp-area="Application" asp-controller="Worker" asp-action="Index">
+                        <i class='bx bxs-widget icon'></i>
+                        <span class="links_name">Employés</span>
+                    </a>
+                </li>
+            }
+            @if (canAccessMessagingSystem)
+            {
+                <li>
+                    <a asp-area="Application" asp-controller="Messaging" asp-action="Index">
+                        <i class='bx bxs-widget icon'></i>
+                        <span class="links_name">Messagerie</span>
+                    </a>
+                </li>
+            }
+            <li class="divider" data-text="employee">Employé</li>
+            @if (canAccessDailyHours)
+            {
+                <li>
+                    <a asp-area="Application" asp-controller="DailyHours" asp-action="Index">
+                        <i class='bx bxs-widget icon'></i>
+                        <span class="links_name">Heures journalières</span>
+                    </a>
+                </li>
+            }
         </ul>
     </section>
 
@@ -99,7 +182,7 @@
                 <i class='bx bxs-bell icon'></i>
                 <span class="badge">5</span>
             </a>
-            <a asp-area="SuperAdministration" asp-controller="Messaging" asp-action="Index" class="nav-link">
+            <a asp-area="Application" asp-controller="Messaging" asp-action="Index" class="nav-link">
                 <i class='bx bxs-message-square-dots icon'></i>
                 <span class="badge">8</span>
             </a>
@@ -124,10 +207,13 @@
                         </a>
                     </li>
                     <li>
-                        <a asp-area="WebSite" asp-controller="Connection" asp-action="Logout">
+                        <form id="logoutForm" class="form-inline" asp-area="Application" asp-controller="Connection" asp-action="Logout">
+                            <button id="logout" type="submit">Logout</button>
+                        </form>
+                        @*<a asp-area="Application" asp-controller="Connection" asp-action="Logout">
                             <i class='bx bxs-log-out-circle'></i>
                             Logout
-                        </a>
+                        </a>*@
                     </li>
                 </ul>
             </div>
@@ -135,6 +221,7 @@
 
         <!-- MAIN -->
         <main>
+            <partial name="_Notification" />
             @RenderBody()
         </main>
     </section>
@@ -144,6 +231,25 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="toastr.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.10/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-sortablejs@latest/jquery-sortable.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/cferdinandi/tabby/dist/js/tabby.polyfills.min.js"></script>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    @*<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.js"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/fr.js"></script>
+    <script src="~/js/Page.js"></script>
+    <script src="~/js/Components/Combobox.js" asp-append-version="true"></script>
+    <script src="~/js/Components/DatePicker.js" asp-append-version="true"></script>
+    <script src="~/js/Components/TimePicker.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -1,5 +1,6 @@
-﻿using SaaS.Domain.Models;
-using SaaS.Domain.Models.Account;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using SaaS.Domain.Models;
+using SaaS.Domain.OTHER;
 using System.ComponentModel.DataAnnotations;
 
 namespace SaaS.ViewModels.Application.DailyHours
@@ -11,16 +12,26 @@ namespace SaaS.ViewModels.Application.DailyHours
         public DateTime Date { get; set; }
 
         #region Morning
-        public TimeSpan MorningStart { get; set; }
-        public TimeSpan MorningEnd { get; set; }
-        public List<WorkSite> MorningWorkSites { get; set; } = new List<WorkSite>();
-        public List<User> MorningWorkManagers { get; set; } = new List<User>();
+        public DateTime MorningStart { get; set; }
+        public DateTime MorningEnd { get; set; }
+
+        public IEnumerable<SelectListItem> ListOfWorkSites { get; set; }
+
+        public int Test { get; set; }
+
+        public List<int> MorningWorkSites { get; set; } = new();
+
+        public List<SelectListItem> MorningWorkManagers { get; set; }
         #endregion
         #region Evening
-        public TimeSpan EveningStart { get; set; }
-        public TimeSpan EveningEnd { get; set; }
+        public DateTime EveningStart { get; set; }
+        public DateTime EveningEnd { get; set; }
         public List<WorkSite> EveningWorkSites { get; set; } = new List<WorkSite>();
         public List<User> EveningWorkManagers { get; set; } = new List<User>();
         #endregion
+        #region Sup
+        #endregion
+        public string Description { get; set; } = string.Empty;
+        public bool Lunchbox { get; set; }
     }
 }

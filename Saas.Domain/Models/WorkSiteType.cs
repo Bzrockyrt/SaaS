@@ -3,7 +3,7 @@ using System.Xml.Linq;
 
 namespace SaaS.Domain.Models
 {
-    public class WorkSiteType : BaseModel
+    public class WorkSiteType : ModelBase
     {
         [Required]
         [Display(Name = "Nom")]

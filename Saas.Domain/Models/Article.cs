@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SaaS.Domain.Models
 {
-    public class Article : BaseModel
+    public class Article : ModelBase
     {
         [Required]
         [Display(Name = "Nom")]

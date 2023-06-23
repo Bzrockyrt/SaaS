@@ -1,0 +1,82 @@
+﻿@using SaaS.ViewModels.SuperCompany.Company;
+@model CreateCompanyViewModel
+
+<div class="header">
+    <h1 class="header-title">Créer une entreprise</h1>
+</div>
+
+<div class="container">
+    <form method="post" asp-area="SuperCompany" asp-controller="Company" asp-action="Create" enctype="multipart/form-data">
+        <input asp-for="Company.Id" hidden />
+        <div class="form-floating py-2 col-12">
+            <input type="text" asp-for="Company.Name" class="form-control" />
+            <label asp-for="Company.Name" class="ms-2"></label>
+            <span asp-validation-for="Company.Name" class="text-danger"></span>
+        </div>
+        <div class="form-floating py-2 col-12">
+            <input type="text" asp-for="Company.Description" class="form-control" />
+            <label asp-for="Company.Description" class="ms-2"></label>
+            <span asp-validation-for="Company.Description" class="text-danger"></span>
+        </div>
+        <div class="form-floating py-2 col-12">
+            <input type="number" asp-for="Company.StreetNumber" class="form-control" />
+            <label asp-for="Company.StreetNumber" class="ms-2"></label>
+            <span asp-validation-for="Company.StreetNumber" class="text-danger"></span>
+        </div>
+        <div class="form-floating py-2 col-12">
+            <input type="text" asp-for="Company.StreetName" class="form-control" />
+            <label asp-for="Company.StreetName" class="ms-2"></label>
+            <span asp-validation-for="Company.StreetName" class="text-danger"></span>
+        </div>
+        <div class="form-floating py-2 col-12">
+            <input type="text" asp-for="Company.State" class="form-control" />
+            <label asp-for="Company.State" class="ms-2"></label>
+            <span asp-validation-for="Company.State" class="text-danger"></span>
+        </div>
+        <div class="form-floating py-2 col-12">
+            <input type="number" asp-for="Company.PostalCode" class="form-control" />
+            <label asp-for="Company.PostalCode" class="ms-2"></label>
+            <span asp-validation-for="Company.PostalCode" class="text-danger"></span>
+        </div>
+        <div class="form-floating py-2 col-12">
+            <input type="number" asp-for="Company.SIRET" class="form-control" />
+            <label asp-for="Company.SIRET" class="ms-2"></label>
+            <span asp-validation-for="Company.SIRET" class="text-danger"></span>
+        </div>
+        <div class="form-floating py-2 col-12">
+            <input type="email" asp-for="Company.Email" class="form-control" />
+            <label asp-for="Company.Email" class="ms-2"></label>
+            <span asp-validation-for="Company.Email" class="text-danger"></span>
+        </div>
+        <div class="form-floating py-2 col-12">
+            <input type="tel" asp-for="Company.PhoneNumber" class="form-control" />
+            <label asp-for="Company.PhoneNumber" class="ms-2"></label>
+            <span asp-validation-for="Company.PhoneNumber" class="text-danger"></span>
+        </div>
+        <div class="form-floating py-2 col-12">
+            <input type="text" asp-for="Company.CompanyCode" class="form-control" />
+            <label asp-for="Company.CompanyCode" class="ms-2"></label>
+            <span asp-validation-for="Company.CompanyCode" class="text-danger"></span>
+        </div>
+        <div class="form-floating py-2 col-12">
+            <input type="text" asp-for="Company.TenantCode" class="form-control" />
+            <label asp-for="Company.TenantCode" class="ms-2"></label>
+            <span asp-validation-for="Company.TenantCode" class="text-danger"></span>
+        </div>
+        <div class="form-floating py-2 col-12">
+            <input type="text" asp-for="Server" class="form-control" />
+            <label asp-for="Server" class="ms-2"></label>
+            <span asp-validation-for="Server" class="text-danger"></span>
+        </div>
+        <div class="form-floating py-2 col-12">
+            <input type="text" asp-for="Database" class="form-control" />
+            <label asp-for="Database" class="ms-2"></label>
+            <span asp-validation-for="Database" class="text-danger"></span>
+        </div>
+        @*<div class="form-floating py-2 col-12">
+            <input type="file" name="picture" class="form-control border-0 shadow"/>
+            <label asp-for="Company.Picture" class="ms-2"></label>
+        </div>*@
+        <button type="submit" class="btn btn-primary form-control">Create</button>
+    </form>
+</div>

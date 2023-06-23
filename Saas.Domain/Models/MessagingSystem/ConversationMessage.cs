@@ -1,6 +1,4 @@
-﻿using SaaS.Domain.Models.Account;
-
-namespace SaaS.Domain.Models.MessagingSystem
+﻿namespace SaaS.Domain.Models.MessagingSystem
 {
     public class ConversationMessage
     {
@@ -8,10 +6,10 @@ namespace SaaS.Domain.Models.MessagingSystem
 
         public DateTime SentAt { get; set; }
 
-        public int ConversationId { get; set; }
+        public string ConversationId { get; set; }
         public virtual Conversation Conversation { get; set; }
 
-        public int SenderId { get; set; }
-        public virtual User Sender { get; set; }
+        public string SenderId { get; set; }
+        /*public virtual ApplicationUser Sender { get; set; }*/
     }
 }

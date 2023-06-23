@@ -2,7 +2,7 @@
 
 namespace SaaS.Domain.Models.MessagingSystem
 {
-    public class MessageType : BaseModel
+    public class MessageType : ModelBase
     {
         [Required]
         public string Name { get; set; } = string.Empty;

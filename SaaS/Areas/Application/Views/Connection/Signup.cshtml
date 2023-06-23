@@ -27,7 +27,7 @@
                 <h1>Inscription</h1>
                 <div>Veuillez vous créer un compte personnel</div>
             </div>
-            <form id="account" method="post" class="login-card-form" asp-area="WebSite" asp-controller="Connection" asp-action="Signup">
+            <form id="account" method="post" class="login-card-form" asp-area="Application" asp-controller="Connection" asp-action="Signup">
                 <div asp-validation-summary="ModelOnly" class="login-card-validation" role="alert"></div>
                 <div class="form-item">
                     <span class="form-item-icon material-symbols-rounded">mail</span>
@@ -62,7 +62,7 @@
                 <button id="login-submit" type="submit">S'inscrire</button>
             </form>
             <div class="login-card-footer">
-                Vous possédez déjà votre propre compte personnel? <a asp-area="WebSite" asp-controller="HomePage" asp-action="Login">Connectez vous !</a>
+                Vous possédez déjà votre propre compte personnel? <a asp-area="Application" asp-controller="HomePage" asp-action="Login">Connectez vous !</a>
             </div>
         </div>
         @*<div class="login-card-social">

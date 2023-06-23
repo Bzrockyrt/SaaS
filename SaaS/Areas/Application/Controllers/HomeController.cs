@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using SaaS.DataAccess.Services;
 using SaaS.DataAccess.Utils;
-using SaaS.Domain.Models.Account;
 using SaaS.Domain.Models;
+using SaaS.Domain.OTHER;
 
 namespace SaaS.Areas.Application.Controllers
 {
@@ -14,12 +14,12 @@ namespace SaaS.Areas.Application.Controllers
         private readonly ILogger<HomeController> logger;
         private TenantSettings tenantSettings;
         private TenantService tenantService;
-        private readonly UserManager<User> userManager;
+        private readonly UserManager<IdentityUser> userManager;
 
         public HomeController(ILogger<HomeController> logger,
             IOptions<TenantSettings> options,
             TenantService tenantService,
-            UserManager<User> userManager)
+            UserManager<IdentityUser> userManager)
         {
             this.logger = logger;
             this.tenantSettings = options.Value;

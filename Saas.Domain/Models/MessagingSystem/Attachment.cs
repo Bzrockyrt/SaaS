@@ -1,6 +1,6 @@
 ﻿namespace SaaS.Domain.Models.MessagingSystem
 {
-    public class Attachment : BaseModel
+    public class Attachment : ModelBase
     {
         public string FileName { get; set; } = string.Empty;
 

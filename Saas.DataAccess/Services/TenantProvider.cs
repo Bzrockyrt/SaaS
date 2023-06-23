@@ -1,4 +1,6 @@
-﻿using SaaS.DataAccess.Utils;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
+using SaaS.DataAccess.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,9 +25,9 @@ namespace SaaS.DataAccess.Services
 
         public string TenantId => this.httpContextAccessor.HttpContext.Request.Headers[TenantIdHeaderName];
 
-        public string GetConnectionString()
+        /*public string GetConnectionString()
         {
             return this.tenantSettings.Tenants.Single(t => t.Id == TenantId);
-        }
+        }*/
     }
 }

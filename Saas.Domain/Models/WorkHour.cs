@@ -1,16 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using SaaS.Domain.Models.Account;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SaaS.Domain.Models
 {
-    public class WorkHour : BaseModel
+    public class WorkHour : ModelBase
     {
-        public string UserId { get; set; }
+        [ValidateNever]
+        /*public string UserId { get; set; }
         [ForeignKey(nameof(UserId))]
         [ValidateNever]
-        public virtual User User { get; set; }
+        public virtual ApplicationUser User { get; set; }*/
 
         [Required]
         [Display(Name = "Jour de travail")]
@@ -31,6 +30,14 @@ namespace SaaS.Domain.Models
         [Required]
         [Display(Name = "Fin de l'après-midi")]
         public TimeSpan EveningEnd { get; set; }
+
+        [Required]
+        [Display(Name = "Panier repas")]
+        public bool LunchBox { get; set; }
+
+        [Required]
+        [Display(Name = "Commentaire")]
+        public string Comment { get; set; } = string.Empty;
 
         [Display(Name = "Photos du chantier")]
         [ValidateNever]

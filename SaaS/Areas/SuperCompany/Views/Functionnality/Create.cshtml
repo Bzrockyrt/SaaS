@@ -1,0 +1,28 @@
+﻿@using SaaS.Domain.PIPL;
+@model Functionnality
+
+<div class="header">
+    <h1 class="header-title">Créer une fonctionnalité</h1>
+</div>
+
+<div class="container">
+    <form method="post" asp-area="SuperCompany" asp-controller="Functionnality" asp-action="Create">
+        <input asp-for="Id" hidden />
+        <div class="form-floating py-2 col-12">
+            <input type="text" asp-for="Name" class="form-control" />
+            <label asp-for="Name" class="ms-2"></label>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-floating py-2 col-12">
+            <input type="text" asp-for="Description" class="form-control" />
+            <label asp-for="Description" class="ms-2"></label>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="form-floating py-2 col-12">
+            <input type="number" asp-for="Code" class="form-control" />
+            <label asp-for="Code" class="ms-2"></label>
+            <span asp-validation-for="Code" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary form-control">Créer</button>
+    </form>
+</div>

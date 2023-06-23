@@ -17,7 +17,7 @@
     --light-green: #E3FFCB;
     --blue: #1775F1;
     --light-blue: #D0E4FF;
-    --dark-blue: #11101D;
+    --dark-blue: #0B5CE6;
     --red: #FC3B56;
 }
 
@@ -350,6 +350,20 @@ nav {
                 top: 100%;
             }
 
+            nav .profile .profile-link button {
+                padding: 10px 16px;
+                display: flex;
+                grid-gap: 10px;
+                font-size: 14px;
+                color: var(--dark);
+                align-items: center;
+                transition: all .3s ease;
+            }
+
+                nav .profile .profile-link button:hover {
+                    background: var(--grey);
+                }
+
             nav .profile .profile-link a {
                 padding: 10px 16px;
                 display: flex;
@@ -363,6 +377,7 @@ nav {
                 nav .profile .profile-link a:hover {
                     background: var(--grey);
                 }
+
 /* NAVBAR */
 
 

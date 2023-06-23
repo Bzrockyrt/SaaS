@@ -2,6 +2,7 @@
 
 namespace SaaS.Areas.Application.Controllers
 {
+    [Area("Application")]
     public class DashboardController : Controller
     {
         public IActionResult Index()

@@ -1,0 +1,37 @@
+﻿@using SaaS.Domain.PIPL;
+@model Company
+
+<div class="header">
+    <h1 class="header-title">Panel de l'entreprise @Model.Name</h1>
+</div>
+<div class="container">
+    @*div de la configuration de l'entreprise sélectionnée*@
+    <div id="configuration">
+
+    </div>
+
+    @*div de la modification des fonctionnalités de l'entreprise sélectionnée*@
+    <div id="functionnalities">
+        @*Deux idées pour gérer les fonctionnalités de chaque entreprises:
+            - Un drag and drop avec d'un côté les fonctionnalités que l'entreprise ne possèdent pas, et de l'autre celles qu'elle possède
+            - Une table avec la liste de toutes les fonctionnalités possibles et une colonne avec un switch button pour activer ou désactiver
+              les fonctionnalités de l'entreprise
+        *@
+        <table id="tableCompanyFunctionnalities" data-model-id="@Model.Id" class="table table-striped" style="width: 100%">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Code</th>
+                    <th>Possède</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script src="~/js/SuperCompany/Company/CompanyFunctionnalities.js"></script>
+}

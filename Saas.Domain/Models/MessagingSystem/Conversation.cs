@@ -1,6 +1,4 @@
-﻿using SaaS.Domain.Models.Account;
-
-namespace SaaS.Domain.Models.MessagingSystem
+﻿namespace SaaS.Domain.Models.MessagingSystem
 {
     public class Conversation
     {
@@ -8,7 +6,7 @@ namespace SaaS.Domain.Models.MessagingSystem
 
         public byte[] Data { get; set; }
 
-        public ICollection<User> Participants { get; set; }
+        /*public ICollection<ApplicationUser> Participants { get; set; }*/
 
         public ICollection<ConversationMessage> Messages { get; set; }
     }

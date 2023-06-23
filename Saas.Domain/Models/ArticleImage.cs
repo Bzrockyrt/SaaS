@@ -7,12 +7,12 @@ namespace SaaS.Domain.Models
     public class ArticleImage
     {
         [Key]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         public string ImageURL { get; set; }
 
-        public int ArticleId { get; set; }
+        public string ArticleId { get; set; }
         [ForeignKey(nameof(ArticleId))]
         [ValidateNever]
         public virtual Article Article { get; set; }

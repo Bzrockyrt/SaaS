@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using SaaS.DataAccess.Repository.IRepository;
 using SaaS.DataAccess.Services;
 using SaaS.DataAccess.Utils;
-using SaaS.Domain.Models.Account;
 using SaaS.Domain.Models;
+using SaaS.Domain.OTHER;
 using SaaS.ViewModels.Application.Connection;
 
 namespace SaaS.Areas.Application.Controllers
@@ -15,20 +15,20 @@ namespace SaaS.Areas.Application.Controllers
     public class ConnectionController : Controller
     {
         private readonly IUnitOfWork unitOfWork;
-        private readonly IUserStore<User> _userStore;
-        private readonly IUserEmailStore<User> _emailStore;
+        private readonly IUserStore<IdentityUser> _userStore;
+        private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly IEmailSender _emailSender;
-        private readonly SignInManager<User> signInManager;
+        private readonly SignInManager<IdentityUser> signInManager;
         private readonly TenantService tenantService;
         private readonly TenantSettings tenantSettings;
-        private readonly UserManager<User> userManager;
+        private readonly UserManager<IdentityUser> userManager;
 
         public ConnectionController(IUnitOfWork unitOfWork,
-            SignInManager<User> signInManager,
+            SignInManager<IdentityUser> signInManager,
             TenantService tenantService,
             IOptions<TenantSettings> options,
-            IUserStore<User> userStore,
-            UserManager<User> userManager)
+            IUserStore<IdentityUser> userStore,
+            UserManager<IdentityUser> userManager)
         {
             this.unitOfWork = unitOfWork;
             this.signInManager = signInManager;
@@ -40,6 +40,12 @@ namespace SaaS.Areas.Application.Controllers
         }
 
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult AccessDenied()
         {
             return View();
         }
@@ -78,15 +84,22 @@ namespace SaaS.Areas.Application.Controllers
                     if (company is null)
                     {
                         //Si 'company' est null, l'entreprise n'existe pas
-                        return View("L'entreprise n'existe pas");
+                        ModelState.AddModelError(string.Empty, "L'entreprise n'existe pas");
+                        return View();
                     }
                     else
                     {
                         //Si 'company' n'est pas null, je vérifie qu'elle possède bien une chaîne de connexion
                         //(Cela signifie qu'un contrat a été passé avec nous et que l'entreprise a été validée)
-                        if (this.tenantSettings.Companies.ContainsKey(company.Company_Tenant_Description))
+                        if (this.tenantSettings.Companies.ContainsKey(company.TenantCode))
                         {
-                            this.Response.Cookies.Append("tenant-code", company.Company_Tenant_Description);
+                            this.Response.Cookies.Append("tenant-code", company.TenantCode);
+                            ViewData["CurrentCompany"] = new TenantSiteModel()
+                            {
+                                Key = this.tenantService.GetTenantCode(),
+                                Logo = this.tenantService.GetTenant()?.logo,
+                                Name = this.tenantService.GetTenant()?.name,
+                            };
                             /*var currentCompany = this.tenantService.GetTenant();
                             ViewBag.CurrentCompany = new TenantSiteModel
                             {
@@ -176,8 +189,9 @@ namespace SaaS.Areas.Application.Controllers
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
+            /*Lors de la déconnexion, il faut déconnecter le compte utilisateur mais également le compte de l'entreprise*/
             await this.signInManager.SignOutAsync();
-            return RedirectToAction("CompanyConnection", "Connection", new { area = "Application" });
+            return View("CompanyConnection");
         }
 
         //GET
@@ -278,13 +292,13 @@ namespace SaaS.Areas.Application.Controllers
             }
         }
 
-        private IUserEmailStore<User> GetEmailStore()
+        private IUserEmailStore<IdentityUser> GetEmailStore()
         {
             if (!this.userManager.SupportsUserEmail)
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
-            return (IUserEmailStore<User>)_userStore;
+            return (IUserEmailStore<IdentityUser>)_userStore;
         }
         #endregion
     }
