@@ -1,28 +1,240 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SaaS.DataAccess.Data;
-using SaaS.DataAccess.Repository.IRepository;
+using SaaS.DataAccess.Repository.PIPL.IRepository;
+using SaaS.Domain.PIPL;
 
 namespace SaaS.DataAccess.DbInitializer
 {
     public class DbInitializer : IDbInitializer
     {
-        private readonly ApplicationDbContext context;
-        private readonly IUnitOfWork unitOfWork;
+        private readonly ApplicationDbContext applicationDbContext;
+        private readonly PIPLDeveloppementDbContext piplDeveloppementDbContext;
+        private readonly ISuperCompanyUnitOfWork unitOfWork;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<IdentityUser> userManager;
 
-        public DbInitializer(ApplicationDbContext context,
-            IUnitOfWork unitOfWork,
+        public DbInitializer(ApplicationDbContext applicationDbContext,
+            PIPLDeveloppementDbContext piplDeveloppementDbContext,
+            ISuperCompanyUnitOfWork unitOfWork,
             RoleManager<IdentityRole> roleManager,
             UserManager<IdentityUser> userManager)
         {
-            this.context = context;
+            this.applicationDbContext = applicationDbContext;
+            this.piplDeveloppementDbContext = piplDeveloppementDbContext;
             this.unitOfWork = unitOfWork;
             this.roleManager = roleManager;
             this.userManager = userManager;
         }
 
-        public void Initialize()
+        public void InitializePIPLDeveloppementDb()
+        {
+            try
+            {
+                if (this.piplDeveloppementDbContext.Database.GetPendingMigrations().Count() > 0)
+                    this.piplDeveloppementDbContext.Database.Migrate();
+                if (!this.piplDeveloppementDbContext.Company.Any())
+                {
+                    Company pipldeveloppement = new Company()
+                    {
+                        StreetNumber = 181,
+                        StreetName = "rue du Villard",
+                        PostalCode = 01380,
+                        State = "Saint André-de-Bâgé",
+                        CompanyCode = "0000",
+                        TenantCode = "pipldeveloppement",
+                        CreatedBy = "Pierre-Louis IPPOLITI",
+                        CreatedOn = DateTime.Now,
+                        Description = "Entreprise PIPL Développement dirigée par Pierre-Louis IPPOLITI",
+                        Email = "pierrelouisippoliti@pipl-developpement.com",
+                        IsEnable = true,
+                        Name = "PIPL Développement",
+                        PhoneNumber = 0633333799,
+                        SIRET = 012345678910121,
+                    };
+                    this.unitOfWork.Company.Add(pipldeveloppement);
+
+                    /*Company company1 = new Company()
+                    {
+                        StreetNumber = "",
+                        StreetName = "",
+                        PostalCode = "",
+                        State = "",
+                        CompanyCode = "ENFI1",
+                        Company_Tenant_Description = "entreprisefictive-1",
+                        CreatedBy = "Pierre-Louis IPPOLITI",
+                        CreatedOn = DateTime.Now,
+                        Description = "Description de l'entreprise fictive n°1",
+                        Email = "test@entreprise-fictive1.com",
+                        IsEnable = true,
+                        Name = "Entreprise fictive n°1",
+                        PhoneNumber = "1234567890",
+                        SIRET = "1234567890",
+                    };
+                    this.unitOfWork.Company.Add(company1);
+
+                    Company company2 = new Company()
+                    {
+                        StreetNumber = "",
+                        StreetName = "",
+                        PostalCode = "",
+                        State = "",
+                        CompanyCode = "ENFI2",
+                        Company_Tenant_Description = "entreprisefictive-2",
+                        CreatedBy = "Pierre-Louis IPPOLITI",
+                        CreatedOn = DateTime.Now,
+                        Description = "Description de l'entreprise fictive n°2",
+                        Email = "test@entreprise-fictive2.com",
+                        IsEnable = true,
+                        Name = "Entreprise fictive n°2",
+                        PhoneNumber = "1234567890",
+                        SIRET = "1234567890",
+                    };
+                    this.unitOfWork.Company.Add(company2);
+
+                    Company company3 = new Company()
+                    {
+                        StreetNumber = "",
+                        StreetName = "",
+                        PostalCode = "",
+                        State = "",
+                        CompanyCode = "ENFI3",
+                        Company_Tenant_Description = "entreprisefictive-3",
+                        CreatedBy = "Pierre-Louis IPPOLITI",
+                        CreatedOn = DateTime.Now,
+                        Description = "Description de l'entreprise fictive n°3",
+                        Email = "test@entreprise-fictive3.com",
+                        IsEnable = true,
+                        Name = "Entreprise fictive n°3",
+                        PhoneNumber = "1234567890",
+                        SIRET = "1234567890",
+                    };
+                    this.unitOfWork.Company.Add(company3); */
+
+                    this.piplDeveloppementDbContext.SaveChanges();
+                }
+                if (!roleManager.RoleExistsAsync("Administration").GetAwaiter().GetResult())
+                {
+                    roleManager.CreateAsync(new IdentityRole("Administration")).GetAwaiter().GetResult();
+
+                    userManager.CreateAsync(new Domain.PIPL.User
+                    {
+                        UserName = "pierrelouisippoliti@pipl-developpement.com",
+                        Email = "pierrelouisippoliti@pipl-developpement.com",
+                        Firstname = "Pierre-Louis",
+                        Lastname = "IPPOLITI",
+                        PhoneNumber = "0633333799",
+                    }, "M-wD3W~k9m]2").GetAwaiter().GetResult();
+
+                    /*userManager.CreateAsync(new ApplicationUser
+                    {
+                        UserName = "johndoe@pipl-developpement.com",
+                        Email = "johndoe@pipl-developpement.com",
+                        Firstname = "John",
+                        Lastname = "DOE",
+                        PhoneNumber = "0633333799",
+                        StreetNumber = "181",
+                        StreetName = "rue du Villard",
+                        State = "Saint André-de-Bâgé",
+                        PostalCode = "01380",
+                    }, "Test123!").GetAwaiter().GetResult();
+
+                    userManager.CreateAsync(new ApplicationUser
+                    {
+                        UserName = "jackdoe@pipl-developpement.com",
+                        Email = "jackdoe@pipl-developpement.com",
+                        Firstname = "Jack",
+                        Lastname = "DOE",
+                        PhoneNumber = "0633333799",
+                        StreetNumber = "181",
+                        StreetName = "rue du Villard",
+                        State = "Saint André-de-Bâgé",
+                        PostalCode = "01380",
+                    }, "Test123!").GetAwaiter().GetResult();s
+
+
+                    ApplicationUser pierrelouis = this.context.ApplicationUser.FirstOrDefault(u => u.Email == "pierrelouisippoliti@pipl-developpement.com");
+                    userManager.AddToRoleAsync(pierrelouis, "Administration").GetAwaiter().GetResult();
+
+                    ApplicationUser john = this.context.ApplicationUser.FirstOrDefault(u => u.Email == "johndoe@pipl-developpement.com");
+                    userManager.AddToRoleAsync(john, "Monteur").GetAwaiter().GetResult();
+
+                    ApplicationUser jack = this.context.ApplicationUser.FirstOrDefault(u => u.Email == "jackdoe@pipl-developpement.com");
+                    userManager.AddToRoleAsync(jack, "Opérateur").GetAwaiter().GetResult();*/
+                }
+                /*if (!this.piplDeveloppementDbContext.Functionnality.Any())
+                {
+                    Functionnality Access_Administration = new Functionnality()
+                    {
+                        CreatedBy = "Pierre-Louis IPPOLITI",
+                        CreatedOn = DateTime.Now,
+                        Description = "Accessibilité à la partie administration",
+                        Name = "Access_Administration",
+                        IsEnable = true,
+                    };
+                    this.unitOfWork.Functionnality.Add(Access_Administration);
+
+                    Functionnality Access_MessagingSystem = new Functionnality()
+                    {
+                        CreatedBy = "Pierre-Louis IPPOLITI",
+                        CreatedOn = DateTime.Now,
+                        Description = "Accessibilité à la messagerie",
+                        Name = "Access_MessagingSystem",
+                        IsEnable = true,
+                    };
+                    this.unitOfWork.Functionnality.Add(Access_MessagingSystem);
+
+                    this.piplDeveloppementDbContext.SaveChanges();
+                }
+                if (!this.piplDeveloppementDbContext.ApplicationRoleFunctionnality.Any())
+                {
+                    ApplicationRoleFunctionnality applicationRoleFunctionnality1 = new ApplicationRoleFunctionnality()
+                    {
+                        CreatedBy = "Pierre-Louis IPPOLITI",
+                        CreatedOn = DateTime.Now,
+                        FunctionnalityId = this.unitOfWork.Functionnality.Get(f => f.Name == "Access_Administration").Id,
+                        IsEnable = true,
+                        RoleId = this.unitOfWork.ApplicationRole.Get(ar => ar.Name == "Administration").Id,
+                    };
+                    this.unitOfWork.ApplicationRoleFunctionnality.Add(applicationRoleFunctionnality1);
+
+                    ApplicationRoleFunctionnality applicationRoleFunctionnality2 = new ApplicationRoleFunctionnality()
+                    {
+                        CreatedBy = "Pierre-Louis IPPOLITI",
+                        CreatedOn = DateTime.Now,
+                        FunctionnalityId = this.unitOfWork.Functionnality.Get(f => f.Name == "Access_MessagingSystem").Id,
+                        IsEnable = true,
+                        RoleId = this.unitOfWork.ApplicationRole.Get(ar => ar.Name == "Développeur").Id,
+                    };
+                    this.unitOfWork.ApplicationRoleFunctionnality.Add(applicationRoleFunctionnality2);
+
+                    ApplicationRoleFunctionnality applicationRoleFunctionnality3 = new ApplicationRoleFunctionnality()
+                    {
+                        CreatedBy = "Pierre-Louis IPPOLITI",
+                        CreatedOn = DateTime.Now,
+                        FunctionnalityId = this.unitOfWork.Functionnality.Get(f => f.Name == "Access_MessagingSystem").Id,
+                        IsEnable = true,
+                        RoleId = this.unitOfWork.ApplicationRole.Get(ar => ar.Name == "Monteur").Id,
+                    };
+                    this.unitOfWork.ApplicationRoleFunctionnality.Add(applicationRoleFunctionnality3);
+
+                    ApplicationRoleFunctionnality applicationRoleFunctionnality4 = new ApplicationRoleFunctionnality()
+                    {
+                        CreatedBy = "Pierre-Louis IPPOLITI",
+                        CreatedOn = DateTime.Now,
+                        FunctionnalityId = this.unitOfWork.Functionnality.Get(f => f.Name == "Access_MessagingSystem").Id,
+                        IsEnable = true,
+                        RoleId = this.unitOfWork.ApplicationRole.Get(ar => ar.Name == "Opérateur").Id,
+                    };
+                    this.unitOfWork.ApplicationRoleFunctionnality.Add(applicationRoleFunctionnality4);
+
+                    this.context.SaveChanges();
+                }*/
+            }
+            catch (Exception ex) { }
+        }
+
+        public void InitializeApplicationDb()
         {
             /*try
             {

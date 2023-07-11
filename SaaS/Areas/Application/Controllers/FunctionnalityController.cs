@@ -6,16 +6,16 @@ namespace SaaS.Areas.Application.Controllers
     [Area("Application")]
     public class FunctionnalityController : Controller
     {
-        private readonly IUnitOfWork unitOfWork;
+        private readonly IApplicationUnitOfWork applicationUnitOfWork;
 
-        public FunctionnalityController(IUnitOfWork unitOfWork)
+        public FunctionnalityController(IApplicationUnitOfWork applicationUnitOfWork)
         {
-            this.unitOfWork = unitOfWork;
+            this.applicationUnitOfWork = applicationUnitOfWork;
         }
 
         public IActionResult Index()
         {
-            if (this.unitOfWork.User.CanUserAccessFunctionnality("Access_Administration", User))
+            if (this.applicationUnitOfWork.User.CanUserAccessFunctionnality("Access_Administration", User))
             {
                 return View();
             }

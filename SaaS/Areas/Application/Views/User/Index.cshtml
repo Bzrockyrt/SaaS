@@ -1,1 +1,32 @@
-﻿<h4>Index of User controller</h4>
+﻿@section BootstrapSelect{
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+}
+
+<div class="header">
+    <h1 class="header-title">Employés</h1>
+    <a class="header-button" asp-area="application" asp-controller="user" asp-action="create">
+        Créer un employé
+    </a>
+</div>
+<div class="container">
+    <table id="tableEmployees" class="table table-bordered table-striped table-hover dataTable text-center" style="width: 100%">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Code</th>
+                <th>Actif ?</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+@section Scripts{
+    <script src="~/js/Application/User/User.js"></script>
+}

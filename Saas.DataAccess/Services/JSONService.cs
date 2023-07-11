@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using SaaS.Domain.Models;
-using SaaS.Domain.OTHER;
 using SaaS.Domain.PIPL;
 
 namespace SaaS.DataAccess.Services

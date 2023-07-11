@@ -1,33 +1,66 @@
-﻿@using SaaS.Domain.PIPL;
-@model Company
+﻿@using SaaS.Domain.Company;
+@using SaaS.ViewModels.SuperCompany.Company;
+@model ConfigurationCompanyViewModel
 
 <div class="header">
-    <h1 class="header-title">Panel de l'entreprise @Model.Name</h1>
+    <h1 class="header-title">Panel de l'entreprise @Model.Company.Name</h1>
 </div>
 <div class="container">
-    @*div de la configuration de l'entreprise sélectionnée*@
-    <div id="configuration">
+    <div class="functionnalities">
+        <div>Ne possède pas</div>
+        <ul id="sortable1" class="connectedSortable">
+            @foreach (CompanyFunctionnalities functionnality in Model.DontHaveFunctionnalities)
+            {
+                <li class="ui-state-default">@functionnality.Name</li>
+            }
+        </ul>
 
+        <div>Possède</div>
+        <ul id="sortable2" class="connectedSortable">
+            @foreach (CompanyFunctionnalities functionnality in Model.HaveFunctionnalities)
+            {
+                <li class="ui-state-default">@functionnality.Name</li>
+            }
+        </ul>
     </div>
+    <div class="configuration">
+        <div class="users">
+            <div class="header">
+                <h1 class="header-title">Utilisateurs de l'entreprise</h1>
+                <a class="header-button" asp-area="SuperCompany" asp-controller="Company" asp-action="CreateCompanyUser">
+                    Créer un utilisateur pour l'entreprise
+                </a>
+            </div>
+            <div class="container">
+                <table id="tableCompanyUsers" class="table table-bordered table-striped table-hover dataTable text-center" style="width: 100%">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Nom</th>
+                            <th>IsEnable</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="design">
 
-    @*div de la modification des fonctionnalités de l'entreprise sélectionnée*@
-    <div id="functionnalities">
-        @*Deux idées pour gérer les fonctionnalités de chaque entreprises:
-            - Un drag and drop avec d'un côté les fonctionnalités que l'entreprise ne possèdent pas, et de l'autre celles qu'elle possède
-            - Une table avec la liste de toutes les fonctionnalités possibles et une colonne avec un switch button pour activer ou désactiver
-              les fonctionnalités de l'entreprise
-        *@
-        <table id="tableCompanyFunctionnalities" data-model-id="@Model.Id" class="table table-striped" style="width: 100%">
-            <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>Code</th>
-                    <th>Possède</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+        </div>
+        <div class="administration">
+
+        </div>
+        <div class="worksites">
+
+        </div>
+        <div class="employees">
+
+        </div>
+        <div class="dailyhours">
+
+        </div>
     </div>
 </div>
 

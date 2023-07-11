@@ -2,6 +2,7 @@
 {
     public interface IDbInitializer
     {
-        void Initialize();
+        void InitializePIPLDeveloppementDb();
+        void InitializeApplicationDb();
     }
 }

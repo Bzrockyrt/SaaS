@@ -1,18 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SaaS.DataAccess.Repository.IRepository;
-using SaaS.Domain.Models;
-using SaaS.ViewModels.Application.DailyHours;
+using SaaS.Domain.Work;
 
 namespace SaaS.Areas.Application.Controllers
 {
     [Area("Application")]
     public class DailyHoursController : Controller
     {
-        private readonly IUnitOfWork unitOfWork;
+        private readonly IApplicationUnitOfWork applicationUnitOfWork;
 
-        public DailyHoursController(IUnitOfWork unitOfWork)
+        public DailyHoursController(IApplicationUnitOfWork applicationUnitOfWork)
         {
-            this.unitOfWork = unitOfWork;
+            this.applicationUnitOfWork = applicationUnitOfWork;
         }
 
         [HttpGet]
@@ -41,10 +40,10 @@ namespace SaaS.Areas.Application.Controllers
                     }
                     else
                     {
-                        string userId = this.unitOfWork.User.Get(u => u.Fullname == User.Identity.Name).Id;
+                        string userId = this.applicationUnitOfWork.User.Get(u => u.Fullname == User.Identity.Name).Id;
                         /*workHour.UserId = userId;*/
-                        this.unitOfWork.WorkHour.Add(workHour);
-                        this.unitOfWork.Save();
+                        this.applicationUnitOfWork.WorkHour.Add(workHour);
+                        this.applicationUnitOfWork.Save();
                     }
                 }
                 catch (Exception ex)

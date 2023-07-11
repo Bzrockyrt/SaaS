@@ -25,6 +25,6 @@ namespace SaaS.Domain
         [Display(Name = "Date et heure de modification")]
         public DateTime? UpdatedOn { get; set; }
 
-        public bool IsEnable { get; set; }
+        public bool IsEnable { get; set; } = true;
     }
 }

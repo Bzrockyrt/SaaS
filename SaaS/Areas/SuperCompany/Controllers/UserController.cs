@@ -1,30 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.ClearScript.V8;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
-using SaaS.DataAccess.Repository.IRepository;
+using SaaS.DataAccess.Repository.PIPL.IRepository;
 using SaaS.DataAccess.Services;
 using SaaS.DataAccess.Utils;
-using SaaS.Domain.Models;
+using SaaS.Domain;
+using SaaS.Domain.PIPL;
 using SaaS.ViewModels.SuperCompany.User;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace SaaS.Areas.SuperCompany.Controllers
 {
     [Area("SuperCompany")]
     public class UserController : Controller
     {
-        private readonly IUnitOfWork unitOfWork;
+        private readonly ISuperCompanyUnitOfWork superCompanyUnitOfWork;
         private readonly TenantService tenantService;
         private readonly TenantSettings tenantSettings;
 
         public static List<UserViewModel> Users = new List<UserViewModel>();
 
-        public UserController(IUnitOfWork unitOfWork,
+        public UserController(ISuperCompanyUnitOfWork superCompanyUnitOfWork,
             TenantService tenantService,
             IOptions<TenantSettings> options)
         {
-            this.unitOfWork = unitOfWork;
+            this.superCompanyUnitOfWork = superCompanyUnitOfWork;
             this.tenantService = tenantService;
             this.tenantSettings = options.Value;
         }
@@ -86,6 +85,9 @@ namespace SaaS.Areas.SuperCompany.Controllers
                             {
                                 engine.Execute("toastr.success('test toastr en C#');");
                             }*/
+                            this.superCompanyUnitOfWork.Log.CreateNewEventInlog(ex, User, "Une erreur est survenue lors de la récupération des utilisateurs", "Exception", LogType.Error);
+                            TempData["error-title"] = "Modification état entreprise";
+                            TempData["error-message"] = "Une erreur est survenue lors de la récupération des utilisateurs";
                             return Json(null);
                         }
                     }

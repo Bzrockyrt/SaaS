@@ -35,6 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\SuperCompany\Views\Servicing\" />
     <Folder Include="ViewComponents\" />
     <Folder Include="ViewModels\Application\Account\" />
     <Folder Include="ViewModels\Application\Company\" />
@@ -42,8 +43,8 @@
     <Folder Include="ViewModels\Application\Functionnality\" />
     <Folder Include="ViewModels\Application\Home\" />
     <Folder Include="ViewModels\Application\Messaging\" />
+    <Folder Include="ViewModels\Application\NewFolder\" />
     <Folder Include="ViewModels\Application\Worksite\" />
-    <Folder Include="ViewModels\Application\User\" />
     <Folder Include="ViewModels\Application\Role\" />
     <Folder Include="ViewModels\WebSite\" />
     <Folder Include="wwwroot\css\Application\Account\" />

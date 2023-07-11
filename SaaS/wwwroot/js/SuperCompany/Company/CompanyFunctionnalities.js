@@ -1,28 +1,67 @@
-var companyFunctionnalitiesDataTable;
+var companyUsersDataTable;
+
 $(document).ready(function () {
-    var companyId = document.getElementById('tableCompanyFunctionnalities').getAttribute('data-model-id');
-    loadCompanyFunctionnalitiesDataTable(companyId);
+    loadCompanyUsersDataTable();
+});
+$(window).on('beforeunload', function () {
+    $.ajax({
+        url: '/supercompany/company/exitcompany',
+        type: 'POST',
+        async: false, // Synchronisez la requête si nécessaire
+        data: {}, // Ajoutez des données supplémentaires si nécessaire
+        success: function (result) {
+            // Traitez la réponse du contrôleur
+        },
+        error: function (xhr, status, error) {
+            // Traitez les erreurs éventuelles
+        }
+    });
 });
 
-/*START - Company Functionnalities*/
-function loadCompanyFunctionnalitiesDataTable(companyId) {
-    companyFunctionnalitiesDataTable = $('#tableCompanyFunctionnalities').DataTable({
-        "ajax": {
-            url: '/supercompany/company/GetAllFunctionnalitiesForCompanyConfiguration',
-            type: "GET",
-            data: JSON.stringify(companyId),
-            contentType: "application/json",
+$(function () {
+    $("#sortable1").sortable({
+        connectWith: "#sortable2",
+    }).disableSelection();
+
+    $("#sortable2").sortable({
+        connectWith: "#sortable1",
+        receive: function (event, ui) {
+            var movedElement = ui.item
+            var targetList = $(this);
+
+            $.ajax({
+                url: '/supercompany/company/addfunctionnalitytocompany?functionnalityName=' + encodeURIComponent(movedElement[0].innerText),
+                type: 'POST',
+            });
         },
+        remove: function (event, ui) {
+            var movedElement = ui.item;
+            var sourceList = $(this);
+
+            $.ajax({
+                url: '/supercompany/company/deletefunctionnalitytocompany?functionnalityName=' + encodeURIComponent(movedElement[0].innerText),
+                type: 'POST',
+            });
+        }
+    }).disableSelection();
+});
+
+
+function loadCompanyUsersDataTable() {
+    companyUsersDataTable = $('#tableCompanyUsers').DataTable({
+        /*ajax : renseigne le chemin de la méthode à invoquer pour récupérer le contenu de la table*/
+        "ajax": { url: '/supercompany/company/getcompanyusers' },
+        /*columns : permet de configurer les colonnes de la table avec différents paramètres*/
         "columns": [
-            { "data": "name", "width": "40%" },
-            { "data": "description", "width": "40%" },
+            { "data": "id", "width": "30%" },
+            { "data": "username", "width": "35%" },
             {
-                "data": { id: "id", hasAccess: "hasAccess" },
+                "data": { id: "id", isEnable: "isEnable" },
                 "render": function (data) {
-                    if (data.hasAccess == false) {
+                    if (data.isEnable == false) {
                         return `
                             <label class="switch">
-                                <input type="checkbox" onclick=lockUnlockCompanyFunctionnality('${companyId}', '${data.id}')>
+                                <input type="checkbox" onclick=lockUnlockCompanyUser('${data.id}')>
                                 <span class="slider round"></span>
                             </label>
                         `
@@ -30,13 +69,29 @@ function loadCompanyFunctionnalitiesDataTable(companyId) {
                     else {
                         return `
                             <label class="switch">
-                                <input type="checkbox" onclick=lockUnlockCompanyFunctionnality('${companyId}', '${data.id}') checked>
+                                <input type="checkbox" onclick=lockUnlockCompanyUser('${data.id}') checked>
                                 <span class="slider round"></span>
                             </label>
                         `
                     }
                 },
-                "width": "20%"
+                "width": "10%"
+            },
+            {
+                "data": "id",
+                "render": function (data) {
+                    return `
+                        <div role="group">
+                            <a href="/supercompany/company/edituser?id=${data}" class="btn btn-primary mx-2">
+                                <i class='bx bxs-edit' style='color:#ffffff'></i>
+                            </a>
+                            <a onClick=deleteUser('/supercompany/company/deleteuser/${data}') class="btn btn-danger mx-2">
+                                <i class='bx bx-trash' style='color:#ffffff'  ></i>
+                            </a>
+                        </div>
+                    `
+                },
+                "width": "15%"
             }
         ],
         "language": {
@@ -62,36 +117,5 @@ function loadCompanyFunctionnalitiesDataTable(companyId) {
             }
         }
     });
-    companyFunctionnalitiesDataTable.draw();
+    companyUsersDataTable.draw();
 }
-
-function lockUnlockCompanyFunctionnality(companyId, functionnalityId) {
-    var data = {
-        companyId: companyId,
-        functionnalityId: functionnalityId
-    };
-
-    $.ajax({
-        type: "POST",
-        url: '/supercompany/company/LockUnlockCompanyFunctionnalities',
-        data: data,
-        contentType: "application/json",
-        success: function (data) {
-            if (data.success) {
-                toastr.options = {
-                    "closeButton": false,
-                    "debug": false,
-                    "newestOnTop": false,
-                    "progressBar": false,
-                    "positionClass": "toast-bottom-right",
-                    "preventDuplicates": false,
-                    "onclick": null,
-                };
-
-                toastr.success("Test modification fonctionnalités", "Réussite");
-                companyFunctionnalitiesDataTable.ajax.reload();
-            }
-        }
-    });
-}
-/*END - Company Functionnalities*/

@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using SaaS.DataAccess.Services;
 using SaaS.DataAccess.Utils;
-using SaaS.Domain.Models;
-using SaaS.Domain.OTHER;
+using SaaS.Domain.Identity;
+using SaaS.Domain.Tenant;
 
 namespace SaaS.Areas.Application.Controllers
 {

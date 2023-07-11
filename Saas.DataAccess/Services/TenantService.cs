@@ -38,6 +38,11 @@ namespace SaaS.DataAccess.Services
             return tenant?.connectionString;
         }
 
+        public string GetTenantName()
+        {
+            return tenant?.name;
+        }
+
         public string GetTenantCode()
         {
             return tenantCode;

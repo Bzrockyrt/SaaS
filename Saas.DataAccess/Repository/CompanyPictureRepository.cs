@@ -1,11 +1,6 @@
-﻿using SaaS.DataAccess.Data;
-using SaaS.DataAccess.Repository.IRepository;
-using SaaS.Domain.Models;
-using SaaS.Domain.OTHER;
-
-namespace SaaS.DataAccess.Repository
+﻿namespace SaaS.DataAccess.Repository
 {
-    public class CompanyPictureRepository : Repository<CompanyPicture>, ICompanyPictureRepository
+    /*public class CompanyPictureRepository : Repository<CompanyPicture>, ICompanyPictureRepository
     {
         private readonly ApplicationDbContext context;
 
@@ -23,5 +18,5 @@ namespace SaaS.DataAccess.Repository
         {
             this.context.Update(companyPicture);
         }
-    }
+    }*/
 }

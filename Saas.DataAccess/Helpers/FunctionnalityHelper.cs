@@ -1,13 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json.Linq;
-using SaaS.DataAccess.Repository.IRepository;
+﻿using SaaS.DataAccess.Repository.IRepository;
 using System.Security.Principal;
 
 namespace SaaS.DataAccess.Helpers
 {
     public static class FunctionnalityHelper
     {
-        private static readonly IUnitOfWork unitOfWork;
+        private static readonly IApplicationUnitOfWork applicationUnitOfWork;
 
         public static bool HasFunctionnality(string functionnalityName, IPrincipal user)
         {
@@ -20,7 +18,7 @@ namespace SaaS.DataAccess.Helpers
               Si ce n'est pas le cas, l'utilisateur n'a pas accès à cette fonctionnalité.*/
 
             //Je récupère l'utilisateur actuel
-            var currentUser = unitOfWork.User.Get(u => u.NormalizedUserName == user.Identity.Name);
+            var currentUser = applicationUnitOfWork.User.Get(u => u.NormalizedUserName == user.Identity.Name);
 
             /*var userProfile = unitOfWork.UserRole.GetAll().Where(ur => ur.UserId == currentUser.Id && ur.RoleId == ).Any();*/
 

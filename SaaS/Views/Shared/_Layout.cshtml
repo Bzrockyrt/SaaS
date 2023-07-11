@@ -1,7 +1,6 @@
-﻿@using SaaS.DataAccess.Repository;
-@using SaaS.DataAccess.Repository.IRepository;
-@*@inject UserRepository userRepository*@
-@inject IUnitOfWork unitOfWork
+﻿@using SaaS.DataAccess.Repository.PIPL.IRepository;
+@using SaaS.Domain.Tenant;
+@inject ISuperCompanyUnitOfWork unitOfWork
 
 @{
     var Culture = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
@@ -13,15 +12,30 @@
      *Si c'est le cas, l'utilisateur peut accéder à la fonctionnalité
     */
     //bool canAccessSuperAdmin = this.unitOfWork.User.CanUserAccessFunctionnality("Access_SuperAdmin", User);
-    bool canAccessSuperAdminDashboard = true;
+    bool canAccessSuperAdminDashboard = false;
     bool canAccessDashboard = true;
-    bool canAccessFunctionnalities = true;
-    bool canAccessCompanies = true;
-    bool canAccessUsers = true;
+    bool canAccessFunctionnalities = false;
+    bool canAccessCompanies = false;
+    bool canAccessUsers = false;
     bool canAccessDailyHours = true;
     bool canAccessMessagingSystem = true;
     bool canAccessWorkSites = true;
     bool canAccessCompanyWorkers = true;
+    bool canAccessSuperCompanyLog = false;
+    bool canAccessDepartments = true;
+    bool canAccessJobs = true;
+    //bool canAccessSuperAdminDashboard = true;
+    //bool canAccessDashboard = false;
+    //bool canAccessFunctionnalities = true;
+    //bool canAccessCompanies = true;
+    //bool canAccessUsers = true;
+    //bool canAccessDailyHours = false;
+    //bool canAccessMessagingSystem = false;
+    //bool canAccessWorkSites = false;
+    //bool canAccessCompanyWorkers = false;
+    //bool canAccessSuperCompanyLog = true;
+    //bool canAccessDepartments = false;
+    //bool canAccessJobs = false;
 }
 
 <!DOCTYPE html>
@@ -35,6 +49,7 @@
     <link rel="stylesheet" href="~/css/Application/DailyHours/DailyHours.css" />
     <link rel="stylesheet" href="~/css/Page.css"/>
     <link rel="stylesheet" href="~/css/Components/TabControl.css"/>
+    <link rel="stylesheet" href="~/css/SuperAdministration/Table.css"/>
     @*<link rel="stylesheet" href="~/lib/semantic/dist/css/semantic.min.css"/>*@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" />
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
@@ -60,7 +75,7 @@
 </head>
 <body>
     <!-- SIDEBAR -->
-    <section id="sidebar">
+    <section id="sidebar" class="hide">
         <a href="#" class="brand">
             <i class='bx bxs-smile icon'></i>
             @company?.Name
@@ -126,6 +141,15 @@
                     </a>
                 </li>
             }
+            @if (canAccessSuperCompanyLog)
+            {
+                <li>
+                    <a asp-area="SuperCompany" asp-controller="Log" asp-action="Index">
+                        <i class='bx bxs-widget icon'></i>
+                        <span class="links_name">Journal</span>
+                    </a>
+                </li>
+            }
             <li class="divider" data-text="entreprise">Entreprise</li>
             @if (canAccessWorkSites)
             {
@@ -139,9 +163,27 @@
             @if (canAccessCompanyWorkers)
             {
                 <li>
-                    <a asp-area="Application" asp-controller="Worker" asp-action="Index">
+                    <a asp-area="application" asp-controller="user" asp-action="index">
                         <i class='bx bxs-widget icon'></i>
                         <span class="links_name">Employés</span>
+                    </a>
+                </li>
+            }
+            @if (canAccessDepartments)
+            {
+                <li>
+                    <a asp-area="application" asp-controller="department" asp-action="index">
+                        <i class='bx bxs-widget icon'></i>
+                        <span class="links_name">Départements</span>
+                    </a>
+                </li>
+            }
+            @if (canAccessJobs)
+            {
+                <li>
+                    <a asp-area="application" asp-controller="job" asp-action="index">
+                        <i class='bx bxs-widget icon'></i>
+                        <span class="links_name">Postes</span>
                     </a>
                 </li>
             }
@@ -238,6 +280,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.10/dist/sweetalert2.all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-sortablejs@latest/jquery-sortable.js"></script>

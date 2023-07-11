@@ -54,7 +54,7 @@ function loadDataTable() {
                             <a href="/supercompany/functionnality/edit?id=${data}" class="btn btn-primary mx-2">
                                 <i class='bx bxs-edit' style='color:#ffffff'></i>
                             </a>
-                            <a onClick=deleteCompany('/supercompany/functionnality/delete/${data}') class="btn btn-danger mx-2">
+                            <a onClick=deleteFunctionnality('/supercompany/functionnality/delete/${data}') class="btn btn-danger mx-2">
                                 <i class='bx bx-trash' style='color:#ffffff'  ></i>
                             </a>
                         </div>

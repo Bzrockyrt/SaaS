@@ -5,7 +5,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SaaS.Domain.OTHER;
+using SaaS.Domain.Identity;
 using System.ComponentModel.DataAnnotations;
 
 namespace SaaS.Areas.Identity.Pages.Account.Manage

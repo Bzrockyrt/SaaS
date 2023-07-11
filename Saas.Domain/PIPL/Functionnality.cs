@@ -11,8 +11,14 @@ namespace SaaS.Domain.PIPL
         [Required]
         [Display(Name = "Nom")]
         [MinLength(3, ErrorMessage = "Le nom de la fonctionnalité doit comporter au minimum 3 caractères")]
-        [MaxLength(25, ErrorMessage = "Le nom de la fonctionnalité ne peut comporter plus de 25 caractères")]
+        [MaxLength(50, ErrorMessage = "Le nom de la fonctionnalité ne peut comporter plus de 25 caractères")]
         public string Name { get; set; } = string.Empty;
+
+        [Required]
+        [Display(Name = "Nom normalisé")]
+        [MinLength(5, ErrorMessage = "Le nom normalisé doit contenir au moins 3 caractères")]
+        [MaxLength(50, ErrorMessage = "Le nom normalisé ne peut contenir plus de 50 catactères")]
+        public string NormalizedName { get; set; } = string.Empty;
 
         [Required]
         [Display(Name = "Code")]

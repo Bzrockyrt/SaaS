@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SaaS.DataAccess.Repository.IRepository;
-using SaaS.Domain.Models;
+using SaaS.DataAccess.Exceptions.SuperCompany.Functionnality;
+using SaaS.DataAccess.Repository.PIPL.IRepository;
+using SaaS.DataAccess.Services;
+using SaaS.Domain;
 using SaaS.Domain.PIPL;
 
 namespace SaaS.Areas.SuperCompany.Controllers
@@ -8,11 +10,11 @@ namespace SaaS.Areas.SuperCompany.Controllers
     [Area("SuperCompany")]
     public class FunctionnalityController : Controller
     {
-        private readonly IUnitOfWork unitOfWork;
+        private readonly ISuperCompanyUnitOfWork superCompanyUnitOfWork;
 
-        public FunctionnalityController(IUnitOfWork unitOfWork)
+        public FunctionnalityController(ISuperCompanyUnitOfWork superCompanyUnitOfWork)
         {
-            this.unitOfWork = unitOfWork;
+            this.superCompanyUnitOfWork = superCompanyUnitOfWork;
         }
 
         public IActionResult Index()
@@ -38,9 +40,47 @@ namespace SaaS.Areas.SuperCompany.Controllers
                     functionnality.CreatedBy = "IPPOLITI Pierre-Louis";
                 else
                     functionnality.CreatedBy = User?.Identity?.Name;
-                this.unitOfWork.Functionnality.Add(functionnality);
-                this.unitOfWork.Save();
-                return RedirectToAction("Index");
+                try
+                {
+                    IEnumerable<Functionnality> functs = this.superCompanyUnitOfWork.Functionnality.GetAll();
+                    foreach (Functionnality func in functs)
+                    {
+                        if (func.Name == functionnality.Name)
+                        {
+                            throw new FunctionnalityNameAlreadyExistsException();
+                        }
+                        if (func.Code == functionnality.Code)
+                        {
+                            throw new FunctionnalityCodeAlreadyExistsException();
+                        }
+                    }
+
+                    this.superCompanyUnitOfWork.Functionnality.Add(functionnality);
+                    this.superCompanyUnitOfWork.Save();
+                    this.superCompanyUnitOfWork.Log.CreateNewEventInlog(null, User, $"La fonctionnalité a bien été ajoutée à la base de données", "", LogType.Success);
+                    TempData["success-title"] = "Création fonctionnalité";
+                    TempData["success-message"] = "La fonctionnalité a bien été créée";
+                    return RedirectToAction("Index");
+                }
+                catch (FunctionnalityNameAlreadyExistsException ex)
+                {
+                    TempData["warning-title"] = "Création fonctionnalité";
+                    TempData["warning-message"] = "Le nom de cette fonctionnalité existe déjà";
+                    return View(functionnality);
+                }
+                catch (FunctionnalityCodeAlreadyExistsException ex)
+                {
+                    TempData["warning-title"] = "Création fonctionnalité";
+                    TempData["warning-message"] = "Le code de cette fonctionnalité existe déjà";
+                    return View(functionnality);
+                }
+                catch (Exception ex)
+                {
+                    this.superCompanyUnitOfWork.Log.CreateNewEventInlog(ex, User, "Erreur lors de l'ajout d'une fonctionnalité dans la base de données", "Exception", LogType.Error);
+                    TempData["warning-title"] = "Création fonctionnalité";
+                    TempData["warning-message"] = "Erreur lors de la création d'une fonctionnalité";
+                    return View(functionnality);
+                }
             }
             return View();
         }
@@ -50,15 +90,11 @@ namespace SaaS.Areas.SuperCompany.Controllers
         {
             if (id == null || string.IsNullOrEmpty(id))
             {
-                //Redirection vers la création d'une fonctionnalité
-                /*return View("Create");*/
-
-                //ou return la page d'information NotFound
                 return NotFound();
             }
 
             //Modifier l'entreprise
-            Functionnality functionnality = this.unitOfWork.Functionnality.Get(c => c.Id == id);
+            Functionnality functionnality = this.superCompanyUnitOfWork.Functionnality.Get(c => c.Id == id);
 
             if (functionnality is null)
             {
@@ -72,10 +108,12 @@ namespace SaaS.Areas.SuperCompany.Controllers
         {
             if (ModelState.IsValid)
             {
-                this.unitOfWork.Functionnality.Update(functionnality);
-                this.unitOfWork.Save();
+                this.superCompanyUnitOfWork.Functionnality.Update(functionnality);
+                this.superCompanyUnitOfWork.Save();
 
-                TempData["success"] = "La fonctionnalité a bien été modifiée";
+                this.superCompanyUnitOfWork.Log.CreateNewEventInlog(null, User, $"La fonctionnalité a bien été modifiée", "", LogType.Success);
+                TempData["success-title"] = "Modification fonctionnalité";
+                TempData["success-message"] = $"La fonctionnalité a bien été modifiée";
                 return RedirectToAction("Index");
             }
             return View(functionnality);
@@ -86,7 +124,7 @@ namespace SaaS.Areas.SuperCompany.Controllers
         public IActionResult GetAllFunctionnalities()
         {
             /*Ecrire la requête en SQL pour récupérer les fonctionnalités si nécessaire*/
-            IEnumerable<Functionnality> functionnalities = this.unitOfWork.Functionnality.GetAll();
+            IEnumerable<Functionnality> functionnalities = this.superCompanyUnitOfWork.Functionnality.GetAll();
 
             return Json(new { data = functionnalities });
         }
@@ -101,16 +139,38 @@ namespace SaaS.Areas.SuperCompany.Controllers
         [HttpPost]
         public IActionResult LockUnlockFunctionnality([FromBody]string id)
         {
-            var objFromDb = this.unitOfWork.Functionnality.Get(f => f.Id == id);
-            if(objFromDb is null)
-                return Json(new { success = false, message = "Une erreur est survenue lors de l'activation/la désactivation de la fonctionnalité" });
-            if (objFromDb.IsEnable == false)
-                objFromDb.IsEnable = true;
-            else
-                objFromDb.IsEnable = false;
+            var objFromDb = new Functionnality();
+            try
+            {
+                objFromDb = this.superCompanyUnitOfWork.Functionnality.Get(f => f.Id == id);
+                if (objFromDb is null)
+                    return Json(new { success = false, message = "Une erreur est survenue lors de l'activation/la désactivation de la fonctionnalité" });
+                if (objFromDb.IsEnable == false)
+                    objFromDb.IsEnable = true;
+                else
+                    objFromDb.IsEnable = false;
 
-            this.unitOfWork.Functionnality.Update(objFromDb);
-            this.unitOfWork.Save();
+                this.superCompanyUnitOfWork.Functionnality.Update(objFromDb);
+                this.superCompanyUnitOfWork.Save();
+                if (objFromDb.IsEnable == true)
+                {
+                    this.superCompanyUnitOfWork.Log.CreateNewEventInlog(null, User, $"La fonctionnalité {objFromDb.Name} a bien été activée", "", LogType.Success);
+                    TempData["success-title"] = "Activation fonctionnalité";
+                    TempData["success-message"] = $"La fonctionnalité {objFromDb.Name} a bien été activée";
+                }
+                else if (objFromDb.IsEnable == false)
+                {
+                    this.superCompanyUnitOfWork.Log.CreateNewEventInlog(null, User, $"La fonctionnalité {objFromDb.Name} a bien été desactivée", "", LogType.Success);
+                    TempData["success-title"] = "Desactivation fonctionnalité";
+                    TempData["success-message"] = $"La fonctionnalité {objFromDb.Name} a bien été desactivée";
+                }
+            }
+            catch (Exception ex)
+            {
+                this.superCompanyUnitOfWork.Log.CreateNewEventInlog(ex, User, $"Erreur lors de la modification de l'état de la fonctionnalité {objFromDb.Name} dans la base de données", "Exception", LogType.Error);
+                TempData["error-title"] = "Modification état fonctionnalité";
+                TempData["error-message"] = $"Erreur lors de la modification de l'état de la fonctionnalité {objFromDb.Name} dans la base de données";
+            }
 
             return Json(new { success = true, message = "Activation/désactivation de la fonctionnalité réussie" });
         }

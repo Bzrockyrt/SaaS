@@ -1,6 +1,4 @@
-﻿using SaaS.Domain.Models;
-
-namespace SaaS.DataAccess.Repository.IRepository
+﻿namespace SaaS.DataAccess.Repository.IRepository
 {
     /*public interface IApplicationRoleFunctionnalityRepository : IRepository<ApplicationRoleFunctionnality>
     {

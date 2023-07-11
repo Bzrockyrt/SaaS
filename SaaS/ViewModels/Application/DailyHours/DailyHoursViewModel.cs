@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using SaaS.Domain.Models;
-using SaaS.Domain.OTHER;
+using SaaS.Domain.Work;
 using System.ComponentModel.DataAnnotations;
 
 namespace SaaS.ViewModels.Application.DailyHours
@@ -27,7 +26,7 @@ namespace SaaS.ViewModels.Application.DailyHours
         public DateTime EveningStart { get; set; }
         public DateTime EveningEnd { get; set; }
         public List<WorkSite> EveningWorkSites { get; set; } = new List<WorkSite>();
-        public List<User> EveningWorkManagers { get; set; } = new List<User>();
+        public List<Domain.Identity.User> EveningWorkManagers { get; set; } = new List<Domain.Identity.User>();
         #endregion
         #region Sup
         #endregion

@@ -4,6 +4,8 @@ using SaaS.DataAccess.Data;
 using SaaS.DataAccess.DbInitializer;
 using SaaS.DataAccess.Repository;
 using SaaS.DataAccess.Repository.IRepository;
+using SaaS.DataAccess.Repository.PIPL;
+using SaaS.DataAccess.Repository.PIPL.IRepository;
 using SaaS.DataAccess.Services;
 using SaaS.DataAccess.Utils;
 
@@ -24,22 +26,12 @@ builder.Services.Configure<TenantSettings>((settings) =>
 
 builder.Services.AddScoped<TenantService>();
 
-/*builder.Services.AddDbContext<SuperAdminDbContext>(options => 
-    options.UseSqlServer("CONNECTION_STRING", o => o.MigrationsHistoryTable(tableName: HistoryRepository.DefaultTableName, schema: "superadmin")));
-
-builder.Services.AddDbContext<ApplicationDbContext>((sp, options){
-    var tenantProvider = sp.GetRequiredService<TenantProvider>();
-
-    *//*options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"));*//*
-    options.UseSqlServer(tenantProvider.GetConnectionString());
-};*/
-
-
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
         .AddEntityFrameworkStores<ApplicationDbContext>()
+        .AddEntityFrameworkStores<PIPLDeveloppementDbContext>()
         .AddDefaultUI()
         .AddDefaultTokenProviders();
 
@@ -57,9 +49,10 @@ builder.Services.AddSession(options => {
     options.Cookie.IsEssential = true;
 });
 
-builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddRazorPages();
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<ISuperCompanyUnitOfWork, SuperCompanyUnitOfWork>();
+builder.Services.AddScoped<IApplicationUnitOfWork, ApplicationUnitOfWork>();
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 //builder.Services.AddScoped<IEmailSender, EmailSender>();
 var app = builder.Build();
 
@@ -81,7 +74,7 @@ SeedDatabase();
 app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
-    pattern: "{area=application}/{controller=dailyhours}/{action=index}/{id?}");
+    pattern: "{area=website}/{controller=homepage}/{action=homepage}/{id?}");
 app.Run();
 
 void SeedDatabase()
@@ -89,6 +82,6 @@ void SeedDatabase()
     using (var scope = app.Services.CreateScope())
     {
         var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
-        dbInitializer.Initialize();
+        dbInitializer.InitializePIPLDeveloppementDb();
     }
 }

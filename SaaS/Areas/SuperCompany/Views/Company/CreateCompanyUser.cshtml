@@ -1,0 +1,46 @@
+﻿@using SaaS.ViewModels.SuperCompany.Company;
+@model CreateCompanyUserViewModel
+
+<div class="header">
+    <h1 class="header-title">Ajouter un utilisateur à l'entreprise</h1>
+</div>
+
+<div class="container">
+    <form method="post" asp-area="supercompany" asp-controller="company" asp-action="createcompanyuser" enctype="multipart/form-data" class="form-floating">
+        <div class="form-item">
+            <span class="form-item-icon material-symbols-rounded">mail</span>
+            <input type="text" asp-for="Firstname" placeholder="Prénom" autofocus required />
+            @*<input type="text" placeholder="Nom d'utilisateur" id="emailForm"
+            autofocus required>*@
+        </div>
+        <div class="form-item">
+            <span class="form-item-icon material-symbols-rounded">mail</span>
+            <input type="text" asp-for="Lastname" placeholder="Lastname" autofocus required />
+            @*<input type="text" placeholder="Nom d'utilisateur" id="emailForm"
+            autofocus required>*@
+        </div>
+        <div class="form-item">
+            <span class="form-item-icon material-symbols-rounded">mail</span>
+            <input type="email" asp-for="Email" placeholder="Email" autofocus required />
+            @*<input type="text" placeholder="Nom d'utilisateur" id="emailForm"
+            autofocus required>*@
+        </div>
+        <div class="form-item">
+            <span class="form-item-icon material-symbols-rounded">lock</span>
+            <input type="password" asp-for="Password" placeholder="Mot de passe" required />
+            @*<input type="password" placeholder="Mot de passe" id="passwordForm"
+            required>*@
+        </div>
+        <div class="form-item">
+            <span class="form-item-icon material-symbols-rounded">lock</span>
+            <input type="password" asp-for="ConfirmPassword" placeholder="Confirmer" required />
+            @*<input type="password" placeholder="Mot de passe" id="passwordForm"
+            required>*@
+        </div>
+        @*<div class="form-floating py-2 col-12">
+        <input type="file" name="picture" class="form-control border-0 shadow"/>
+        <label asp-for="Company.Picture" class="ms-2"></label>
+        </div>*@
+        <button type="submit" class="btn btn-primary form-control">Créer</button>
+    </form>
+</div>

@@ -11,7 +11,17 @@ function loadCompanyDataTable() {
         "ajax": { url: '/supercompany/company/getallcompanies' },
         /*columns : permet de configurer les colonnes de la table avec différents paramètres*/
         "columns": [
-            { "data": "name", "width": "10%" },
+            {
+                "data": { id: "id", name: "name" },
+                "render": function (data) {
+                    if (data.name != null) {
+                        return `
+                            <a href="/supercompany/company/gocompany?id=${data.id}">${data.name}</a>
+                        `
+                    }
+                },
+                "width": "10%"
+            },
             { "data": "description", "width": "10%" },
             { "data": "siret", "width": "10%" },
             { "data": "email", "width": "10%" },
@@ -47,9 +57,6 @@ function loadCompanyDataTable() {
                         <div role="group">
                             <a href="/supercompany/company/edit?id=${data}" class="btn btn-primary mx-2">
                                 <i class='bx bxs-edit' style='color:#ffffff'></i>
-                            </a>
-                            <a href="/supercompany/company/configuration?id=${data}" class="btn btn-warning mx-2">
-                                <i class='bx bx-cog' style='color:#ffffff' ></i>
                             </a>
                             <a onClick=deleteCompany('/supercompany/company/delete/${data}') class="btn btn-danger mx-2">
                                 <i class='bx bx-trash' style='color:#ffffff'  ></i>

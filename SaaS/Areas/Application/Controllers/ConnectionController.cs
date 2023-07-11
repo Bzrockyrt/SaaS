@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using SaaS.DataAccess.Repository.IRepository;
+using SaaS.DataAccess.Repository.PIPL.IRepository;
 using SaaS.DataAccess.Services;
 using SaaS.DataAccess.Utils;
-using SaaS.Domain.Models;
-using SaaS.Domain.OTHER;
+using SaaS.Domain.Tenant;
 using SaaS.ViewModels.Application.Connection;
 
 namespace SaaS.Areas.Application.Controllers
@@ -14,7 +14,8 @@ namespace SaaS.Areas.Application.Controllers
     [Area("Application")]
     public class ConnectionController : Controller
     {
-        private readonly IUnitOfWork unitOfWork;
+        private readonly ISuperCompanyUnitOfWork superCompanyUnitOfWork;
+        private readonly IApplicationUnitOfWork applicationUnitOfWork;
         private readonly IUserStore<IdentityUser> _userStore;
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly IEmailSender _emailSender;
@@ -23,14 +24,16 @@ namespace SaaS.Areas.Application.Controllers
         private readonly TenantSettings tenantSettings;
         private readonly UserManager<IdentityUser> userManager;
 
-        public ConnectionController(IUnitOfWork unitOfWork,
+        public ConnectionController(ISuperCompanyUnitOfWork superCompanyUnitOfWork,
+            IApplicationUnitOfWork applicationUnitOfWork,
             SignInManager<IdentityUser> signInManager,
             TenantService tenantService,
             IOptions<TenantSettings> options,
             IUserStore<IdentityUser> userStore,
             UserManager<IdentityUser> userManager)
         {
-            this.unitOfWork = unitOfWork;
+            this.superCompanyUnitOfWork = superCompanyUnitOfWork;
+            this.applicationUnitOfWork = applicationUnitOfWork;
             this.signInManager = signInManager;
             this.tenantService = tenantService;
             this.tenantSettings = options.Value;
@@ -80,7 +83,7 @@ namespace SaaS.Areas.Application.Controllers
                 try
                 {
                     //Je vérifie si le code entreprise correspond à une entreprise existante
-                    var company = this.unitOfWork.Company.Get(c => c.CompanyCode == companyConnectionViewModel.CompanyCode);
+                    var company = this.superCompanyUnitOfWork.Company.Get(c => c.CompanyCode == companyConnectionViewModel.CompanyCode);
                     if (company is null)
                     {
                         //Si 'company' est null, l'entreprise n'existe pas
@@ -91,22 +94,15 @@ namespace SaaS.Areas.Application.Controllers
                     {
                         //Si 'company' n'est pas null, je vérifie qu'elle possède bien une chaîne de connexion
                         //(Cela signifie qu'un contrat a été passé avec nous et que l'entreprise a été validée)
-                        if (this.tenantSettings.Companies.ContainsKey(company.TenantCode))
+                        if (this.tenantSettings.Companies.ContainsKey(company.Id))
                         {
-                            this.Response.Cookies.Append("tenant-code", company.TenantCode);
+                            this.Response.Cookies.Append("tenant-code", company.Id);
                             ViewData["CurrentCompany"] = new TenantSiteModel()
                             {
                                 Key = this.tenantService.GetTenantCode(),
                                 Logo = this.tenantService.GetTenant()?.logo,
                                 Name = this.tenantService.GetTenant()?.name,
                             };
-                            /*var currentCompany = this.tenantService.GetTenant();
-                            ViewBag.CurrentCompany = new TenantSiteModel
-                            {
-                                Key = this.tenantService.GetTenantCode(),
-                                Logo = currentCompany?.logo,
-                                Name = currentCompany?.name
-                            };*/
                         }
                         return RedirectToAction("Login", "Connection", new { area = "Application" });
                     }
@@ -128,14 +124,22 @@ namespace SaaS.Areas.Application.Controllers
             //Clear the existing external cookie to ensure a clear login process
             /*await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);*/
 
-            LoginViewModel model = new LoginViewModel
+            if (string.IsNullOrEmpty(this.tenantService.GetTenantName()))
             {
-                ReturnUrl = returnUrl,
-                ExternalLogins =
-                (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
-            };
+                //Le nom du tenant est null ou vide, c'est que je ne me suis pas connecté à l'entreprise
+                return RedirectToAction("companyconnection", "connection", new { area = "application" });
+            }
+            else
+            {
+                LoginViewModel model = new LoginViewModel
+                {
+                    ReturnUrl = returnUrl,
+                    ExternalLogins =
+                    (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
+                };
 
-            return View(model);
+                return View(model);
+            }
         }
 
         //POST
@@ -146,35 +150,61 @@ namespace SaaS.Areas.Application.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var user = await userManager.FindByEmailAsync(loginViewModel.Email);
+                    if (this.tenantService.GetTenantName() == "PIPL Développement")
+                    {
+                        Domain.PIPL.User us = this.superCompanyUnitOfWork.User.Get(u => u.Email == loginViewModel.Email);
 
-                    if (user == null)
-                    {
-                        ModelState.AddModelError(string.Empty, "Utilisateur inexistant");
-                        return View(loginViewModel);
-                    }
-                    // This doesn't count login failures towards account lockout
-                    // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                    var result = await signInManager.PasswordSignInAsync(user, loginViewModel.Password, loginViewModel.RememberMe, false);
+                        if (us == null)
+                        {
+                            ModelState.AddModelError(string.Empty, "Utilisateur inexistant");
+                            return View(loginViewModel);
+                        }
+                        // This doesn't count login failures towards account lockout
+                        // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                        var res = await signInManager.PasswordSignInAsync(us, loginViewModel.Password, loginViewModel.RememberMe, false);
 
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Index", "Home", new { area = "Application" });
+                        if (res.Succeeded)
+                        {
+                            return RedirectToAction("Index", "Dashboard", new { area = "SuperCompany" });
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "Informations invalides");
+                        }
                     }
-                    /*if (result.RequiresTwoFactor)
-                    {
-                        return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
-                    }*/
-                    /*if (result.IsLockedOut)
-                    {
-                        logger.LogWarning("User account locked out.");
-                        return RedirectToPage("./Lockout");
-                    }*/
                     else
                     {
-                        ModelState.AddModelError("", "Informations invalides");
-                    }
+                        /*var user = await userManager.FindByEmailAsync(loginViewModel.Email);*/
 
+                        Domain.Identity.User user = this.applicationUnitOfWork.User.Get(u => u.Email == loginViewModel.Email);
+
+                        if (user == null)
+                        {
+                            ModelState.AddModelError(string.Empty, "Utilisateur inexistant");
+                            return View(loginViewModel);
+                        }
+                        // This doesn't count login failures towards account lockout
+                        // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                        var result = await signInManager.PasswordSignInAsync(user, loginViewModel.Password, loginViewModel.RememberMe, false);
+
+                        if (result.Succeeded)
+                        {
+                            return RedirectToAction("Index", "Home", new { area = "Application" });
+                        }
+                        /*if (result.RequiresTwoFactor)
+                        {
+                            return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                        }*/
+                        /*if (result.IsLockedOut)
+                        {
+                            logger.LogWarning("User account locked out.");
+                            return RedirectToPage("./Lockout");
+                        }*/
+                        else
+                        {
+                            ModelState.AddModelError("", "Informations invalides");
+                        }
+                    }
                 }
                 return View(loginViewModel);
             }
@@ -190,6 +220,7 @@ namespace SaaS.Areas.Application.Controllers
         public async Task<IActionResult> Logout()
         {
             /*Lors de la déconnexion, il faut déconnecter le compte utilisateur mais également le compte de l'entreprise*/
+            Response.Cookies.Delete("tenant-code");
             await this.signInManager.SignOutAsync();
             return View("CompanyConnection");
         }
@@ -278,11 +309,11 @@ namespace SaaS.Areas.Application.Controllers
             }
         }
 
-        private User CreateUser()
+        private Domain.Identity.User CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<User>();
+                return Activator.CreateInstance<Domain.Identity.User>();
             }
             catch
             {
