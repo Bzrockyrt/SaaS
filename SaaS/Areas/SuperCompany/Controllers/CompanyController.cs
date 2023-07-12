@@ -368,12 +368,12 @@ namespace SaaS.Areas.SuperCompany.Controllers
 
                     var user = CreateUser();
                     //Je crée le nom d'utilisateur à partir du nom et du prénom de l'utilisateur
-                    var username = signupViewModel.Lastname.Substring(0, Math.Min(signupViewModel.Lastname.Length, 3))
-                        + signupViewModel.Firstname.Substring(0, Math.Min(signupViewModel.Firstname.Length, 3));
-                    user.Firstname = signupViewModel.Firstname;
-                    user.Lastname = signupViewModel.Lastname;
+                    var username = signupViewModel.User.Lastname.Substring(0, Math.Min(signupViewModel.User.Lastname.Length, 3))
+                        + signupViewModel.User.Firstname.Substring(0, Math.Min(signupViewModel.User.Firstname.Length, 3));
+                    user.Firstname = signupViewModel.User.Firstname;
+                    user.Lastname = signupViewModel.User.Lastname;
                     await userStore.SetUserNameAsync(user, username, CancellationToken.None);
-                    await emailStore.SetEmailAsync(user, signupViewModel.Email, CancellationToken.None);
+                    await emailStore.SetEmailAsync(user, signupViewModel.User.Email, CancellationToken.None);
 
                     var result = await this.userManager.CreateAsync(user, signupViewModel.Password);
 

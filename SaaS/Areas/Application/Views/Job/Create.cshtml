@@ -27,7 +27,7 @@
             <select asp-for="@Model.Job.DepartmentId" asp-items="@Model.DepartmentList" class="form-select border-0 shadow">
                 <option disabled selected>--Sélectionner un département--</option>
             </select>
-            <label asp-for="Job.DepartmentId" class="ms-2"></label>
+            <label asp-for="Job.DepartmentId" class="ms-2">Département</label>
             <span asp-validation-for="Job.DepartmentId" class="text-danger"></span>
         </div>
         <button type="submit" class="btn btn-primary form-control" style="width: 150px;">Créer</button>

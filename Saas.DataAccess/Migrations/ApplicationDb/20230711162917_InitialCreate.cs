@@ -45,39 +45,12 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
-                name: "Company",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    StreetNumber = table.Column<long>(type: "bigint", nullable: false),
-                    StreetName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    State = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PostalCode = table.Column<long>(type: "bigint", nullable: false),
-                    SIRET = table.Column<double>(type: "float", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<double>(type: "float", nullable: false),
-                    CompanyCode = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
-                    TenantCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsSuperCompany = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsEnable = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Company", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "CompanyFunctionnalities",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
+                    NormalizedName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -92,10 +65,28 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
+                name: "CompanyPicture",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsEnable = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CompanyPicture", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CompanySetting",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    IsDemo = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -105,25 +96,6 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CompanySetting", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Department",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsEnable = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Department", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -150,6 +122,11 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ExceptionName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Source = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DevNote = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LogType = table.Column<int>(type: "int", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -159,6 +136,25 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Log", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Subsidiary",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsEnable = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Subsidiary", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -288,38 +284,14 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
-                name: "CompanyPicture",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CompanyId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsEnable = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CompanyPicture", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CompanyPicture_Company_CompanyId",
-                        column: x => x.CompanyId,
-                        principalTable: "Company",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Job",
+                name: "Department",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DepartmentId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    SubsidiaryId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -328,11 +300,11 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Job", x => x.Id);
+                    table.PrimaryKey("PK_Department", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Job_Department_DepartmentId",
-                        column: x => x.DepartmentId,
-                        principalTable: "Department",
+                        name: "FK_Department_Subsidiary_SubsidiaryId",
+                        column: x => x.SubsidiaryId,
+                        principalTable: "Subsidiary",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -397,11 +369,11 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Comment = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     WorkSiteTypeId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -417,6 +389,62 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                         column: x => x.WorkSiteTypeId,
                         principalTable: "WorkSiteType",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Job",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DepartmentId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsEnable = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Job", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Job_Department_DepartmentId",
+                        column: x => x.DepartmentId,
+                        principalTable: "Department",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WorkHour_WorkSite",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    WorkHourId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    WorkSiteId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsEnable = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkHour_WorkSite", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WorkHour_WorkSite_WorkHour_WorkHourId",
+                        column: x => x.WorkHourId,
+                        principalTable: "WorkHour",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_WorkHour_WorkSite_WorkSite_WorkSiteId",
+                        column: x => x.WorkSiteId,
+                        principalTable: "WorkSite",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -477,36 +505,6 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                         name: "FK_AspNetUsers_UserStatus_UserStatusId",
                         column: x => x.UserStatusId,
                         principalTable: "UserStatus",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "WorkHour_WorkSite",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    WorkHourId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    WorkSiteId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsEnable = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WorkHour_WorkSite", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_WorkHour_WorkSite_WorkHour_WorkHourId",
-                        column: x => x.WorkHourId,
-                        principalTable: "WorkHour",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_WorkHour_WorkSite_WorkSite_WorkSiteId",
-                        column: x => x.WorkSiteId,
-                        principalTable: "WorkSite",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -656,9 +654,9 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CompanyPicture_CompanyId",
-                table: "CompanyPicture",
-                column: "CompanyId");
+                name: "IX_Department_SubsidiaryId",
+                table: "Department",
+                column: "SubsidiaryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Job_DepartmentId",
@@ -745,9 +743,6 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Company");
-
-            migrationBuilder.DropTable(
                 name: "Article");
 
             migrationBuilder.DropTable(
@@ -773,6 +768,9 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
 
             migrationBuilder.DropTable(
                 name: "Department");
+
+            migrationBuilder.DropTable(
+                name: "Subsidiary");
         }
     }
 }

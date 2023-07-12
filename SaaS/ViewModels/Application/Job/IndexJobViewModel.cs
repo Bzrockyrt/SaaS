@@ -7,6 +7,8 @@
         public string Code { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public int EmployeesNumber { get; set; }
+        public string SubsidiaryName { get; set; } = string.Empty;
+        public string DepartmentName { get; set; } = string.Empty;
         public bool IsEnable { get; set; }
     }
 }

@@ -12,8 +12,8 @@ using SaaS.DataAccess.Data;
 namespace SaaS.DataAccess.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230707171736_Update_DB_ENTREPRISETEST")]
-    partial class Update_DB_ENTREPRISETEST
+    [Migration("20230712194912_Update_WorkSite_SetEndDateNull")]
+    partial class Update_WorkSite_SetEndDateNull
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -232,123 +232,7 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("SaaS.Domain.Models.WorkSiteType", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<bool>("IsEnable")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
-
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("WorkSiteType");
-                });
-
-            modelBuilder.Entity("SaaS.Domain.OTHER.Article", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CodeArticle")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<bool>("IsEnable")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
-
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Article");
-                });
-
-            modelBuilder.Entity("SaaS.Domain.OTHER.ArticleImage", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ArticleId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ImageURL")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsEnable")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ArticleId");
-
-                    b.ToTable("ArticleImage");
-                });
-
-            modelBuilder.Entity("SaaS.Domain.OTHER.CompanyFunctionnalities", b =>
+            modelBuilder.Entity("SaaS.Domain.Company.CompanyFunctionnalities", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -394,13 +278,9 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                     b.ToTable("CompanyFunctionnalities");
                 });
 
-            modelBuilder.Entity("SaaS.Domain.OTHER.CompanyPicture", b =>
+            modelBuilder.Entity("SaaS.Domain.Company.CompanyPicture", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CompanyId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CreatedBy")
@@ -426,12 +306,10 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CompanyId");
-
                     b.ToTable("CompanyPicture");
                 });
 
-            modelBuilder.Entity("SaaS.Domain.OTHER.CompanySetting", b =>
+            modelBuilder.Entity("SaaS.Domain.Company.CompanySetting", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -461,130 +339,7 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                     b.ToTable("CompanySetting");
                 });
 
-            modelBuilder.Entity("SaaS.Domain.OTHER.Department", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsEnable")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Department");
-                });
-
-            modelBuilder.Entity("SaaS.Domain.OTHER.EmploymentContract", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsEnable")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EmploymentContract");
-                });
-
-            modelBuilder.Entity("SaaS.Domain.OTHER.Job", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DepartmentId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsEnable")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DepartmentId");
-
-                    b.ToTable("Job");
-                });
-
-            modelBuilder.Entity("SaaS.Domain.OTHER.Log", b =>
+            modelBuilder.Entity("SaaS.Domain.Company.Log", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -630,7 +385,293 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                     b.ToTable("Log");
                 });
 
-            modelBuilder.Entity("SaaS.Domain.OTHER.Supplier", b =>
+            modelBuilder.Entity("SaaS.Domain.Identity.Department", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsEnable")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubsidiaryId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubsidiaryId");
+
+                    b.ToTable("Department");
+                });
+
+            modelBuilder.Entity("SaaS.Domain.Identity.EmploymentContract", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsEnable")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EmploymentContract");
+                });
+
+            modelBuilder.Entity("SaaS.Domain.Identity.Job", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DepartmentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsEnable")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.ToTable("Job");
+                });
+
+            modelBuilder.Entity("SaaS.Domain.Identity.Subsidiary", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsEnable")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Subsidiary");
+                });
+
+            modelBuilder.Entity("SaaS.Domain.Identity.UserStatus", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsEnable")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserStatus");
+                });
+
+            modelBuilder.Entity("SaaS.Domain.Logistic.Article", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CodeArticle")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsEnable")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Article");
+                });
+
+            modelBuilder.Entity("SaaS.Domain.Logistic.ArticleImage", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ArticleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageURL")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsEnable")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArticleId");
+
+                    b.ToTable("ArticleImage");
+                });
+
+            modelBuilder.Entity("SaaS.Domain.Logistic.Supplier", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -679,7 +720,7 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                     b.ToTable("Supplier");
                 });
 
-            modelBuilder.Entity("SaaS.Domain.OTHER.Supplier_Article", b =>
+            modelBuilder.Entity("SaaS.Domain.Logistic.Supplier_Article", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -718,46 +759,7 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                     b.ToTable("Supplier_Article");
                 });
 
-            modelBuilder.Entity("SaaS.Domain.OTHER.UserStatus", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsEnable")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserStatus");
-                });
-
-            modelBuilder.Entity("SaaS.Domain.OTHER.WorkHour", b =>
+            modelBuilder.Entity("SaaS.Domain.Work.WorkHour", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -806,7 +808,7 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                     b.ToTable("WorkHour");
                 });
 
-            modelBuilder.Entity("SaaS.Domain.OTHER.WorkHourImage", b =>
+            modelBuilder.Entity("SaaS.Domain.Work.WorkHourImage", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -843,7 +845,7 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                     b.ToTable("WorkHourImage");
                 });
 
-            modelBuilder.Entity("SaaS.Domain.OTHER.WorkHour_WorkSite", b =>
+            modelBuilder.Entity("SaaS.Domain.Work.WorkHour_WorkSite", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -882,7 +884,7 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                     b.ToTable("WorkHour_WorkSite");
                 });
 
-            modelBuilder.Entity("SaaS.Domain.OTHER.WorkSite", b =>
+            modelBuilder.Entity("SaaS.Domain.Work.WorkSite", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -891,10 +893,15 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
                     b.Property<string>("Comment")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -905,10 +912,10 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsEnable")
@@ -939,15 +946,10 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                     b.ToTable("WorkSite");
                 });
 
-            modelBuilder.Entity("SaaS.Domain.PIPL.Company", b =>
+            modelBuilder.Entity("SaaS.Domain.Work.WorkSiteType", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CompanyCode")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -958,47 +960,16 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<bool>("IsEnable")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsSuperCompany")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
-
-                    b.Property<double>("PhoneNumber")
-                        .HasColumnType("float");
-
-                    b.Property<long>("PostalCode")
-                        .HasColumnType("bigint");
-
-                    b.Property<double>("SIRET")
-                        .HasColumnType("float");
-
-                    b.Property<string>("State")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StreetName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("StreetNumber")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("TenantCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UpdatedBy")
                         .IsRequired()
@@ -1009,10 +980,10 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("Company");
+                    b.ToTable("WorkSiteType");
                 });
 
-            modelBuilder.Entity("SaaS.Domain.OTHER.User", b =>
+            modelBuilder.Entity("SaaS.Domain.Identity.User", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
@@ -1146,31 +1117,20 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SaaS.Domain.OTHER.ArticleImage", b =>
+            modelBuilder.Entity("SaaS.Domain.Identity.Department", b =>
                 {
-                    b.HasOne("SaaS.Domain.OTHER.Article", "Article")
-                        .WithMany("ArticleImages")
-                        .HasForeignKey("ArticleId")
+                    b.HasOne("SaaS.Domain.Identity.Subsidiary", "Subsidiary")
+                        .WithMany("Departments")
+                        .HasForeignKey("SubsidiaryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Article");
+                    b.Navigation("Subsidiary");
                 });
 
-            modelBuilder.Entity("SaaS.Domain.OTHER.CompanyPicture", b =>
+            modelBuilder.Entity("SaaS.Domain.Identity.Job", b =>
                 {
-                    b.HasOne("SaaS.Domain.PIPL.Company", "Company")
-                        .WithMany()
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Company");
-                });
-
-            modelBuilder.Entity("SaaS.Domain.OTHER.Job", b =>
-                {
-                    b.HasOne("SaaS.Domain.OTHER.Department", "Department")
+                    b.HasOne("SaaS.Domain.Identity.Department", "Department")
                         .WithMany("Jobs")
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1179,15 +1139,26 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                     b.Navigation("Department");
                 });
 
-            modelBuilder.Entity("SaaS.Domain.OTHER.Supplier_Article", b =>
+            modelBuilder.Entity("SaaS.Domain.Logistic.ArticleImage", b =>
                 {
-                    b.HasOne("SaaS.Domain.OTHER.Article", "Article")
+                    b.HasOne("SaaS.Domain.Logistic.Article", "Article")
+                        .WithMany("ArticleImages")
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Article");
+                });
+
+            modelBuilder.Entity("SaaS.Domain.Logistic.Supplier_Article", b =>
+                {
+                    b.HasOne("SaaS.Domain.Logistic.Article", "Article")
                         .WithMany("Supplier_Articles")
                         .HasForeignKey("ArticleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SaaS.Domain.OTHER.Supplier", "Supplier")
+                    b.HasOne("SaaS.Domain.Logistic.Supplier", "Supplier")
                         .WithMany("Supplier_Articles")
                         .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1198,9 +1169,9 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                     b.Navigation("Supplier");
                 });
 
-            modelBuilder.Entity("SaaS.Domain.OTHER.WorkHourImage", b =>
+            modelBuilder.Entity("SaaS.Domain.Work.WorkHourImage", b =>
                 {
-                    b.HasOne("SaaS.Domain.OTHER.WorkHour", "WorkHour")
+                    b.HasOne("SaaS.Domain.Work.WorkHour", "WorkHour")
                         .WithMany("WorkHourImages")
                         .HasForeignKey("WorkHourId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1209,15 +1180,15 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                     b.Navigation("WorkHour");
                 });
 
-            modelBuilder.Entity("SaaS.Domain.OTHER.WorkHour_WorkSite", b =>
+            modelBuilder.Entity("SaaS.Domain.Work.WorkHour_WorkSite", b =>
                 {
-                    b.HasOne("SaaS.Domain.OTHER.WorkHour", "WorkHour")
+                    b.HasOne("SaaS.Domain.Work.WorkHour", "WorkHour")
                         .WithMany("WorkHour_WorkSites")
                         .HasForeignKey("WorkHourId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SaaS.Domain.OTHER.WorkSite", "WorkSite")
+                    b.HasOne("SaaS.Domain.Work.WorkSite", "WorkSite")
                         .WithMany("WorkHour_WorkSites")
                         .HasForeignKey("WorkSiteId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1228,28 +1199,28 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                     b.Navigation("WorkSite");
                 });
 
-            modelBuilder.Entity("SaaS.Domain.OTHER.WorkSite", b =>
+            modelBuilder.Entity("SaaS.Domain.Work.WorkSite", b =>
                 {
-                    b.HasOne("SaaS.Domain.Models.WorkSiteType", null)
+                    b.HasOne("SaaS.Domain.Work.WorkSiteType", null)
                         .WithMany("WorkSites")
                         .HasForeignKey("WorkSiteTypeId");
                 });
 
-            modelBuilder.Entity("SaaS.Domain.OTHER.User", b =>
+            modelBuilder.Entity("SaaS.Domain.Identity.User", b =>
                 {
-                    b.HasOne("SaaS.Domain.OTHER.EmploymentContract", "EmploymentContract")
+                    b.HasOne("SaaS.Domain.Identity.EmploymentContract", "EmploymentContract")
                         .WithMany("Users")
                         .HasForeignKey("EmploymentContractId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SaaS.Domain.OTHER.Job", "Job")
+                    b.HasOne("SaaS.Domain.Identity.Job", "Job")
                         .WithMany("Users")
                         .HasForeignKey("JobId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SaaS.Domain.OTHER.UserStatus", "UserStatus")
+                    b.HasOne("SaaS.Domain.Identity.UserStatus", "UserStatus")
                         .WithMany("Users")
                         .HasForeignKey("UserStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1262,53 +1233,58 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                     b.Navigation("UserStatus");
                 });
 
-            modelBuilder.Entity("SaaS.Domain.Models.WorkSiteType", b =>
+            modelBuilder.Entity("SaaS.Domain.Identity.Department", b =>
                 {
-                    b.Navigation("WorkSites");
+                    b.Navigation("Jobs");
                 });
 
-            modelBuilder.Entity("SaaS.Domain.OTHER.Article", b =>
+            modelBuilder.Entity("SaaS.Domain.Identity.EmploymentContract", b =>
+                {
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("SaaS.Domain.Identity.Job", b =>
+                {
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("SaaS.Domain.Identity.Subsidiary", b =>
+                {
+                    b.Navigation("Departments");
+                });
+
+            modelBuilder.Entity("SaaS.Domain.Identity.UserStatus", b =>
+                {
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("SaaS.Domain.Logistic.Article", b =>
                 {
                     b.Navigation("ArticleImages");
 
                     b.Navigation("Supplier_Articles");
                 });
 
-            modelBuilder.Entity("SaaS.Domain.OTHER.Department", b =>
-                {
-                    b.Navigation("Jobs");
-                });
-
-            modelBuilder.Entity("SaaS.Domain.OTHER.EmploymentContract", b =>
-                {
-                    b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("SaaS.Domain.OTHER.Job", b =>
-                {
-                    b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("SaaS.Domain.OTHER.Supplier", b =>
+            modelBuilder.Entity("SaaS.Domain.Logistic.Supplier", b =>
                 {
                     b.Navigation("Supplier_Articles");
                 });
 
-            modelBuilder.Entity("SaaS.Domain.OTHER.UserStatus", b =>
-                {
-                    b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("SaaS.Domain.OTHER.WorkHour", b =>
+            modelBuilder.Entity("SaaS.Domain.Work.WorkHour", b =>
                 {
                     b.Navigation("WorkHourImages");
 
                     b.Navigation("WorkHour_WorkSites");
                 });
 
-            modelBuilder.Entity("SaaS.Domain.OTHER.WorkSite", b =>
+            modelBuilder.Entity("SaaS.Domain.Work.WorkSite", b =>
                 {
                     b.Navigation("WorkHour_WorkSites");
+                });
+
+            modelBuilder.Entity("SaaS.Domain.Work.WorkSiteType", b =>
+                {
+                    b.Navigation("WorkSites");
                 });
 #pragma warning restore 612, 618
         }

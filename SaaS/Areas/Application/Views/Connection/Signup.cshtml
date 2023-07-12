@@ -31,38 +31,49 @@
                 <div asp-validation-summary="ModelOnly" class="login-card-validation" role="alert"></div>
                 <div class="form-item">
                     <span class="form-item-icon material-symbols-rounded">mail</span>
-                    <input type="text" asp-for="Firstname" placeholder="Prénom" autofocus required/>
-                    @*<input type="text" placeholder="Nom d'utilisateur" id="emailForm"
-                           autofocus required>*@
+                    <input type="text" asp-for="User.Firstname" placeholder="Prénom" autofocus required/>
                 </div>
                 <div class="form-item">
                     <span class="form-item-icon material-symbols-rounded">mail</span>
-                    <input type="text" asp-for="Lastname" placeholder="Lastname" autofocus required />
-                    @*<input type="text" placeholder="Nom d'utilisateur" id="emailForm"
-                    autofocus required>*@
+                    <input type="text" asp-for="User.Lastname" placeholder="Lastname" autofocus required />
                 </div>
                 <div class="form-item">
                     <span class="form-item-icon material-symbols-rounded">mail</span>
-                    <input type="email" asp-for="Email" placeholder="Email" autofocus required/>
-                    @*<input type="text" placeholder="Nom d'utilisateur" id="emailForm"
-                           autofocus required>*@
+                    <input type="email" asp-for="User.Email" placeholder="Email" autofocus required />
                 </div>
                 <div class="form-item">
                     <span class="form-item-icon material-symbols-rounded">lock</span>
                     <input type="password" asp-for="Password" placeholder="Mot de passe" required/>
-                    @*<input type="password" placeholder="Mot de passe" id="passwordForm"
-                           required>*@
                 </div>
                 <div class="form-item">
                     <span class="form-item-icon material-symbols-rounded">lock</span>
                     <input type="password" asp-for="ConfirmPassword" placeholder="Confirmer" required />
-                    @*<input type="password" placeholder="Mot de passe" id="passwordForm"
-                    required>*@
+                </div>
+                <div class="form-floating py-2 col-12">
+                    <select id="subsidiarySelect" name="subsidiaryId" asp-items="@Model.SubsidiaryList" class="form-select border-0 shadow">
+                        <option disabled selected>--Sélectionner une filliale--</option>
+                    </select>
+                    <label class="ms-2"></label>
+                    <span class="text-danger"></span>
+                </div>
+                <div class="form-floating py-2 col-12">
+                    <select id="departmentSelect" name="departmentId" class="form-select border-0 shadow">
+                        <option disabled selected>--Sélectionner un service--</option>
+                    </select>
+                    <label class="ms-2"></label>
+                    <span class="text-danger"></span>
+                </div>
+                <div class="form-floating py-2 col-12">
+                    <select id="jobSelect" name="jobId" asp-for="@Model.User.JobId" class="form-select border-0 shadow">
+                        <option disabled selected>--Sélectionner un poste--</option>
+                    </select>
+                    <label asp-for="User.JobId" class="ms-2"></label>
+                    <span asp-validation-for="User.JobId" class="text-danger"></span>
                 </div>
                 <button id="login-submit" type="submit">S'inscrire</button>
             </form>
             <div class="login-card-footer">
-                Vous possédez déjà votre propre compte personnel? <a asp-area="Application" asp-controller="HomePage" asp-action="Login">Connectez vous !</a>
+                Vous possédez déjà votre propre compte personnel? <a asp-area="application" asp-controller="connection" asp-action="login">Connectez vous !</a>
             </div>
         </div>
         @*<div class="login-card-social">
@@ -89,6 +100,7 @@
     </div>
     <script src="~/js/Signup.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 </body>
 </html>

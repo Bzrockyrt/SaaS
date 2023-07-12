@@ -1,18 +1,17 @@
-var jobDataTable;
+var subsidiaryDataTable;
 
 $(document).ready(function () {
-    loadJobDataTable();
+    loadSubsidiaryDataTable();
 });
 
-/*START - Index Company*/
-function loadJobDataTable() {
-    jobDataTable = $('#tableJobs').DataTable({
-        "ajax": { url: '/application/job/getalljobs' },
+function loadSubsidiaryDataTable() {
+    subsidiaryDataTable = $('#tableSubsidiaries').DataTable({
+        "ajax": { url: '/application/subsidiary/getallsubsidiaries' },
         "columns": [
             { "data": "name", "width": "35%" },
             { "data": "code", "width": "10%" },
-            { "data": "subsidiaryName", "width": "10%" },
-            { "data": "departmentName", "width": "10%" },
+            { "data": "departmentsNumber", "width": "10%" },
+            { "data": "jobsNumber", "width": "10%" },
             { "data": "employeesNumber", "width": "10%" },
             {
                 "data": { id: "id", isEnable: "isEnable" },
@@ -20,7 +19,7 @@ function loadJobDataTable() {
                     if (data.isEnable == false) {
                         return `
                             <label class="switch">
-                                <input type="checkbox" onclick=lockUnlockJob('${data.id}')>
+                                <input type="checkbox" onclick=lockUnlockSubsidiary('${data.id}')>
                                 <span class="slider round"></span>
                             </label>
                         `
@@ -28,7 +27,7 @@ function loadJobDataTable() {
                     else {
                         return `
                             <label class="switch">
-                                <input type="checkbox" onclick=lockUnlockJob('${data.id}') checked>
+                                <input type="checkbox" onclick=lockUnlockSubsidiary('${data.id}') checked>
                                 <span class="slider round"></span>
                             </label>
                         `
@@ -41,10 +40,10 @@ function loadJobDataTable() {
                 "render": function (data) {
                     return `
                         <div role="group">
-                            <a href="/application/job/edit?id=${data}" class="btn btn-primary mx-2">
+                            <a href="/application/subsidiary/edit?id=${data}" class="btn btn-primary mx-2">
                                 <i class='bx bxs-edit' style='color:#ffffff'></i>
                             </a>
-                            <a onClick=deleteJob('/application/job/delete/${data}') class="btn btn-danger mx-2">
+                            <a onClick=deleteSubsidiary('/application/subsidiary/delete/${data}') class="btn btn-danger mx-2">
                                 <i class='bx bx-trash' style='color:#ffffff'  ></i>
                             </a>
                         </div>
@@ -76,11 +75,10 @@ function loadJobDataTable() {
             }
         }
     });
-    jobDataTable.draw();
+    subsidiaryDataTable.draw();
 }
 
-function deleteJob(url) {
-    /*Ouvre une fenêtre modale pour confirmer la suppression de l'entreprise*/
+function deleteSubsidiary(url) {
     Swal.fire({
         title: '\u00CAtes-vous s\u00FBr?',
         text: "Vous ne serez plus capable d'annuler votre suppression!",
@@ -104,10 +102,10 @@ function deleteJob(url) {
     })
 }
 
-function lockUnlockJob(id) {
+function lockUnlockSubsidiary(id) {
     $.ajax({
         type: "POST",
-        url: '/application/job/LockUnlockJob',
+        url: '/application/subsidiary/LockUnlockSubsidiary',
         data: JSON.stringify(id),
         contentType: "application/json",
         success: function (data) {
@@ -122,10 +120,9 @@ function lockUnlockJob(id) {
                     "onclick": null,
                 };
 
-                toastr.success("Modification de l'\u00E9tat du poste r\u00E9ussie", "Modification \u00E9tat poste");
-                jobDataTable.ajax.reload();
+                toastr.success("Modification de l'\u00E9tat de la filliale r\u00E9ussie", "Modification \u00E9tat filliale");
+                subsidiaryDataTable.ajax.reload();
             }
         }
     });
 }
-/*END - Index Company*/

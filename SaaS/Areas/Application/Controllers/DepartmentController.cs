@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 using SaaS.DataAccess.Exceptions.Application.Department;
@@ -9,6 +10,7 @@ using SaaS.Domain;
 using SaaS.Domain.Identity;
 using SaaS.Domain.PIPL;
 using SaaS.ViewModels.Application.Department;
+using SaaS.ViewModels.Application.Job;
 
 namespace SaaS.Areas.Application.Controllers
 {
@@ -19,7 +21,7 @@ namespace SaaS.Areas.Application.Controllers
         private readonly TenantService tenantService;
         private readonly TenantSettings tenantSettings;
 
-        public static List<DepartmentViewModel> Departments = new List<DepartmentViewModel>();
+        public static List<IndexDepartmentViewModel> Departments = new List<IndexDepartmentViewModel>();
         
         public DepartmentController(IApplicationUnitOfWork applicationUnitOfWork,
             TenantService tenantService,
@@ -39,36 +41,44 @@ namespace SaaS.Areas.Application.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            Department department = new Department();
-            return View(department);
+            CreateDepartmentViewModel departmentViewModel = new CreateDepartmentViewModel()
+            {
+                SubsidiaryList = this.applicationUnitOfWork.Subsidiary.GetAll().Select(d => new SelectListItem
+                {
+                    Text = d.Name,
+                    Value = d.Id
+                }),
+                Department = new Department()
+            };
+            return View(departmentViewModel);
         }
 
         [HttpPost]
-        public IActionResult Create(Department department)
+        public IActionResult Create(CreateDepartmentViewModel createDepartmentViewModel)
         {
             if (ModelState.IsValid)
             {
                 if (User?.Identity?.Name is null)
-                    department.CreatedBy = "IPPOLITI Pierre-Louis";
+                    createDepartmentViewModel.Department.CreatedBy = "IPPOLITI Pierre-Louis";
                 else
-                    department.CreatedBy = User?.Identity?.Name;
+                    createDepartmentViewModel.Department.CreatedBy = User?.Identity?.Name;
 
                 try
                 {
                     IEnumerable<Department> departments = this.applicationUnitOfWork.Department.GetAll();
                     foreach (Department dep in departments)
                     {
-                        if (dep.Name == department.Name)
+                        if (dep.Name == createDepartmentViewModel.Department.Name)
                         {
                             throw new DepartmentNameAlreadyExistsException();
                         }
-                        if (dep.Code == department.Code)
+                        if (dep.Code == createDepartmentViewModel.Department.Code)
                         {
                             throw new DepartmentCodeAlreadyExistsException();
                         }
                     }
 
-                    this.applicationUnitOfWork.Department.Add(department);
+                    this.applicationUnitOfWork.Department.Add(createDepartmentViewModel.Department);
                     this.applicationUnitOfWork.Save();
                     this.applicationUnitOfWork.Log.CreateNewEventInlog(null, User, $"Le département a bien été ajouté à la base de données", "", LogType.Success);
                     TempData["success-title"] = "Création département";
@@ -79,20 +89,20 @@ namespace SaaS.Areas.Application.Controllers
                 {
                     TempData["warning-title"] = "Création département";
                     TempData["warning-message"] = "Le nom de ce département existe déjà";
-                    return View(department);
+                    return View(createDepartmentViewModel);
                 }
                 catch (DepartmentCodeAlreadyExistsException ex)
                 {
                     TempData["warning-title"] = "Création département";
                     TempData["warning-message"] = "Le code de ce département existe déjà";
-                    return View(department);
+                    return View(createDepartmentViewModel);
                 }
                 catch (Exception ex)
                 {
                     this.applicationUnitOfWork.Log.CreateNewEventInlog(ex, User, "Erreur lors de l'ajout d'un département dans la base de données", "Exception", LogType.Error);
                     TempData["warning-title"] = "Création département";
                     TempData["warning-message"] = "Erreur lors de la création d'un département";
-                    return View(department);
+                    return View(createDepartmentViewModel);
                 }
             }
             return View();
@@ -114,16 +124,17 @@ namespace SaaS.Areas.Application.Controllers
                             try
                             {
                                 connection.Open();
-                                var query = "SELECT Department.Id, Department.Code, Department.IsEnable, Department.[Name], COUNT(DISTINCT Job.Id), COUNT(DISTINCT AspNetUsers.Id) FROM Department LEFT JOIN Job ON Department.Id = Job.DepartmentId LEFT JOIN AspNetUsers ON Job.Id = AspNetUsers.JobId GROUP BY Department.Id, Department.Code, Department.IsEnable, Department.[Name];";
+                                var query = "SELECT Department.Id, Department.Code, Department.IsEnable, Department.[Name], COUNT(DISTINCT Job.Id), COUNT(DISTINCT AspNetUsers.Id), Subsidiary.[Name] FROM Subsidiary RIGHT JOIN Department ON Subsidiary.Id = Department.SubsidiaryId LEFT JOIN Job ON Department.Id = Job.DepartmentId LEFT JOIN AspNetUsers ON Job.Id = AspNetUsers.JobId GROUP BY Department.Id, Department.Code, Department.IsEnable, Department.[Name], Subsidiary.[Name];";
                                 SqlCommand cmd = new SqlCommand(query, connection);
                                 SqlDataReader reader = cmd.ExecuteReader();
                                 while (reader.Read())
                                 {
-                                    Departments.Add(new DepartmentViewModel
+                                    Departments.Add(new IndexDepartmentViewModel
                                     {
                                         Id = reader.GetString(0),
                                         Code = reader.GetString(1),
                                         EmployeesNumber = reader.GetInt32(5),
+                                        SubsidiaryName = reader.GetString(6),
                                         IsEnable = reader.GetBoolean(2),
                                         JobsNumber = reader.GetInt32(4),
                                         Name = reader.GetString(3),
@@ -136,7 +147,7 @@ namespace SaaS.Areas.Application.Controllers
                             catch (Exception ex)
                             {
                                 this.applicationUnitOfWork.Log.CreateNewEventInlog(ex, User, "Une erreur est survenue lors de la récupération des départements", "Exception", LogType.Error);
-                                TempData["error-title"] = "Modification état département";
+                                TempData["error-title"] = "Récupération département";
                                 TempData["error-message"] = "Une erreur est survenue lors de la récupération des départements";
                                 return Json(null);
                             }

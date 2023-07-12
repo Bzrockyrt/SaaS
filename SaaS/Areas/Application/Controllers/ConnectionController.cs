@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using SaaS.DataAccess.Repository.IRepository;
 using SaaS.DataAccess.Repository.PIPL.IRepository;
@@ -231,6 +232,11 @@ namespace SaaS.Areas.Application.Controllers
         {
             SignupViewModel signupViewModel = new SignupViewModel
             {
+                SubsidiaryList = this.applicationUnitOfWork.Subsidiary.GetAll().Select(d => new SelectListItem 
+                {
+                    Text = d.Name,
+                    Value = d.Id
+                }),
                 ReturnUrl = returnUrl,
                 ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
             };
@@ -258,12 +264,12 @@ namespace SaaS.Areas.Application.Controllers
 
                     var user = CreateUser();
                     //Je crée le nom d'utilisateur à partir du nom et du prénom de l'utilisateur
-                    var username = signupViewModel.Lastname.Substring(0, Math.Min(signupViewModel.Lastname.Length, 3))
-                        + signupViewModel.Firstname.Substring(0, Math.Min(signupViewModel.Firstname.Length, 3));
-                    user.Firstname = signupViewModel.Firstname;
-                    user.Lastname = signupViewModel.Lastname;
+                    var username = signupViewModel.User.Lastname.Substring(0, Math.Min(signupViewModel.User.Lastname.Length, 3))
+                        + signupViewModel.User.Firstname.Substring(0, Math.Min(signupViewModel.User.Firstname.Length, 3));
+                    user.Firstname = signupViewModel.User.Firstname;
+                    user.Lastname = signupViewModel.User.Lastname;
                     await _userStore.SetUserNameAsync(user, username, CancellationToken.None);
-                    await _emailStore.SetEmailAsync(user, signupViewModel.Email, CancellationToken.None);
+                    await _emailStore.SetEmailAsync(user, signupViewModel.User.Email, CancellationToken.None);
 
 
                     var result = await this.userManager.CreateAsync(user, signupViewModel.Password);
@@ -330,6 +336,19 @@ namespace SaaS.Areas.Application.Controllers
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<IdentityUser>)_userStore;
+        }
+        #endregion
+
+        #region APICALLS
+        [HttpGet]
+        public IActionResult GetDepartments(string subsidiaryId)
+        {
+            return View();
+        }
+        [HttpGet]
+        public IActionResult GetJobs(string departmentId)
+        {
+            return View();
         }
         #endregion
     }

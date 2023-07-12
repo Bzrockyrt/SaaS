@@ -125,7 +125,7 @@ namespace SaaS.Areas.Application.Controllers
                             try
                             {
                                 connection.Open();
-                                var query = "SELECT Job.Id, Job.Code, Job.IsEnable, Job.[Name], COUNT(DISTINCT AspNetUsers.Id) AS UsersCount FROM Job LEFT JOIN AspNetUsers ON Job.Id = AspNetUsers.JobId GROUP BY Job.Id, Job.Code, Job.IsEnable, Job.[Name];";
+                                var query = "SELECT Job.Id, Job.Code, Job.IsEnable, Job.[Name], COUNT(DISTINCT AspNetUsers.Id), Department.[Name], Subsidiary.[Name] FROM Subsidiary RIGHT JOIN Department ON Subsidiary.Id = Department.SubsidiaryId RIGHT JOIN Job ON Department.Id = Job.DepartmentId LEFT JOIN AspNetUsers ON Job.Id = AspNetUsers.JobId GROUP BY Job.Id, Job.Code, Job.IsEnable, Job.[Name], Department.[Name], Subsidiary.[Name];";
                                 SqlCommand cmd = new SqlCommand(query, connection);
                                 SqlDataReader reader = cmd.ExecuteReader();
                                 while (reader.Read())
@@ -135,6 +135,8 @@ namespace SaaS.Areas.Application.Controllers
                                         Id = reader.GetString(0),
                                         Code = reader.GetString(1),
                                         EmployeesNumber = reader.GetInt32(4),
+                                        SubsidiaryName = reader.GetString(6),
+                                        DepartmentName = reader.GetString(5),
                                         IsEnable = reader.GetBoolean(2),
                                         Name = reader.GetString(3),
                                     });

@@ -24,6 +24,7 @@
     bool canAccessSuperCompanyLog = false;
     bool canAccessDepartments = true;
     bool canAccessJobs = true;
+    bool canAccessSubsidiaries = true;
     //bool canAccessSuperAdminDashboard = true;
     //bool canAccessDashboard = false;
     //bool canAccessFunctionnalities = true;
@@ -36,6 +37,7 @@
     //bool canAccessSuperCompanyLog = true;
     //bool canAccessDepartments = false;
     //bool canAccessJobs = false;
+    //bool canAccessSubsidiaries = false;
 }
 
 <!DOCTYPE html>
@@ -77,11 +79,10 @@
     <!-- SIDEBAR -->
     <section id="sidebar" class="hide">
         <a href="#" class="brand">
-            <i class='bx bxs-smile icon'></i>
             @company?.Name
         </a>
         <ul class="side-menu">
-            <li>
+            @*<li>
                 @if (canAccessSuperAdminDashboard)
                 {
                     <a asp-area="SuperCompany" asp-controller="Dashboard" asp-action="Index">
@@ -96,7 +97,7 @@
                         <span class="links_name">Tableau de bord</span>
                     </a>
                 }
-            </li>
+            </li>*@
             @if (canAccessSuperAdminDashboard)
             {
                 <li class="divider" data-text="super administration">Super Administration</li>
@@ -150,22 +151,13 @@
                     </a>
                 </li>
             }
-            <li class="divider" data-text="entreprise">Entreprise</li>
-            @if (canAccessWorkSites)
+            <li class="divider" data-text="administration">Administration</li>
+            @if (canAccessSubsidiaries)
             {
                 <li>
-                    <a asp-area="Application" asp-controller="WorkSite" asp-action="Index">
+                    <a asp-area="application" asp-controller="subsidiary" asp-action="index">
                         <i class='bx bxs-widget icon'></i>
-                        <span class="links_name">Chantiers</span>
-                    </a>
-                </li>
-            }
-            @if (canAccessCompanyWorkers)
-            {
-                <li>
-                    <a asp-area="application" asp-controller="user" asp-action="index">
-                        <i class='bx bxs-widget icon'></i>
-                        <span class="links_name">Employés</span>
+                        <span class="links_name">Filliales</span>
                     </a>
                 </li>
             }
@@ -187,6 +179,16 @@
                     </a>
                 </li>
             }
+            @if (canAccessCompanyWorkers)
+            {
+                <li>
+                    <a asp-area="application" asp-controller="user" asp-action="index">
+                        <i class='bx bxs-widget icon'></i>
+                        <span class="links_name">Employés</span>
+                    </a>
+                </li>
+            }
+            <li class="divider" data-text="messagerie">Messagerie</li>
             @if (canAccessMessagingSystem)
             {
                 <li>
@@ -196,7 +198,17 @@
                     </a>
                 </li>
             }
-            <li class="divider" data-text="employee">Employé</li>
+            <li class="divider" data-text="entreprise">Entreprise</li>
+            @if (canAccessWorkSites)
+            {
+                <li>
+                    <a asp-area="Application" asp-controller="WorkSite" asp-action="Index">
+                        <i class='bx bxs-widget icon'></i>
+                        <span class="links_name">Chantiers</span>
+                    </a>
+                </li>
+            }
+            <li class="divider" data-text="employee">Travail</li>
             @if (canAccessDailyHours)
             {
                 <li>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace SaaS.Domain.Identity
 {
@@ -58,6 +59,8 @@ namespace SaaS.Domain.Identity
         public string BirthLocation { get; set; } = string.Empty;
 
         public virtual string JobId { get; set; }
+        [ForeignKey(nameof(JobId))]
+        [ValidateNever]
         public virtual Job Job { get; set; }
 
         public virtual string EmploymentContractId { get; set; }

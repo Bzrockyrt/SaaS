@@ -5,16 +5,16 @@
 namespace SaaS.DataAccess.Migrations.ApplicationDb
 {
     /// <inheritdoc />
-    public partial class Add_NormalizedName_CompanyFunctionnalities : Migration
+    public partial class Add_Code_WorkSite : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "NormalizedName",
-                table: "CompanyFunctionnalities",
-                type: "nvarchar(50)",
-                maxLength: 50,
+                name: "Code",
+                table: "WorkSite",
+                type: "nvarchar(150)",
+                maxLength: 150,
                 nullable: false,
                 defaultValue: "");
         }
@@ -23,8 +23,8 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "NormalizedName",
-                table: "CompanyFunctionnalities");
+                name: "Code",
+                table: "WorkSite");
         }
     }
 }

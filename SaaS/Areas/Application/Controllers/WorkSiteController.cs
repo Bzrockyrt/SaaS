@@ -75,12 +75,58 @@ namespace SaaS.Areas.Application.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Edit(string? id)
+        {
+            if (id == null || string.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
+            //Modifier l'entreprise
+            WorkSite worksite = this.applicationUnitOfWork.WorkSite.Get(c => c.Id == id);
+
+            if (worksite is null)
+            {
+                return NotFound();
+            }
+            return View(worksite);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(WorkSite worksite)
+        {
+            if (ModelState.IsValid)
+            {
+                this.applicationUnitOfWork.WorkSite.Update(worksite);
+                this.applicationUnitOfWork.Save();
+
+                this.applicationUnitOfWork.Log.CreateNewEventInlog(null, User, $"Le chantier a bien été modifié", "", LogType.Success);
+                TempData["success-title"] = "Modification chantier";
+                TempData["success-message"] = $"Le chantier a bien été modifié";
+                return RedirectToAction("Index");
+            }
+            return View(worksite);
+        }
+
         #region APICALLS
         [HttpGet]
-        public IActionResult GetAllWorkSites()
+        public IActionResult GetAllWorkSites(string status)
         {
-            /*Ecrire la requête en SQL pour récupérer les chantiers si nécessaire*/
-            IEnumerable<WorkSite> workSites = this.applicationUnitOfWork.WorkSite.GetAll();
+            IEnumerable<WorkSite> workSites = new List<WorkSite>();
+
+            switch (status)
+            {
+                case "unClotured":
+                    workSites = this.applicationUnitOfWork.WorkSite.GetAll().Where(ws => ws.EndDate is null);
+                    break;
+                case "clotured":
+                    workSites = this.applicationUnitOfWork.WorkSite.GetAll().Where(ws => ws.EndDate is not null);
+                    break;
+                default:
+                    workSites = this.applicationUnitOfWork.WorkSite.GetAll();
+                    break;
+            }
 
             return Json(new { data = workSites });
         }
@@ -122,6 +168,46 @@ namespace SaaS.Areas.Application.Controllers
             }
 
             return Json(new { success = true, message = "Activation/désactivation du chantier réussie" });
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(string? id)
+        {
+            if (id is not null)
+            {
+                try
+                {
+                    WorkSite workSite = this.applicationUnitOfWork.WorkSite.Get(ws => ws.Id == id);
+                    this.applicationUnitOfWork.WorkSite.Delete(workSite);
+                    this.applicationUnitOfWork.Save();
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Close(string? id)
+        {
+            if (id is not null)
+            {
+                try
+                {
+                    WorkSite workSite = this.applicationUnitOfWork.WorkSite.Get(ws => ws.Id == id);
+                    workSite.EndDate = DateTime.Now;
+                    this.applicationUnitOfWork.WorkSite.Update(workSite);
+                    this.applicationUnitOfWork.Save();
+                    return View("Index");
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+            return View();
         }
         #endregion
     }

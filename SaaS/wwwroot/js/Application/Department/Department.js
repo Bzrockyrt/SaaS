@@ -11,6 +11,7 @@ function loadDepartmentDataTable() {
         "columns": [
             { "data": "name", "width": "35%" },
             { "data": "code", "width": "10%" },
+            { "data": "subsidiaryName", "width": "10%" },
             { "data": "jobsNumber", "width": "10%" },
             { "data": "employeesNumber", "width": "10%" },
             {

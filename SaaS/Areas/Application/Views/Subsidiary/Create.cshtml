@@ -1,12 +1,12 @@
-﻿@using SaaS.Domain.PIPL;
-@model Functionnality
+﻿@using SaaS.Domain.Identity;
+@model Subsidiary
 
 <div class="header">
-    <h1 class="header-title">Créer une fonctionnalité</h1>
+    <h1 class="header-title">Créer une filliale</h1>
 </div>
 
 <div class="container">
-    <form method="post" asp-area="SuperCompany" asp-controller="Functionnality" asp-action="Create" class="form-floating">
+    <form method="post" asp-area="application" asp-controller="subsidiary" asp-action="create" class="form-floating">
         <input asp-for="Id" hidden />
         <div class="form-floating py-2 col-12">
             <input type="text" asp-for="Name" class="form-control" />
@@ -24,7 +24,7 @@
             <span asp-validation-for="Code" class="text-danger"></span>
         </div>
         <button type="submit" class="btn btn-primary form-control" style="width: 150px;">Créer</button>
-        <a asp-area="supercompany" asp-controller="functionnality" asp-action="index">
+        <a asp-area="application" asp-controller="subsidiary" asp-action="index">
             Annuler
         </a>
     </form>

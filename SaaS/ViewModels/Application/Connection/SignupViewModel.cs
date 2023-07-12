@@ -1,21 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace SaaS.ViewModels.Application.Connection
 {
     public class SignupViewModel
     {
-        [MinLength(3, ErrorMessage = "Votre prénom doit comporter au moins 3 caractères")]
-        [Required(ErrorMessage = "Un prénom est requis")]
-        public string Firstname { get; set; } = string.Empty;
-
-        [MinLength(3, ErrorMessage = "Votre nom doit comporter au moins 3 caractères")]
-        [Required(ErrorMessage = "Un nom est requis")]
-        public string Lastname { get; set; } = string.Empty;
-
-        [EmailAddress(ErrorMessage = "Adresse mail invalide")]
-        [Required(ErrorMessage = "Une adresse mail est requise")]
-        public string Email { get; set; } = string.Empty;
+        public Domain.Identity.User User { get; set; }
 
         [Required(ErrorMessage = "Un mot de passe est requis")]
         [MinLength(6, ErrorMessage = "Nombre minimum de caractères : 6")]
@@ -25,6 +17,17 @@ namespace SaaS.ViewModels.Application.Connection
         [MinLength(6, ErrorMessage = "Nombre minimum de catactères : 6")]
         [Compare("Password", ErrorMessage = "Les mots de passes ne correspondent pas")]
         public string ConfirmPassword { get; set; } = string.Empty;
+
+        public virtual string SubsidiaryId { get; set; }
+
+        [ValidateNever]
+        public IEnumerable<SelectListItem> SubsidiaryList { get; set; }
+
+        [ValidateNever]
+        public IEnumerable<SelectListItem> DepartmentList { get; set; }
+
+        [ValidateNever]
+        public IEnumerable<SelectListItem> JobList { get; set; }
 
         public bool IsAgree { get; set; }
 

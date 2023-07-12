@@ -38,6 +38,7 @@ namespace SaaS.DataAccess.Data
         public DbSet<EmploymentContract> EmploymentContract { get; set; }
         public DbSet<Job> Job { get; set; }
         public DbSet<Log> Log { get; set; }
+        public DbSet<Subsidiary> Subsidiary { get; set; }
         public DbSet<Supplier> Supplier { get; set; }
         public DbSet<Supplier_Article> Supplier_Article { get; set; }
         public DbSet<User> User { get; set; }

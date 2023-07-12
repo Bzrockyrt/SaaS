@@ -1,1 +1,46 @@
-﻿
+﻿@using SaaS.Domain.Work;
+@model WorkSite
+
+<div class="header">
+    <h1 class="header-title">Modifier le chantier @Model.Name</h1>
+</div>
+
+<div class="container">
+    <form method="post" asp-area="application" asp-controller="worksite" asp-action="edit">
+        <input asp-for="Id" hidden />
+        <div class="form-floating py-2 col-12">
+            <input type="text" asp-for="Name" class="form-control" />
+            <label asp-for="Name" class="ms-2"></label>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-floating py-2 col-12">
+            <input type="text" asp-for="Description" class="form-control" />
+            <label asp-for="Description" class="ms-2"></label>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="form-floating py-2 col-12">
+            <input type="number" asp-for="Code" class="form-control" />
+            <label asp-for="Code" class="ms-2"></label>
+            <span asp-validation-for="Code" class="text-danger"></span>
+        </div>
+        <div class="form-floating py-2 col-12">
+            <input type="text" asp-for="Address" class="form-control" />
+            <label asp-for="Address" class="ms-2"></label>
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+        <div class="form-floating py-2 col-12">
+            <input type="datetime-local" asp-for="StartDate" class="form-control" />
+            <label asp-for="StartDate" class="ms-2"></label>
+            <span asp-validation-for="StartDate" class="text-danger"></span>
+        </div>
+        <div class="form-floating py-2 col-12">
+            <input type="text" asp-for="Comment" class="form-control" />
+            <label asp-for="Comment" class="ms-2"></label>
+            <span asp-validation-for="Comment" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary form-control">Update</button>
+        <a asp-area="application" asp-controller="worksite" asp-action="index">
+            Annuler
+        </a>
+    </form>
+</div>

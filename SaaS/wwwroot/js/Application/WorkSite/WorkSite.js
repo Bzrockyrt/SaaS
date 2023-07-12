@@ -1,12 +1,23 @@
 var workSitesDataTable;
 
 $(document).ready(function () {
-    loadWorkSitesDataTable();
+    var url = window.location.search;
+    if (url.includes("unClotured")) {
+        loadWorkSitesDataTable("unClotured");
+    }
+    else {
+        if (url.includes("clotured")) {
+            loadWorkSitesDataTable("clotured");
+        }
+        else {
+            loadWorkSitesDataTable("all");
+        }
+    }
 });
 
-function loadWorkSitesDataTable() {
+function loadWorkSitesDataTable(status) {
     workSitesDataTable = $('#tableWorkSites').DataTable({
-        "ajax": { url: '/application/worksite/getallworksites' },
+        "ajax": { url: '/application/worksite/getallworksites?status=' + status },
         "columns": [
             { "data": "name", "width": "35%" },
             { "data": "description", "width": "35%" },

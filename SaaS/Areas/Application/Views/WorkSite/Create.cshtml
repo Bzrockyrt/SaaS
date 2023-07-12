@@ -20,6 +20,11 @@
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
         <div class="form-floating py-2 col-12">
+            <input type="text" asp-for="Code" class="form-control" />
+            <label asp-for="Code" class="ms-2"></label>
+            <span asp-validation-for="Code" class="text-danger"></span>
+        </div>
+        <div class="form-floating py-2 col-12">
             <input type="text" asp-for="Address" class="form-control" />
             <label asp-for="Address" class="ms-2"></label>
             <span asp-validation-for="Address" class="text-danger"></span>
@@ -28,11 +33,6 @@
             <input type="datetime-local" asp-for="StartDate" class="form-control" />
             <label asp-for="StartDate" class="ms-2"></label>
             <span asp-validation-for="StartDate" class="text-danger"></span>
-        </div>
-        <div class="form-floating py-2 col-12">
-            <input type="datetime-local" asp-for="EndDate" class="form-control" />
-            <label asp-for="EndDate" class="ms-2"></label>
-            <span asp-validation-for="EndDate" class="text-danger"></span>
         </div>
         <div class="form-floating py-2 col-12">
             <input type="text" asp-for="Comment" class="form-control" />

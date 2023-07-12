@@ -9,8 +9,22 @@ function loadUserDataTable() {
     userDataTable = $('#tableEmployees').DataTable({
         "ajax": { url: '/application/user/getallusers' },
         "columns": [
-            { "data": "id", "width": "30%" },
-            { "data": "userName", "width": "35%" },
+            {
+                "data": { id: "id", name: "userName" },
+                "render": function (data) {
+                    if (data.userName != null) {
+                        return `
+                            <a href="/application/user/gouserdetails?id=${data.id}">${data.userName}</a>
+                        `
+                    }
+                },
+                "width": "10%"
+            },
+            { "data": "email", "width": "15%" },
+            { "data": "phoneNumber", "width": "10%" },
+            { "data": "jobName", "width": "10%" },
+            { "data": "departmentName", "width": "15%" },
+            { "data": "subsidiaryName", "width": "15%" },
             {
                 "data": { id: "id", isEnable: "isEnable" },
                 "render": function (data) {

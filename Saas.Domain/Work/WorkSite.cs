@@ -22,6 +22,12 @@ namespace SaaS.Domain.Work
         public string Description { get; set; } = string.Empty;
 
         [Required]
+        [Display(Name = "Code")]
+        [MinLength(1, ErrorMessage = "Le code du chantier doit comporter au minimum 1 caractères")]
+        [MaxLength(150, ErrorMessage = "Le code du chantier ne peut comporter plus de 150 caractères")]
+        public string Code { get; set; } = string.Empty;
+
+        [Required]
         [Display(Name = "Adresse")]
         [DataType(DataType.PostalCode)]
         public string Address { get; set; } = string.Empty;
@@ -31,10 +37,9 @@ namespace SaaS.Domain.Work
         [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
 
-        [Required]
         [Display(Name = "Date de fin")]
         [DataType(DataType.Date)]
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         [Required]
         [Display(Name = "Commentaire")]
