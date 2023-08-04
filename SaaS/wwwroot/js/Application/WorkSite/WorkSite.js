@@ -82,7 +82,10 @@ function loadWorkSitesDataTable(status) {
                 sortDescending: ": activer pour trier la colonne par ordre décroissant"
             }
         },
-        responsive: true
+        responsive: true,
+        buttons: [
+            'copy', 'excel', 'pdf'
+        ]
     });
     workSitesDataTable.draw();
 }
