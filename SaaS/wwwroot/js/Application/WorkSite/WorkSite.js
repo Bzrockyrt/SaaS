@@ -66,7 +66,7 @@ function loadWorkSitesDataTable(status) {
             infoPostFix: "",
             loadingRecords: "Chargement en cours...",
             zeroRecords: "Aucun &eacute;l&eacute;ment &agrave; afficher",
-            emptyTable: "Aucune donnée disponible dans le tableau",
+            emptyTable: "Aucune donnÃ©e disponible dans le tableau",
             paginate: {
                 first: "Premier",
                 previous: "Pr&eacute;c&eacute;dent",
@@ -75,16 +75,20 @@ function loadWorkSitesDataTable(status) {
             },
             aria: {
                 sortAscending: ": activer pour trier la colonne par ordre croissant",
-                sortDescending: ": activer pour trier la colonne par ordre décroissant"
+                sortDescending: ": activer pour trier la colonne par ordre dÃ©croissant"
             }
-        }
+        },
+        responsive: true,
+        buttons: [
+            'copy', 'excel', 'pdf'
+        ]
     });
     workSitesDataTable.draw();
 }
 
 function deleteWorkSite(url) {
     Swal.fire({
-        title: 'Êtes-vous sûr?',
+        title: 'ÃŠtes-vous sÃ»r?',
         text: "Vous ne serez plus capable d'annuler votre suppression!",
         icon: 'warning',
         showCancelButton: true,
@@ -124,7 +128,7 @@ function lockUnlockWorkSite(id) {
                     "onclick": null,
                 };
 
-                toastr.success("Modification de l'état du chantier réussie", "Modification état chantier");
+                toastr.success("Modification de l'Ã©tat du chantier rÃ©ussie", "Modification Ã©tat chantier");
                 workSitesDataTable.ajax.reload();
             }
         }
