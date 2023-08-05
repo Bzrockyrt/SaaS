@@ -37,7 +37,7 @@ namespace SaaS.DataAccess.Data
                 new Company
                 {
                     CompanyCode = "PIPL0001",
-                    CreatedBy = "Pierre-Louis IPPOLITI",
+                    CreatorId = string.Empty,
                     CreatedOn = DateTime.Now,
                     Description = "Entreprise PIPL Développement",
                     Email = "pierrelouisippoliti@pipl-developpement.com",

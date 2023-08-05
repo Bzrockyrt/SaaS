@@ -13,11 +13,13 @@ namespace SaaS.DataAccess.Repository.IRepository
         IDepartmentRepository Department { get; }
         IEmploymentContractRepository EmploymentContract { get; }
         IJobRepository Job { get; }
+        IJob_CompanyFunctionnalitiesRepository Job_CompanyFunctionnalities { get; }
         ILogRepository Log { get; }
         ISubsidiaryRepository Subsidiary { get; }
         ISupplierRepository Supplier { get; }
         IUserRepository User { get; }
         IWorkHourRepository WorkHour { get; }
+        IWorkHour_WorkSiteRepository WorkHour_WorkSite { get; }
         IWorkSiteRepository WorkSite { get; }
 
         void Save();

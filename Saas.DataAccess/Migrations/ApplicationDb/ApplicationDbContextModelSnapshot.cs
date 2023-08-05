@@ -238,12 +238,12 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -280,12 +280,12 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
@@ -311,12 +311,12 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDemo")
                         .HasColumnType("bit");
@@ -341,12 +341,12 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DevNote")
                         .IsRequired()
@@ -391,12 +391,12 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -436,12 +436,12 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -475,12 +475,12 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DepartmentId")
                         .IsRequired()
@@ -511,6 +511,21 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                     b.ToTable("Job");
                 });
 
+            modelBuilder.Entity("SaaS.Domain.Identity.Job_CompanyFunctionnalities", b =>
+                {
+                    b.Property<string>("JobId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CompanyFunctionnalitiesId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("JobId", "CompanyFunctionnalitiesId");
+
+                    b.HasIndex("CompanyFunctionnalitiesId");
+
+                    b.ToTable("Job_CompanyFunctionnalities");
+                });
+
             modelBuilder.Entity("SaaS.Domain.Identity.Subsidiary", b =>
                 {
                     b.Property<string>("Id")
@@ -520,12 +535,12 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -535,6 +550,18 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PrimaryColor")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SecondaryColor")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TertiaryColor")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -559,12 +586,12 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -599,12 +626,12 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -640,12 +667,12 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageURL")
                         .IsRequired()
@@ -677,12 +704,12 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -726,12 +753,12 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsEnable")
                         .HasColumnType("bit");
@@ -765,12 +792,12 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<TimeSpan>("EveningEnd")
                         .HasColumnType("time");
@@ -797,10 +824,16 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                     b.Property<DateTime?>("UpdatedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("WorkDay")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("WorkHour");
                 });
@@ -810,12 +843,12 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageURL")
                         .IsRequired()
@@ -847,12 +880,12 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsEnable")
                         .HasColumnType("bit");
@@ -900,12 +933,12 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -948,12 +981,12 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -1007,6 +1040,9 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
+                    b.Property<bool>("IsAppearingInWorkerWorkHours")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsEnable")
                         .HasColumnType("bit");
 
@@ -1025,8 +1061,7 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
 
                     b.Property<string>("SocialSecurityNumber")
                         .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("State")
                         .IsRequired()
@@ -1136,6 +1171,25 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                     b.Navigation("Department");
                 });
 
+            modelBuilder.Entity("SaaS.Domain.Identity.Job_CompanyFunctionnalities", b =>
+                {
+                    b.HasOne("SaaS.Domain.Company.CompanyFunctionnalities", "CompanyFunctionnalities")
+                        .WithMany("Job_CompanyFunctionnalities")
+                        .HasForeignKey("CompanyFunctionnalitiesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SaaS.Domain.Identity.Job", "Job")
+                        .WithMany("Job_CompanyFunctionnalities")
+                        .HasForeignKey("JobId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CompanyFunctionnalities");
+
+                    b.Navigation("Job");
+                });
+
             modelBuilder.Entity("SaaS.Domain.Logistic.ArticleImage", b =>
                 {
                     b.HasOne("SaaS.Domain.Logistic.Article", "Article")
@@ -1164,6 +1218,17 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                     b.Navigation("Article");
 
                     b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("SaaS.Domain.Work.WorkHour", b =>
+                {
+                    b.HasOne("SaaS.Domain.Identity.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SaaS.Domain.Work.WorkHourImage", b =>
@@ -1230,6 +1295,11 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
                     b.Navigation("UserStatus");
                 });
 
+            modelBuilder.Entity("SaaS.Domain.Company.CompanyFunctionnalities", b =>
+                {
+                    b.Navigation("Job_CompanyFunctionnalities");
+                });
+
             modelBuilder.Entity("SaaS.Domain.Identity.Department", b =>
                 {
                     b.Navigation("Jobs");
@@ -1242,6 +1312,8 @@ namespace SaaS.DataAccess.Migrations.ApplicationDb
 
             modelBuilder.Entity("SaaS.Domain.Identity.Job", b =>
                 {
+                    b.Navigation("Job_CompanyFunctionnalities");
+
                     b.Navigation("Users");
                 });
 

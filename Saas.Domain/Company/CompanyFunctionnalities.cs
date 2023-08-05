@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SaaS.Domain.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace SaaS.Domain.Company
 {
@@ -30,5 +31,7 @@ namespace SaaS.Domain.Company
         [MinLength(5, ErrorMessage = "La description de la fonctionnalité doit comporter au minimum 5 caractères")]
         [MaxLength(100, ErrorMessage = "La description de la fonctionnalité ne peut comporter plus de 100 caractères")]
         public string Description { get; set; } = string.Empty;
+
+        public IList<Job_CompanyFunctionnalities> Job_CompanyFunctionnalities { get; set; }
     }
 }

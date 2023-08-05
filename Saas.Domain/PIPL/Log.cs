@@ -2,7 +2,7 @@
 
 namespace SaaS.Domain.PIPL
 {
-    public class Log : ModelBase
+    public class Log : PIPLModelBase
     {
         public Log() : base()
         {

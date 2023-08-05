@@ -239,12 +239,12 @@ namespace SaaS.DataAccess.Migrations
                         .HasMaxLength(8)
                         .HasColumnType("nvarchar(8)");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -304,10 +304,10 @@ namespace SaaS.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "eaf4782d-d9da-48a7-8a96-420fba52a0cc",
+                            Id = "6f840818-2d82-4919-8b83-f633c424beb0",
                             CompanyCode = "PIPL0001",
-                            CreatedBy = "Pierre-Louis IPPOLITI",
-                            CreatedOn = new DateTime(2023, 7, 3, 17, 39, 43, 771, DateTimeKind.Local).AddTicks(5028),
+                            CreatedOn = new DateTime(2023, 7, 13, 21, 44, 13, 122, DateTimeKind.Local).AddTicks(5803),
+                            CreatorId = "",
                             Description = "Entreprise PIPL Développement",
                             Email = "pierrelouisippoliti@pipl-developpement.com",
                             IsEnable = true,
@@ -333,12 +333,12 @@ namespace SaaS.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -375,12 +375,12 @@ namespace SaaS.DataAccess.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DevNote")
                         .IsRequired()
@@ -455,19 +455,19 @@ namespace SaaS.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "0198a5cc-9db5-4e58-bd86-72d7f67ff311",
+                            Id = "ada79e95-ecac-4b80-85dd-34e55b32580a",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "62f04791-b1bd-46a7-a3ee-707c05753d9b",
+                            ConcurrencyStamp = "3194578b-ea47-4edc-94c4-77da99bbfca3",
                             Email = "pierrelouisippoliti@pipl-developpement.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEGxD/ZpqYMnXS3M3n2FBh5W2FF6ynreJ5fqrReDtPVdAKyfqIKhqiDoQvzOnfudoQw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEERgZUqstg7yx/qOMW2RTAVmF3eZn1LPNRXE9WMk+zpKRJTXaEG4Kd4q0y5yiIE7nQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "1b876546-99f1-47ca-9ff9-5f0786970082",
+                            SecurityStamp = "24f72a71-fbc6-4ce1-a588-188169cd0267",
                             TwoFactorEnabled = false,
                             UserName = "PlIppoliti",
                             CreatedBy = "Pierre-Louis IPPOLITI",
-                            CreatedOn = new DateTime(2023, 7, 3, 17, 39, 43, 771, DateTimeKind.Local).AddTicks(5153),
+                            CreatedOn = new DateTime(2023, 7, 13, 21, 44, 13, 122, DateTimeKind.Local).AddTicks(5929),
                             Firstname = "Pierre-Louis",
                             IsEnable = true,
                             IsSuperUser = true,

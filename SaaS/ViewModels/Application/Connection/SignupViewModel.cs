@@ -18,7 +18,8 @@ namespace SaaS.ViewModels.Application.Connection
         [Compare("Password", ErrorMessage = "Les mots de passes ne correspondent pas")]
         public string ConfirmPassword { get; set; } = string.Empty;
 
-        public virtual string SubsidiaryId { get; set; }
+        [Required]
+        public string JobId { get; set; } = string.Empty;
 
         [ValidateNever]
         public IEnumerable<SelectListItem> SubsidiaryList { get; set; }

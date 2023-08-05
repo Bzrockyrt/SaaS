@@ -19,8 +19,20 @@ function loadWorkSitesDataTable(status) {
     workSitesDataTable = $('#tableWorkSites').DataTable({
         "ajax": { url: '/application/worksite/getallworksites?status=' + status },
         "columns": [
-            { "data": "name", "width": "35%" },
+            {
+                "data": { id: "id", name: "name" },
+                "render": function (data) {
+                    if (data.name != null) {
+                        return `
+                            <a style="color: #0000FF; text-decoration: underline;" href="/application/worksite/details?id=${data.id}">${data.name}</a>
+                        `
+                    }
+                },
+                "width": "25%"
+            },
+            { "data": "code", "width": "15%" },
             { "data": "description", "width": "35%" },
+            { "data": "subsidiaryName", "width": "15%" },
             {
                 "data": { id: "id", isEnable: "isEnable" },
                 "render": function (data) {
@@ -42,22 +54,6 @@ function loadWorkSitesDataTable(status) {
                     }
                 },
                 "width": "10%"
-            },
-            {
-                "data": "id",
-                "render": function (data) {
-                    return `
-                        <div role="group">
-                            <a href="/application/worksite/edit?id=${data}" class="btn btn-primary mx-2">
-                                <i class='bx bxs-edit' style='color:#ffffff'></i>
-                            </a>
-                            <a onClick=deleteWorkSite('/application/worksite/delete/${data}') class="btn btn-danger mx-2">
-                                <i class='bx bx-trash' style='color:#ffffff'  ></i>
-                            </a>
-                        </div>
-                    `
-                },
-                "width": "20%"
             }
         ],
         "language": {

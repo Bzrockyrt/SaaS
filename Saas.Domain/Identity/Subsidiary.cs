@@ -19,6 +19,12 @@ namespace SaaS.Domain.Identity
         [Required]
         public string Code { get; set; } = string.Empty;
 
+        public string PrimaryColor { get; set; } = "";
+
+        public string SecondaryColor { get; set; } = "";
+
+        public string TertiaryColor { get; set; } = "";
+
         [ValidateNever]
         public IList<Department> Departments { get; set; } = new List<Department>();
     }

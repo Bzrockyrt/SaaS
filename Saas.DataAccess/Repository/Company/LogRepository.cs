@@ -36,7 +36,7 @@ namespace SaaS.DataAccess.Repository.Company
                 DevNote = devNote,
                 LogType = logType,
                 CreatedOn = DateTime.Now,
-                CreatedBy = user is not null ? "Non renseigné" : user?.Identity.Name,
+                CreatorId = user is null ? "" : user?.Identity.Name,
                 IsEnable = true,
             });
             context.SaveChanges();

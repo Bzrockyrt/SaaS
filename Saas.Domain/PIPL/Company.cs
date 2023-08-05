@@ -2,7 +2,7 @@
 
 namespace SaaS.Domain.PIPL
 {
-    public class Company : ModelBase
+    public class Company : PIPLModelBase
     {
         public Company() : base()
         {

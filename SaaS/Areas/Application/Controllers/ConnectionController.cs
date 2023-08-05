@@ -2,13 +2,19 @@
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
+using SaaS.DataAccess.Exceptions.Application.Connection;
 using SaaS.DataAccess.Repository.IRepository;
 using SaaS.DataAccess.Repository.PIPL.IRepository;
 using SaaS.DataAccess.Services;
 using SaaS.DataAccess.Utils;
+using SaaS.Domain;
+using SaaS.Domain.Identity;
 using SaaS.Domain.Tenant;
 using SaaS.ViewModels.Application.Connection;
+using SaaS.ViewModels.Application.Subsidiary;
+using System.Runtime.Intrinsics.Arm;
 
 namespace SaaS.Areas.Application.Controllers
 {
@@ -177,12 +183,16 @@ namespace SaaS.Areas.Application.Controllers
                     {
                         /*var user = await userManager.FindByEmailAsync(loginViewModel.Email);*/
 
-                        Domain.Identity.User user = this.applicationUnitOfWork.User.Get(u => u.Email == loginViewModel.Email);
+                        User user = this.applicationUnitOfWork.User.Get(u => u.Email == loginViewModel.Email);
 
                         if (user == null)
                         {
                             ModelState.AddModelError(string.Empty, "Utilisateur inexistant");
                             return View(loginViewModel);
+                        }
+                        if (!user.IsEnable)
+                        {
+                            throw new UserIsNotEnabledException();
                         }
                         // This doesn't count login failures towards account lockout
                         // To enable password failures to trigger account lockout, set lockoutOnFailure: true
@@ -207,6 +217,10 @@ namespace SaaS.Areas.Application.Controllers
                         }
                     }
                 }
+                return View(loginViewModel);
+            }
+            catch (UserIsNotEnabledException ex)
+            {
                 return View(loginViewModel);
             }
             catch (Exception ex)
@@ -268,6 +282,7 @@ namespace SaaS.Areas.Application.Controllers
                         + signupViewModel.User.Firstname.Substring(0, Math.Min(signupViewModel.User.Firstname.Length, 3));
                     user.Firstname = signupViewModel.User.Firstname;
                     user.Lastname = signupViewModel.User.Lastname;
+                    user.JobId = signupViewModel.JobId;
                     await _userStore.SetUserNameAsync(user, username, CancellationToken.None);
                     await _emailStore.SetEmailAsync(user, signupViewModel.User.Email, CancellationToken.None);
 
@@ -315,11 +330,11 @@ namespace SaaS.Areas.Application.Controllers
             }
         }
 
-        private Domain.Identity.User CreateUser()
+        private User CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<Domain.Identity.User>();
+                return Activator.CreateInstance<User>();
             }
             catch
             {
@@ -340,15 +355,38 @@ namespace SaaS.Areas.Application.Controllers
         #endregion
 
         #region APICALLS
-        [HttpGet]
-        public IActionResult GetDepartments(string subsidiaryId)
+        [HttpPost]
+        public IActionResult GetDepartments([FromBody] string subsidiaryId)
         {
-            return View();
+            List<SelectListItem> departmentList = new List<SelectListItem>();
+
+            List<Department> departments = this.applicationUnitOfWork.Department.GetAll().Where(d => d.SubsidiaryId == subsidiaryId).ToList();
+            foreach (Department dep in departments)
+            {
+                departmentList.Add(new SelectListItem
+                {
+                    Value = dep.Id,
+                    Text = dep.Name,
+                });
+            }
+            return Json(new { data = departmentList });
         }
-        [HttpGet]
-        public IActionResult GetJobs(string departmentId)
+
+        [HttpPost]
+        public IActionResult GetJobs([FromBody] string departmentId)
         {
-            return View();
+            List<SelectListItem> jobList = new List<SelectListItem>();
+
+            List<Job> jobs = this.applicationUnitOfWork.Job.GetAll().Where(j => j.DepartmentId == departmentId).ToList();
+            foreach (Job job in jobs)
+            {
+                jobList.Add(new SelectListItem
+                {
+                    Value = job.Id,
+                    Text = job.Name,
+                });
+            }
+            return Json(new { data = jobList });
         }
         #endregion
     }

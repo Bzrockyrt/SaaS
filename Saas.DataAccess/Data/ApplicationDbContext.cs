@@ -37,6 +37,7 @@ namespace SaaS.DataAccess.Data
         public DbSet<Department> Department { get; set; }
         public DbSet<EmploymentContract> EmploymentContract { get; set; }
         public DbSet<Job> Job { get; set; }
+        public DbSet<Job_CompanyFunctionnalities> Job_CompanyFunctionnalities { get; set; }
         public DbSet<Log> Log { get; set; }
         public DbSet<Subsidiary> Subsidiary { get; set; }
         public DbSet<Supplier> Supplier { get; set; }
@@ -61,6 +62,8 @@ namespace SaaS.DataAccess.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Job_CompanyFunctionnalities>().HasKey(jcf => new { jcf.JobId, jcf.CompanyFunctionnalitiesId });
 
             /*modelBuilder.Entity<Company>().HasOne<CompanyPicture>(c => c.Picture).WithOne(cp => cp.Company).OnDelete(DeleteBehavior.Cascade);*/
 

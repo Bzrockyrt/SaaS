@@ -270,7 +270,7 @@ nav {
     }
 
     .navbar-menu-item.active {
-        text-decoration: underline;
+        text-decoration: none;
         text-underline-offset: .25rem;
         text-decoration-thickness: .125rem;
         text-decoration-color: var(--blue);
@@ -347,7 +347,7 @@ header {
     font-size: 1.25rem;
     font-weight: 500;
     color: var(--blue-dark);
-    text-decoration: underline;
+    text-decoration: none;
     text-decoration-thickness: .125rem;
     text-underline-offset: .25rem;
     display: inline-block;
@@ -383,7 +383,7 @@ header {
 }
 
     .header-cta-link:hover {
-        text-decoration: underline;
+        text-decoration: none;
     }
 /* HEADER */
 
@@ -866,7 +866,7 @@ footer {
 }
 
     .footer-item-links a:hover {
-        text-decoration: underline;
+        text-decoration: none;
     }
 
 .footer-bottom {
@@ -887,7 +887,7 @@ footer {
     }
 
         .footer-bottom-links a:hover {
-            text-decoration: underline;
+            text-decoration: none;
         }
 /* FOOTER */
 

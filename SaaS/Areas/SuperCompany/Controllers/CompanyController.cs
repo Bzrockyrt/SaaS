@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.Data.SqlClient;
@@ -15,9 +14,8 @@ using SaaS.Domain.Identity;
 using SaaS.Domain.PIPL;
 using SaaS.Domain.Tenant;
 using SaaS.ViewModels.Application.Connection;
+using SaaS.ViewModels.Application.Job;
 using SaaS.ViewModels.SuperCompany.Company;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SaaS.Areas.SuperCompany.Controllers
 {
@@ -35,6 +33,7 @@ namespace SaaS.Areas.SuperCompany.Controllers
         private readonly IWebHostEnvironment hostingEnvironment;
 
         private static readonly ConfigurationCompanyViewModel configurationCompanyViewModel = new ConfigurationCompanyViewModel();
+        private static readonly DetailsCompanyViewModel detailsCompanyViewModel = new DetailsCompanyViewModel();
         public CompanyController(IApplicationUnitOfWork applicationUnitOfWork,
             SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
@@ -67,7 +66,11 @@ namespace SaaS.Areas.SuperCompany.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            CreateCompanyViewModel createCompanyViewModel = new CreateCompanyViewModel();
+            CreateCompanyViewModel createCompanyViewModel = new CreateCompanyViewModel()
+            {
+                Company = new Company(),
+                DontHaveFunctionnalities = this.superCompanyUnitOfWork.Functionnality.GetAll().ToList(),
+            };
             return View(createCompanyViewModel);
         }
 
@@ -158,6 +161,20 @@ namespace SaaS.Areas.SuperCompany.Controllers
                     /*Création du tenant*/
                     this.tenantService.AddTenant(createCompanyViewModel.Company.Id, createCompanyViewModel.Company.Name,
                                                     "picture.FileName", createCompanyViewModel.ConnectionString);
+
+                    /*foreach (TenantData tenantData in this.tenantSettings.Companies.Values)
+                    {
+                        if (tenantData.name == createCompanyViewModel.Company.Name)
+                        {
+                            using (ApplicationDbContext context = new ApplicationDbContext(tenantData.connectionString))
+                            {
+                                Domain.Identity.User user = new Domain.Identity.User()
+                                {
+                                    
+                                };
+                            }
+                        }
+                    }*/
                 }
                 catch (Exception ex)
                 {
@@ -187,77 +204,47 @@ namespace SaaS.Areas.SuperCompany.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(string? id)
+        public IActionResult Details(string? id)
         {
             if (id == null || string.IsNullOrEmpty(id))
             {
-                this.superCompanyUnitOfWork.Log.CreateNewEventInlog(null, User, $"L'id passé en paramètre est null ou vide", "", LogType.Warning);
-                TempData["warning-title"] = "Modification d'entreprise";
-                TempData["warning-message"] = $"L'id passé en paramètre est null ou vide";
                 return NotFound();
             }
-            
-            //Modifier l'entreprise
-            Company company = this.superCompanyUnitOfWork.Company.Get(c => c.Id == id);
 
-            if(company is null)
+            detailsCompanyViewModel.Company = this.superCompanyUnitOfWork.Company.Get(s => s.Id == id);
+
+            if (detailsCompanyViewModel.Company is null)
             {
-                this.superCompanyUnitOfWork.Log.CreateNewEventInlog(null, User, $"L'entreprise avec l'Id : {id} n'a pas été trouvée", "", LogType.Warning);
-                TempData["warning-title"] = "Recherche d'entreprise";
-                TempData["warning-message"] = $"L'entreprise avec pour Id : {id} est introuvable";
-
                 return NotFound();
             }
-            return View(company);
+
+            return View(detailsCompanyViewModel);
         }
 
         [HttpPost]
-        public IActionResult Edit(Company company)
+        public IActionResult Details(DetailsCompanyViewModel detailsCompanyViewModel)
         {
             if (ModelState.IsValid)
             {
-                try
-                {
-                    this.superCompanyUnitOfWork.Company.Update(company);
-                    this.superCompanyUnitOfWork.Save();
-                }
-                catch (Exception ex)
-                {
-                    this.superCompanyUnitOfWork.Log.CreateNewEventInlog(ex, User, $"Erreur lors de la sauvegarde des modifications de l'entreprise {company.Name} dans la base de données", "Exception", LogType.Error);
-                    TempData["error-title"] = "Modification entreprise";
-                    TempData["error-message"] = $"Erreur lors de la sauvegarde des modifications de l'entreprise {company.Name} dans la base de données";
-                }
+                detailsCompanyViewModel.Company.CreatorId = "";
+                detailsCompanyViewModel.Company.UpdatedOn = DateTime.Now;
+                detailsCompanyViewModel.Company.UpdatedBy = User?.Identity.Name;
+                this.superCompanyUnitOfWork.Company.Update(detailsCompanyViewModel.Company);
+                this.superCompanyUnitOfWork.Save();
 
-                this.superCompanyUnitOfWork.Log.CreateNewEventInlog(null, User, $"L'entreprise {company.Name} a été modifiée avec succès", "", LogType.Success);
-                TempData["success-title"] = "Modification entreprise";
-                TempData["success-message"] = $"L'entreprise {company.Name} a été modifiée avec succès";
+                this.superCompanyUnitOfWork.Log.CreateNewEventInlog(null, User, $"Le poste a bien été modifié", "", LogType.Success);
+                TempData["success-title"] = "Modification poste";
+                TempData["success-message"] = $"Le poste a bien été modifié";
                 return RedirectToAction("Index");
             }
-            return View(company);
+            return View(detailsCompanyViewModel);
         }
 
         [HttpGet]
-        public IActionResult Configuration()
+        public IActionResult Configuration(string id)
         {
             try
             {
-                var company = this.tenantService.GetTenant();
-                var id = this.tenantService.GetTenantCode();
-                if (company != null)
-                {
-                    ViewBag.SelectedCompany = new TenantSiteModel
-                    {
-                        Key = this.tenantService.GetTenantCode(),
-                        Logo = company.logo,
-                        Name = company.name
-                    };
-                }
-
-                if (id == null || string.IsNullOrEmpty(id))
-                {
-                    return NotFound();
-                }
-
                 IEnumerable<Functionnality> functionnalities = this.superCompanyUnitOfWork.Functionnality.GetAll();
 
                 //Modifier l'entreprise
@@ -283,7 +270,6 @@ namespace SaaS.Areas.SuperCompany.Controllers
                                         configurationCompanyViewModel.DontHaveFunctionnalities.Add(new CompanyFunctionnalities
                                         {
                                             Code = functionnality.Code,
-                                            CreatedBy = functionnality.CreatedBy,
                                             CreatedOn = functionnality.CreatedOn,
                                             Description = functionnality.Description,
                                             IsEnable = functionnality.IsEnable,
@@ -301,7 +287,6 @@ namespace SaaS.Areas.SuperCompany.Controllers
                                             configurationCompanyViewModel.HaveFunctionnalities.Add(new CompanyFunctionnalities
                                             {
                                                 Code = functionnality.Code,
-                                                CreatedBy = functionnality.CreatedBy,
                                                 CreatedOn = functionnality.CreatedOn,
                                                 Description = functionnality.Description,
                                                 IsEnable = functionnality.IsEnable,
@@ -314,7 +299,6 @@ namespace SaaS.Areas.SuperCompany.Controllers
                                             configurationCompanyViewModel.DontHaveFunctionnalities.Add(new CompanyFunctionnalities
                                             {
                                                 Code = functionnality.Code,
-                                                CreatedBy = functionnality.CreatedBy,
                                                 CreatedOn = functionnality.CreatedOn,
                                                 Description = functionnality.Description,
                                                 IsEnable = functionnality.IsEnable,
@@ -337,7 +321,7 @@ namespace SaaS.Areas.SuperCompany.Controllers
                 }
             }
             catch (Exception ex)
-                {
+            {
                     this.superCompanyUnitOfWork.Log.CreateNewEventInlog(null, User, $"L'entreprise avec l'Id :  n'a pas été trouvée", "", LogType.Error);
                     TempData["error-title"] = "Configuration entreprise";
                     TempData["error-message"] = $"L'entreprise avec pour Id :  est introuvable";
@@ -627,10 +611,11 @@ namespace SaaS.Areas.SuperCompany.Controllers
                                 {
                                     Code = functionnality.Code,
                                     Description = functionnality.Description,
-                                    CreatedBy = functionnality.CreatedBy,
                                     CreatedOn = functionnality.CreatedOn,
                                     IsEnable = functionnality.IsEnable,
                                     Name = functionnality.Name,
+                                    CreatorId = "tototot"
+                                    /*CreatorId = this.applicationUnitOfWork.User.Get(u => u.UserName == User.Identity.Name).Id*/
                                 });
                                 context.SaveChanges();
                                 this.superCompanyUnitOfWork.Log.CreateNewEventInlog(null, User, $"La fonctionnalité a bien été ajoutée", "", LogType.Success);

@@ -1,16 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
-using SaaS.DataAccess.Exceptions.Application.Department;
+using SaaS.DataAccess.Exceptions.Application.Job;
+using SaaS.DataAccess.Repository.IRepository;
 using SaaS.DataAccess.Services;
 using SaaS.DataAccess.Utils;
 using SaaS.Domain;
-using SaaS.ViewModels.Application.Department;
-using SaaS.DataAccess.Exceptions.Application.Job;
-using SaaS.ViewModels.Application.Job;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using SaaS.Domain.Company;
 using SaaS.Domain.Identity;
-using SaaS.DataAccess.Repository.IRepository;
+using SaaS.ViewModels.Application.Job;
 
 namespace SaaS.Areas.Application.Controllers
 {
@@ -22,6 +21,7 @@ namespace SaaS.Areas.Application.Controllers
         private readonly TenantSettings tenantSettings;
 
         public static List<IndexJobViewModel> Jobs = new List<IndexJobViewModel>();
+        public static DetailsJobViewModel detailsJobViewModel = new DetailsJobViewModel();
 
         public JobController(IApplicationUnitOfWork applicationUnitOfWork,
             TenantService tenantService,
@@ -60,9 +60,9 @@ namespace SaaS.Areas.Application.Controllers
             if (ModelState.IsValid)
             {
                 if (User?.Identity?.Name is null)
-                    createJobViewModel.Job.CreatedBy = "IPPOLITI Pierre-Louis";
+                    createJobViewModel.Job.CreatorId = string.Empty;
                 else
-                    createJobViewModel.Job.CreatedBy = User?.Identity?.Name;
+                    createJobViewModel.Job.CreatorId = this.applicationUnitOfWork.User.GetAll().FirstOrDefault(u => u.UserName == User?.Identity?.Name).Id;
 
                 try
                 {
@@ -109,6 +109,60 @@ namespace SaaS.Areas.Application.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Details(string? id)
+        {
+            if (id == null || string.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
+            detailsJobViewModel.Job = this.applicationUnitOfWork.Job.Get(s => s.Id == id);
+            detailsJobViewModel.DepartmentList = this.applicationUnitOfWork.Department.GetAll().Select(d => new SelectListItem
+            {
+                Text = d.Name,
+                Value = d.Id
+            });
+
+            if (detailsJobViewModel.Job is null)
+            {
+                return NotFound();
+            }
+
+            IEnumerable<CompanyFunctionnalities> companyFunctionnalities = this.applicationUnitOfWork.CompanyFunctionnalities.GetAll();
+
+            detailsJobViewModel.HaveFunctionnalities.Clear();
+            detailsJobViewModel.DontHaveFunctionnalities.Clear();
+
+            foreach (CompanyFunctionnalities cf in companyFunctionnalities)
+            {
+                if (this.applicationUnitOfWork.Job_CompanyFunctionnalities.GetAll().Any(jcf => jcf.CompanyFunctionnalitiesId == cf.Id && jcf.JobId == detailsJobViewModel.Job.Id))
+                    detailsJobViewModel.HaveFunctionnalities.Add(cf);
+                else
+                    detailsJobViewModel.DontHaveFunctionnalities.Add(cf);
+            }
+
+            return View(detailsJobViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Details(DetailsJobViewModel detailsJobViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                detailsJobViewModel.Job.UpdatedOn = DateTime.Now;
+                detailsJobViewModel.Job.UpdatedBy = User?.Identity.Name;
+                this.applicationUnitOfWork.Job.Update(detailsJobViewModel.Job);
+                this.applicationUnitOfWork.Save();
+
+                this.applicationUnitOfWork.Log.CreateNewEventInlog(null, User, $"Le poste a bien été modifié", "", LogType.Success);
+                TempData["success-title"] = "Modification poste";
+                TempData["success-message"] = $"Le poste a bien été modifié";
+                return RedirectToAction("Index");
+            }
+            return View(detailsJobViewModel);
+        }
+
         #region API CALLS
         [HttpGet]
         public IActionResult GetAllJobs()
@@ -132,13 +186,13 @@ namespace SaaS.Areas.Application.Controllers
                                 {
                                     Jobs.Add(new IndexJobViewModel
                                     {
-                                        Id = reader.GetString(0),
-                                        Code = reader.GetString(1),
-                                        EmployeesNumber = reader.GetInt32(4),
-                                        SubsidiaryName = reader.GetString(6),
-                                        DepartmentName = reader.GetString(5),
+                                        Id = reader.IsDBNull(0) ? "" : reader.GetString(0),
+                                        Code = reader.IsDBNull(0) ? "" : reader.GetString(1),
+                                        EmployeesNumber = reader.IsDBNull(0) ? 0 : reader.GetInt32(4),
+                                        SubsidiaryName = reader.IsDBNull(0) ? "" : reader.GetString(6),
+                                        DepartmentName = reader.IsDBNull(0) ? "" : reader.GetString(5),
                                         IsEnable = reader.GetBoolean(2),
-                                        Name = reader.GetString(3),
+                                        Name = reader.IsDBNull(0) ? "" : reader.GetString(3),
                                     });
                                 }
                                 reader.Close();
@@ -154,7 +208,6 @@ namespace SaaS.Areas.Application.Controllers
                             }
                         }
                     }
-                    return Json(null);
                 }
                 return Json(null);
             }
@@ -198,6 +251,68 @@ namespace SaaS.Areas.Application.Controllers
             }
 
             return Json(new { success = true, message = "Activation/désactivation du poste réussie" });
+        }
+
+        [HttpPost]
+        public IActionResult AddFunctionnalityToJob(string functionnalityName)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    CompanyFunctionnalities companyFunctionnalities = this.applicationUnitOfWork.CompanyFunctionnalities.Get(f => f.Name == functionnalityName);
+
+                    Job_CompanyFunctionnalities job_CompanyFunctionnalities = new Job_CompanyFunctionnalities()
+                    {
+                        CompanyFunctionnalitiesId = companyFunctionnalities.Id,
+                        JobId = detailsJobViewModel.Job.Id,
+                    };
+
+                    this.applicationUnitOfWork.Job_CompanyFunctionnalities.Add(job_CompanyFunctionnalities);
+                    this.applicationUnitOfWork.Save();
+
+                    this.applicationUnitOfWork.Log.CreateNewEventInlog(null, User, $"La fonctionnalité {functionnalityName} a bien été ajoutée au poste", "", LogType.Success);
+                    TempData["success-title"] = "Ajout fonctionnalité poste";
+                    TempData["success-message"] = "La fonctionnalité a bien été ajoutée au poste";
+                }
+            }
+            catch (Exception ex)
+            {
+                this.applicationUnitOfWork.Log.CreateNewEventInlog(ex, User, $"Erreur lors de l'ajout de la fonctionnalité {functionnalityName} au poste dans la base de données", "Exception", LogType.Error);
+                TempData["error-title"] = "Ajout fonctionnalité poste";
+                TempData["error-message"] = $"Erreur lors de l'ajout de la fonctionnalité {functionnalityName} au poste dans la base de données";
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult DeleteFunctionnalityToJob(string functionnalityName)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    CompanyFunctionnalities companyFunctionnalities = this.applicationUnitOfWork.CompanyFunctionnalities.Get(f => f.Name == functionnalityName);
+
+                    Job_CompanyFunctionnalities job_CompanyFunctionnalities = this.applicationUnitOfWork.Job_CompanyFunctionnalities.Get(jcf => jcf.CompanyFunctionnalitiesId == companyFunctionnalities.Id);
+
+                    this.applicationUnitOfWork.Job_CompanyFunctionnalities.Delete(job_CompanyFunctionnalities);
+                    this.applicationUnitOfWork.Save();
+
+                    this.applicationUnitOfWork.Log.CreateNewEventInlog(null, User, $"La fonctionnalité {functionnalityName} a bien été supprimée du poste", "", LogType.Success);
+                    TempData["success-title"] = "Suppression fonctionnalité poste";
+                    TempData["success-message"] = "La fonctionnalité a bien été supprimée du poste";
+                }
+            }
+            catch (Exception ex)
+            {
+                this.applicationUnitOfWork.Log.CreateNewEventInlog(ex, User, $"Erreur lors de la suppression de la fonctionnalité {functionnalityName} au poste dans la base de données", "Exception", LogType.Error);
+                TempData["error-title"] = "Suppression fonctionnalité entreprise";
+                TempData["error-message"] = $"Erreur lors de la suppression de la fonctionnalité {functionnalityName} au poste dans la base de données";
+            }
+
+            return View();
         }
         #endregion
     }

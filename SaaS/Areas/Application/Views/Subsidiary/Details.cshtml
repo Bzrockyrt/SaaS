@@ -1,0 +1,54 @@
+﻿@using SaaS.Domain.Identity;
+@model Subsidiary
+
+<div class="container">
+    <div class="header">
+        <h1 class="header-title">@Model.Name</h1>
+        <a class="header-button delete" asp-area="application" asp-controller="subsidiary" asp-action="delete">
+            Supprimer
+        </a>
+    </div>
+
+    <form method="post" asp-area="application" asp-controller="subsidiary" asp-action="update" class="form-floating">
+        <div class="body">
+            <input asp-for="Id" hidden />
+            <input asp-for="CreatorId" hidden />
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="Name" class="form-control" />
+                <label asp-for="Name" class="ms-2">Nom</label>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="Description" class="form-control" />
+                <label asp-for="Description" class="ms-2">Description</label>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="Code" class="form-control" />
+                <label asp-for="Code" class="ms-2">Code</label>
+                <span asp-validation-for="Code" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="color" asp-for="PrimaryColor" class="form-control" />
+                <label asp-for="PrimaryColor" class="ms-2">Couleur n°1</label>
+                <span asp-validation-for="PrimaryColor" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="color" asp-for="SecondaryColor" class="form-control" />
+                <label asp-for="SecondaryColor" class="ms-2">Couleur n°2</label>
+                <span asp-validation-for="SecondaryColor" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="color" asp-for="TertiaryColor" class="form-control" />
+                <label asp-for="TertiaryColor" class="ms-2">Couleur n°3</label>
+                <span asp-validation-for="TertiaryColor" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="footer">
+            <button type="submit" class="footer-button-valid" style="width: 150px;">Enregistrer</button>
+            <a class="footer-button-cancel" asp-area="application" asp-controller="subsidiary" asp-action="index">
+                Annuler
+            </a>
+        </div>
+    </form>
+</div>

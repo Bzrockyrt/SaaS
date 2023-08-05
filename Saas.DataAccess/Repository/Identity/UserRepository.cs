@@ -74,7 +74,7 @@ namespace SaaS.DataAccess.Repository.Identity
         /// </returns>
         public bool CanUserAccessFunctionnality(string functionnalityCode, ClaimsPrincipal user)
         {
-            string query = $"SELECT Functionnality.Code FROM AspNetUsers INNER JOIN AspNetUserRoles ON AspNetUsers.Id = AspNetUserRoles.UserId INNER JOIN AspNetRoles ON AspNetUserRoles.RoleId = AspNetRoles.Id INNER JOIN ApplicationRoleFunctionnality ON AspNetRoles.Id = ApplicationRoleFunctionnality.RoleId INNER JOIN Functionnality ON ApplicationRoleFunctionnality.FunctionnalityId = Functionnality.Id WHERE AspNetUsers.Email = '{user?.Identity?.Name}';";
+            string query = $"SELECT CompanyFunctionnalities.Code FROM CompanyFunctionnalities INNER JOIN Job_CompanyFunctionnalities ON CompanyFunctionnalities.Id = Job_CompanyFunctionnalities.CompanyFunctionnalitiesId INNER JOIN Job ON Job_CompanyFunctionnalities.JobId = Job.Id INNER JOIN AspNetUsers ON Job.Id = AspNetUsers.JobId WHERE AspNetUsers.Username = '{user?.Identity.Name}';";
 
             using (var connection = new SqlConnection(context.ConnectionString))
             {
@@ -95,6 +95,67 @@ namespace SaaS.DataAccess.Repository.Identity
             }
 
             return false;
+        }
+
+        public string GetSubsidiaryPrimaryColor(ClaimsPrincipal user)
+        {
+            var query = $"SELECT Subsidiary.PrimaryColor FROM Subsidiary INNER JOIN Department ON Subsidiary.Id = Department.SubsidiaryId INNER JOIN Job ON Department.Id = Job.DepartmentId INNER JOIN AspNetUsers ON Job.Id = AspNetUsers.JobId WHERE AspNetUsers.UserName = '{user?.Identity.Name}';";
+
+            using (var connection = new SqlConnection(context.ConnectionString))
+            {
+                connection.Open();
+
+                var command = new SqlCommand(query, connection);
+                var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    return reader.IsDBNull(0) ? "" : reader.GetString(0);
+                }
+
+                reader.Close();
+            }
+                return "";
+        }
+        public string GetSubsidiarySecondaryColor(ClaimsPrincipal user)
+        {
+            var query = $"SELECT Subsidiary.SecondaryColor FROM Subsidiary INNER JOIN Department ON Subsidiary.Id = Department.SubsidiaryId INNER JOIN Job ON Department.Id = Job.DepartmentId INNER JOIN AspNetUsers ON Job.Id = AspNetUsers.JobId WHERE AspNetUsers.UserName = '{user?.Identity.Name}';";
+
+            using (var connection = new SqlConnection(context.ConnectionString))
+            {
+                connection.Open();
+
+                var command = new SqlCommand(query, connection);
+                var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    return reader.IsDBNull(0) ? "" : reader.GetString(0);
+                }
+
+                reader.Close();
+            }
+            return "";
+        }
+        public string GetSubsidiaryTertiaryColor(ClaimsPrincipal user)
+        {
+            var query = $"SELECT Subsidiary.TertiaryColor FROM Subsidiary INNER JOIN Department ON Subsidiary.Id = Department.SubsidiaryId INNER JOIN Job ON Department.Id = Job.DepartmentId INNER JOIN AspNetUsers ON Job.Id = AspNetUsers.JobId WHERE AspNetUsers.UserName = '{user?.Identity.Name}';";
+
+            using (var connection = new SqlConnection(context.ConnectionString))
+            {
+                connection.Open();
+
+                var command = new SqlCommand(query, connection);
+                var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    return reader.IsDBNull(0) ? "" : reader.GetString(0);
+                }
+
+                reader.Close();
+            }
+            return "";
         }
     }
 }

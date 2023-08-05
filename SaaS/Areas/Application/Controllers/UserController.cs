@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 using SaaS.DataAccess.Repository.IRepository;
@@ -6,8 +8,7 @@ using SaaS.DataAccess.Services;
 using SaaS.DataAccess.Utils;
 using SaaS.Domain;
 using SaaS.Domain.Identity;
-using SaaS.Utility;
-using SaaS.ViewModels.Application.Department;
+using SaaS.Domain.Work;
 using SaaS.ViewModels.Application.User;
 
 namespace SaaS.Areas.Application.Controllers
@@ -16,23 +17,128 @@ namespace SaaS.Areas.Application.Controllers
     public class UserController : Controller
     {
         private readonly IApplicationUnitOfWork applicationUnitOfWork;
+        private readonly IUserStore<IdentityUser> userStore;
+        private readonly IUserEmailStore<IdentityUser> emailStore;
         private readonly TenantService tenantService;
         private readonly TenantSettings tenantSettings;
+        private readonly UserManager<IdentityUser> userManager;
 
         public static List<IndexUserViewModel> Users = new List<IndexUserViewModel>();
+        public static DetailsUserViewModel detailsUserViewModel = new DetailsUserViewModel();
 
         public UserController(IApplicationUnitOfWork applicationUnitOfWork, 
-            TenantService tenantService, 
-            IOptions<TenantSettings> options)
+            TenantService tenantService,
+            IUserStore<IdentityUser> userStore,
+            IOptions<TenantSettings> options,
+            UserManager<IdentityUser> userManager)
         {
             this.applicationUnitOfWork = applicationUnitOfWork;
             this.tenantService = tenantService;
             this.tenantSettings = options.Value;
+            this.userStore = userStore;
+            this.userManager = userManager;
+            this.emailStore = GetEmailStore();
         }
 
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            CreateUserViewModel createUserViewModel = new CreateUserViewModel()
+            {
+                SubsidiaryList = this.applicationUnitOfWork.Subsidiary.GetAll().Select(d => new SelectListItem
+                {
+                    Text = d.Name,
+                    Value = d.Id
+                }),
+                User = new User()
+            };
+            return View(createUserViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateUserViewModel createUserViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (createUserViewModel.Password != createUserViewModel.ConfirmPassword)
+                    {
+                        ModelState.AddModelError(string.Empty, "Les mots de passes ne correspondent pas");
+                        return View(createUserViewModel);
+                    }
+
+                    var user = CreateUser();
+                    //Je crée le nom d'utilisateur à partir du nom et du prénom de l'utilisateur
+                    var username = createUserViewModel.User.Lastname.Substring(0, Math.Min(createUserViewModel.User.Lastname.Length, 3))
+                        + createUserViewModel.User.Firstname.Substring(0, Math.Min(createUserViewModel.User.Firstname.Length, 3));
+                    user.Firstname = createUserViewModel.User.Firstname;
+                    user.Lastname = createUserViewModel.User.Lastname;
+                    user.JobId = createUserViewModel.JobId;
+                    await userStore.SetUserNameAsync(user, username, CancellationToken.None);
+                    await emailStore.SetEmailAsync(user, createUserViewModel.User.Email, CancellationToken.None);
+
+                    var result = await this.userManager.CreateAsync(user, createUserViewModel.Password);
+                    if (result.Succeeded)
+                    {
+                        var userId = await this.userManager.GetUserIdAsync(user);
+                        var code = await this.userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                        return View("Index");
+                    }
+                    return View(createUserViewModel);
+                }
+                catch (Exception ex)
+                {
+                    return View(createUserViewModel);
+                }
+            }
+            return View(createUserViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult Details(string? id)
+        {
+            if (id == null || string.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
+            detailsUserViewModel.User = this.applicationUnitOfWork.User.Get(s => s.Id == id);
+            detailsUserViewModel.SubsidiaryList = this.applicationUnitOfWork.Subsidiary.GetAll().Select(d => new SelectListItem
+            {
+                Text = d.Name,
+                Value = d.Id
+            });
+
+            if (detailsUserViewModel.User is null)
+            {
+                return NotFound();
+            }
+            return View(detailsUserViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Details(DetailsUserViewModel detailsUserViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                detailsUserViewModel.User.UpdatedOn = DateTime.Now;
+                detailsUserViewModel.User.UpdatedBy = User?.Identity.Name;
+                this.applicationUnitOfWork.User.Update(detailsUserViewModel.User);
+                this.applicationUnitOfWork.Save();
+
+                this.applicationUnitOfWork.Log.CreateNewEventInlog(null, User, $"L'employé a bien été modifié", "", LogType.Success);
+                TempData["success-title"] = "Modification employé";
+                TempData["success-message"] = $"L'employé a bien été modifié";
+                return RedirectToAction("Index");
+            }
+            return View(detailsUserViewModel);
         }
 
         #region API CALLS
@@ -58,14 +164,14 @@ namespace SaaS.Areas.Application.Controllers
                                 {
                                     Users.Add(new IndexUserViewModel
                                     {
-                                        Id = reader.IsDBNull(0) ? "vide" : reader.GetString(0),
-                                        UserName = reader.IsDBNull(1) ? "vide" : reader.GetString(1),
-                                        Email = reader.IsDBNull(2) ? "vide" : reader.GetString(2),
-                                        PhoneNumber = reader.IsDBNull(3) ? "vide" : reader.GetString(3),
+                                        Id = reader.IsDBNull(0) ? "" : reader.GetString(0),
+                                        UserName = reader.IsDBNull(1) ? "" : reader.GetString(1),
+                                        Email = reader.IsDBNull(2) ? "" : reader.GetString(2),
+                                        PhoneNumber = reader.IsDBNull(3) ? "" : reader.GetString(3),
                                         IsEnable = reader.GetBoolean(4),
-                                        JobName = reader.IsDBNull(5) ? "vide" : reader.GetString(5),
-                                        DepartmentName = reader.IsDBNull(6) ? "vide" : reader.GetString(6),
-                                        SubsidiaryName = reader.IsDBNull(7) ? "vide" : reader.GetString(7),
+                                        JobName = reader.IsDBNull(5) ? "" : reader.GetString(5),
+                                        DepartmentName = reader.IsDBNull(6) ? "" : reader.GetString(6),
+                                        SubsidiaryName = reader.IsDBNull(7) ? "" : reader.GetString(7),
                                     });
                                 }
                                 reader.Close();
@@ -127,6 +233,82 @@ namespace SaaS.Areas.Application.Controllers
 
             return Json(new { success = true, message = "Activation/désactivation de l'utilisateur réussie" });
         }
+
+        [HttpPost]
+        public IActionResult GetDepartments([FromBody] string subsidiaryId)
+        {
+            List<SelectListItem> departmentList = new List<SelectListItem>();
+
+            List<Department> departments = this.applicationUnitOfWork.Department.GetAll().Where(d => d.SubsidiaryId == subsidiaryId).ToList();
+            foreach (Department dep in departments)
+            {
+                departmentList.Add(new SelectListItem
+                {
+                    Value = dep.Id,
+                    Text = dep.Name,
+                });
+            }
+            return Json(new { data = departmentList });
+        }
+
+        [HttpPost]
+        public IActionResult GetJobs([FromBody] string departmentId)
+        {
+            List<SelectListItem> jobList = new List<SelectListItem>();
+
+            List<Job> jobs = this.applicationUnitOfWork.Job.GetAll().Where(j => j.DepartmentId == departmentId).ToList();
+            foreach (Job job in jobs)
+            {
+                jobList.Add(new SelectListItem
+                {
+                    Value = job.Id,
+                    Text = job.Name,
+                });
+            }
+            return Json(new { data = jobList });
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(string? id)
+        {
+            if (id is not null)
+            {
+                try
+                {
+                    User user = this.applicationUnitOfWork.User.Get(ws => ws.Id == id);
+                    this.applicationUnitOfWork.User.Delete(user);
+                    this.applicationUnitOfWork.Save();
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+            return View("Index");
+        }
         #endregion
+
+        private User CreateUser()
+        {
+            try
+            {
+                return Activator.CreateInstance<User>();
+            }
+            catch
+            {
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
+                    $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
+            }
+        }
+
+        private IUserEmailStore<IdentityUser> GetEmailStore()
+        {
+            if (!this.userManager.SupportsUserEmail)
+            {
+                throw new NotSupportedException("The default UI requires a user store with email support.");
+            }
+            return (IUserEmailStore<IdentityUser>)userStore;
+        }
     }
 }

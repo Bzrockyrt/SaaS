@@ -4,6 +4,9 @@
     {
         public Domain.PIPL.Company Company { get; set; } = new Domain.PIPL.Company();
 
+        public IList<Domain.PIPL.Functionnality> HaveFunctionnalities { get; set; } = new List<Domain.PIPL.Functionnality>();
+        public IList<Domain.PIPL.Functionnality> DontHaveFunctionnalities { get; set; } = new List<Domain.PIPL.Functionnality>();
+
         public string Server { get; set; } = string.Empty;
         public string Database { get; set; } = string.Empty;
         public string ConnectionString 

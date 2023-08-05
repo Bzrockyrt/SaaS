@@ -43,7 +43,7 @@ namespace SaaS.DataAccess.DbInitializer
                         State = "Saint André-de-Bâgé",
                         CompanyCode = "0000",
                         TenantCode = "pipldeveloppement",
-                        CreatedBy = "Pierre-Louis IPPOLITI",
+                        CreatorId = string.Empty,
                         CreatedOn = DateTime.Now,
                         Description = "Entreprise PIPL Développement dirigée par Pierre-Louis IPPOLITI",
                         Email = "pierrelouisippoliti@pipl-developpement.com",
@@ -162,31 +162,147 @@ namespace SaaS.DataAccess.DbInitializer
                     ApplicationUser jack = this.context.ApplicationUser.FirstOrDefault(u => u.Email == "jackdoe@pipl-developpement.com");
                     userManager.AddToRoleAsync(jack, "Opérateur").GetAwaiter().GetResult();*/
                 }
-                /*if (!this.piplDeveloppementDbContext.Functionnality.Any())
+                if (!this.piplDeveloppementDbContext.Functionnality.Any())
                 {
+                    #region Access
+                    Functionnality Access_SuperAdministration = new Functionnality()
+                    {
+                        Name = "Accès super administration",
+                        NormalizedName = "Access_SuperAdministration",
+                        Description = "Accès à la partie PIPL Développement",
+                        Code = "F-A-SUPERADMIN",
+                        CreatorId = "",
+                        CreatedOn = DateTime.Now,
+                        IsEnable = true,
+                    };
+                    this.unitOfWork.Functionnality.Add(Access_SuperAdministration);
+
+                    Functionnality Access_Dashboard = new Functionnality()
+                    {
+                        Name = "Accès au tableau de bord",
+                        NormalizedName = "Access_Dashboard",
+                        Description = "Accès au tableau de bord de l'employé",
+                        Code = "F-A-TABLEAUDEBORD",
+                        CreatorId = "",
+                        CreatedOn = DateTime.Now,
+                        IsEnable = true,
+                    };
+                    this.unitOfWork.Functionnality.Add(Access_SuperAdministration);
+
                     Functionnality Access_Administration = new Functionnality()
                     {
-                        CreatedBy = "Pierre-Louis IPPOLITI",
+                        Name = "Accès administration",
+                        NormalizedName = "Access_Administration",
+                        Description = "Accès à la partie administration de l'entreprise",
+                        Code = "F-A-ADMINISTRATION",
+                        CreatorId = "",
                         CreatedOn = DateTime.Now,
-                        Description = "Accessibilité à la partie administration",
-                        Name = "Access_Administration",
                         IsEnable = true,
                     };
                     this.unitOfWork.Functionnality.Add(Access_Administration);
 
                     Functionnality Access_MessagingSystem = new Functionnality()
                     {
-                        CreatedBy = "Pierre-Louis IPPOLITI",
+                        Name = "Accès messagerie",
+                        NormalizedName = "Access_MessagingSystem",
+                        Description = "Accès à la messagerie de l'utilisateur",
+                        Code = "F-A-MESSAGERIE",
+                        CreatorId = "",
                         CreatedOn = DateTime.Now,
-                        Description = "Accessibilité à la messagerie",
-                        Name = "Access_MessagingSystem",
                         IsEnable = true,
                     };
                     this.unitOfWork.Functionnality.Add(Access_MessagingSystem);
 
+                    Functionnality Access_WorkSites = new Functionnality()
+                    {
+                        Name = "Accès chantiers",
+                        NormalizedName = "Access_WorkSites",
+                        Description = "Accès aux chantiers de l'entreprise",
+                        Code = "F-A-CHANTIERS",
+                        CreatorId = "",
+                        CreatedOn = DateTime.Now,
+                        IsEnable = true,
+                    };
+                    this.unitOfWork.Functionnality.Add(Access_WorkSites);
+
+                    Functionnality Access_Users = new Functionnality()
+                    {
+                        Name = "Accès employés",
+                        NormalizedName = "Access_CompanyUsers",
+                        Description = "Accès aux employés de l'entreprise",
+                        Code = "F-A-EMPLOYES",
+                        CreatorId = "",
+                        CreatedOn = DateTime.Now,
+                        IsEnable = true,
+                    };
+                    this.unitOfWork.Functionnality.Add(Access_Users);
+
+                    Functionnality Access_Jobs = new Functionnality()
+                    {
+                        Name = "Accès postes",
+                        NormalizedName = "Access_Jobs",
+                        Description = "Accès aux postes de l'entreprise",
+                        Code = "F-A-JOBS",
+                        CreatorId = "",
+                        CreatedOn = DateTime.Now,
+                        IsEnable = true,
+                    };
+                    this.unitOfWork.Functionnality.Add(Access_Jobs);
+
+                    Functionnality Access_Departments = new Functionnality()
+                    {
+                        Name = "Accès services",
+                        NormalizedName = "Access_Departments",
+                        Description = "Accès aux services de l'entreprise",
+                        Code = "F-A-SERVICES",
+                        CreatorId = "",
+                        CreatedOn = DateTime.Now,
+                        IsEnable = true,
+                    };
+                    this.unitOfWork.Functionnality.Add(Access_Departments);
+
+                    Functionnality Access_Subsidiaries = new Functionnality()
+                    {
+                        Name = "Accès filliales",
+                        NormalizedName = "Access_Subsidiaries",
+                        Description = "Accès aux filliales de l'entreprise",
+                        Code = "F-A-FILLIALES",
+                        CreatorId = "",
+                        CreatedOn = DateTime.Now,
+                        IsEnable = true,
+                    };
+                    this.unitOfWork.Functionnality.Add(Access_Subsidiaries);
+
+                    Functionnality Access_WorkHours = new Functionnality()
+                    {
+                        Name = "Accès heures journalières personnelles",
+                        NormalizedName = "Access_WorkHours",
+                        Description = "Accès aux heures journalières personnelles",
+                        Code = "F-A-HEURESJOURPERSO",
+                        CreatorId = "",
+                        CreatedOn = DateTime.Now,
+                        IsEnable = true,
+                    };
+                    this.unitOfWork.Functionnality.Add(Access_WorkHours);
+
+                    Functionnality Access_GlobalWorkHours = new Functionnality()
+                    {
+                        Name = "Accès heures journalières globales",
+                        NormalizedName = "Access_GlobalWorkHours",
+                        Description = "Accès aux heures journalières globales des employés",
+                        Code = "F-A-HEURESJOURGLOBALES",
+                        CreatorId = "",
+                        CreatedOn = DateTime.Now,
+                        IsEnable = true,
+                    };
+                    this.unitOfWork.Functionnality.Add(Access_GlobalWorkHours);
+                    #endregion
+                    #region Create
+                    #endregion
+
                     this.piplDeveloppementDbContext.SaveChanges();
                 }
-                if (!this.piplDeveloppementDbContext.ApplicationRoleFunctionnality.Any())
+                /*if (!this.piplDeveloppementDbContext.ApplicationRoleFunctionnality.Any())
                 {
                     ApplicationRoleFunctionnality applicationRoleFunctionnality1 = new ApplicationRoleFunctionnality()
                     {

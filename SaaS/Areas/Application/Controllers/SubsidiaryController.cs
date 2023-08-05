@@ -8,6 +8,7 @@ using SaaS.DataAccess.Services;
 using SaaS.DataAccess.Utils;
 using SaaS.Domain;
 using SaaS.Domain.Identity;
+using SaaS.Domain.Work;
 using SaaS.ViewModels.Application.Department;
 using SaaS.ViewModels.Application.Subsidiary;
 
@@ -50,9 +51,9 @@ namespace SaaS.Areas.Application.Controllers
             if (ModelState.IsValid)
             {
                 if (User?.Identity?.Name is null)
-                    subsidiary.CreatedBy = "IPPOLITI Pierre-Louis";
+                    subsidiary.CreatorId = string.Empty;
                 else
-                    subsidiary.CreatedBy = User?.Identity?.Name;
+                    subsidiary.CreatorId = this.applicationUnitOfWork.User.GetAll().FirstOrDefault(u => u.UserName == User?.Identity?.Name).Id;
 
                 try
                 {
@@ -99,6 +100,40 @@ namespace SaaS.Areas.Application.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Details(string? id)
+        {
+            if (id == null || string.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
+            Subsidiary subsidiary = this.applicationUnitOfWork.Subsidiary.Get(s => s.Id == id);
+            if (subsidiary is null)
+            {
+                return NotFound();
+            }
+            return View(subsidiary);
+        }
+
+        [HttpPost]
+        public IActionResult Update(Subsidiary subsidiary)
+        {
+            if (ModelState.IsValid)
+            {
+                subsidiary.UpdatedOn = DateTime.Now;
+                subsidiary.UpdatedBy = User?.Identity.Name;
+                this.applicationUnitOfWork.Subsidiary.Update(subsidiary);
+                this.applicationUnitOfWork.Save();
+
+                this.applicationUnitOfWork.Log.CreateNewEventInlog(null, User, $"La filliale a bien été modifiée", "", LogType.Success);
+                TempData["success-title"] = "Modification filliale";
+                TempData["success-message"] = $"La filliale a bien été modifiée";
+                return RedirectToAction("Index");
+            }
+            return View(subsidiary);
+        }
+
         #region API CALLS
         [HttpGet]
         public IActionResult GetAllSubsidiaries()
@@ -122,13 +157,13 @@ namespace SaaS.Areas.Application.Controllers
                                 {
                                     Subsidiaries.Add(new SubsidiaryViewModel
                                     {
-                                        Id = reader.GetString(0),
-                                        Code = reader.GetString(1),
-                                        EmployeesNumber = reader.GetInt32(6),
-                                        DepartmentsNumber = reader.GetInt32(4),
+                                        Id = reader.IsDBNull(0) ? "" : reader.GetString(0),
+                                        Code = reader.IsDBNull(0) ? "" : reader.GetString(1),
+                                        EmployeesNumber = reader.IsDBNull(0) ? 0 : reader.GetInt32(6),
+                                        DepartmentsNumber = reader.IsDBNull(0) ? 0 : reader.GetInt32(4),
                                         IsEnable = reader.GetBoolean(2),
-                                        JobsNumber = reader.GetInt32(5),
-                                        Name = reader.GetString(3),
+                                        JobsNumber = reader.IsDBNull(0) ? 0 : reader.GetInt32(5),
+                                        Name = reader.IsDBNull(0) ? "" : reader.GetString(3),
                                     });
                                 }
                                 reader.Close();
@@ -144,7 +179,6 @@ namespace SaaS.Areas.Application.Controllers
                             }
                         }
                     }
-                    return Json(null);
                 }
                 return Json(null);
             }

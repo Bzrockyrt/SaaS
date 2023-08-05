@@ -8,9 +8,7 @@ using SaaS.DataAccess.Services;
 using SaaS.DataAccess.Utils;
 using SaaS.Domain;
 using SaaS.Domain.Identity;
-using SaaS.Domain.PIPL;
 using SaaS.ViewModels.Application.Department;
-using SaaS.ViewModels.Application.Job;
 
 namespace SaaS.Areas.Application.Controllers
 {
@@ -22,6 +20,7 @@ namespace SaaS.Areas.Application.Controllers
         private readonly TenantSettings tenantSettings;
 
         public static List<IndexDepartmentViewModel> Departments = new List<IndexDepartmentViewModel>();
+        public static DetailsDepartmentViewModel detailsDepartmentViewModel = new DetailsDepartmentViewModel();
         
         public DepartmentController(IApplicationUnitOfWork applicationUnitOfWork,
             TenantService tenantService,
@@ -59,9 +58,9 @@ namespace SaaS.Areas.Application.Controllers
             if (ModelState.IsValid)
             {
                 if (User?.Identity?.Name is null)
-                    createDepartmentViewModel.Department.CreatedBy = "IPPOLITI Pierre-Louis";
+                    createDepartmentViewModel.Department.CreatorId = string.Empty;
                 else
-                    createDepartmentViewModel.Department.CreatedBy = User?.Identity?.Name;
+                    createDepartmentViewModel.Department.CreatorId = this.applicationUnitOfWork.User.Get(u => u.UserName == User.Identity.Name).Id;
 
                 try
                 {
@@ -108,6 +107,46 @@ namespace SaaS.Areas.Application.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Details(string? id)
+        {
+            if (id == null || string.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
+            detailsDepartmentViewModel.Department = this.applicationUnitOfWork.Department.Get(s => s.Id == id);
+            detailsDepartmentViewModel.SubsidiaryList = this.applicationUnitOfWork.Subsidiary.GetAll().Select(d => new SelectListItem
+            {
+                Text = d.Name,
+                Value = d.Id
+            });
+            
+            if (detailsDepartmentViewModel.Department is null)
+            {
+                return NotFound();
+            }
+            return View(detailsDepartmentViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Update(DetailsDepartmentViewModel detailsDepartmentViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                detailsDepartmentViewModel.Department.UpdatedOn = DateTime.Now;
+                detailsDepartmentViewModel.Department.UpdatedBy = User?.Identity.Name;
+                this.applicationUnitOfWork.Department.Update(detailsDepartmentViewModel.Department);
+                this.applicationUnitOfWork.Save();
+
+                this.applicationUnitOfWork.Log.CreateNewEventInlog(null, User, $"Le département a bien été modifié", "", LogType.Success);
+                TempData["success-title"] = "Modification département";
+                TempData["success-message"] = $"Le département a bien été modifié";
+                return RedirectToAction("Index");
+            }
+            return View(detailsDepartmentViewModel);
+        }
+
         #region API CALLS
         [HttpGet]
         public IActionResult GetAllDepartments()
@@ -131,13 +170,13 @@ namespace SaaS.Areas.Application.Controllers
                                 {
                                     Departments.Add(new IndexDepartmentViewModel
                                     {
-                                        Id = reader.GetString(0),
-                                        Code = reader.GetString(1),
-                                        EmployeesNumber = reader.GetInt32(5),
-                                        SubsidiaryName = reader.GetString(6),
+                                        Id = reader.IsDBNull(0) ? "" : reader.GetString(0),
+                                        Code = reader.IsDBNull(0) ? "" : reader.GetString(1),
+                                        EmployeesNumber = reader.IsDBNull(0) ? 0 : reader.GetInt32(5),
+                                        SubsidiaryName = reader.IsDBNull(0) ? "" : reader.GetString(6),
                                         IsEnable = reader.GetBoolean(2),
-                                        JobsNumber = reader.GetInt32(4),
-                                        Name = reader.GetString(3),
+                                        JobsNumber = reader.IsDBNull(0) ? 0 : reader.GetInt32(4),
+                                        Name = reader.IsDBNull(0) ? "" : reader.GetString(3),
                                     });
                                 }
                                 reader.Close();
@@ -153,7 +192,6 @@ namespace SaaS.Areas.Application.Controllers
                             }
                         }
                     }
-                    return Json(null);
                 }
                 return Json(null);
             }

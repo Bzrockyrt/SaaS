@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
+using SaaS.DataAccess.Exceptions.SuperCompany.Functionnality;
 using SaaS.DataAccess.Repository.PIPL.IRepository;
 using SaaS.DataAccess.Services;
 using SaaS.DataAccess.Utils;
 using SaaS.Domain;
-using SaaS.Domain.PIPL;
+using SaaS.Domain.Identity;
 using SaaS.ViewModels.SuperCompany.User;
 
 namespace SaaS.Areas.SuperCompany.Controllers
@@ -30,15 +31,17 @@ namespace SaaS.Areas.SuperCompany.Controllers
 
         public IActionResult Index()
         {
-            /*if (this.unitOfWork.User.CanUserAccessFunctionnality("Access_User_Index", User))
-            {
-                return View();
-            }
-            else 
-            {
-                return RedirectToAction("AccessDenied", "Connection", new { area = "Application" });
-            }*/
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            CreateUserViewModel createUserViewModel = new CreateUserViewModel()
+            {
+                User = new User()
+            };
+            return View(createUserViewModel);
         }
 
         #region API CALLS

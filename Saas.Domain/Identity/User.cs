@@ -7,6 +7,12 @@ namespace SaaS.Domain.Identity
 {
     public class User : IdentityUser
     {
+        /*Constructeur pour instancier l'utilisateur lors de la création d'un élément dans l'application*/
+        public User()
+        {
+            
+        }
+
         [Required]
         [Display(Name = "Prénom")]
         [MinLength(1, ErrorMessage = "Le prénom de l'utilisateur doit comporter au minimum 1 caractères")]
@@ -28,26 +34,19 @@ namespace SaaS.Domain.Identity
 
         public int UsernameChangeLimit { get; set; } = 10;
 
-        [Required]
         [Display(Name = "N° de rue")]
         public string StreetNumber { get; set; } = string.Empty;
 
-        [Required]
         [Display(Name = "Nom de rue")]
         public string StreetName { get; set; } = string.Empty;
 
-        [Required]
         [Display(Name = "Commune")]
         public string State { get; set; } = string.Empty;
 
-        [Required]
         [Display(Name = "Code postal")]
         public string PostalCode { get; set; } = string.Empty;
 
-        [Required]
         [Display(Name = "Numéro de sécurité sociale")]
-        [MinLength(15, ErrorMessage = "Le numéro de sécurité sociale doit comporter 15 chiffres")]
-        [MaxLength(15, ErrorMessage = "Le numéro de sécurité sociale doit comporter 15 chiffres")]
         public string SocialSecurityNumber { get; set; } = string.Empty;
 
         [Display(Name = "Date de naissance")]
@@ -58,15 +57,26 @@ namespace SaaS.Domain.Identity
         [DataType(DataType.PostalCode)]
         public string BirthLocation { get; set; } = string.Empty;
 
+        //Cette variable permet de savoir si cet utilisateur va apparaître dans la liste des chefs de chantiers lors du
+        //renseignement des heures journalières
+        public bool IsAppearingInWorkerWorkHours { get; set; } = false;
+
+        [ValidateNever]
         public virtual string JobId { get; set; }
         [ForeignKey(nameof(JobId))]
         [ValidateNever]
         public virtual Job Job { get; set; }
 
+        [ValidateNever]
         public virtual string EmploymentContractId { get; set; }
+        [ForeignKey(nameof(EmploymentContractId))]
+        [ValidateNever]
         public virtual EmploymentContract EmploymentContract { get; set; }
 
+        [ValidateNever]
         public virtual string UserStatusId { get; set; }
+        [ForeignKey(nameof(UserStatusId))]
+        [ValidateNever]
         public virtual UserStatus UserStatus { get; set; }
 
         [Display(Name = "Créateur")]

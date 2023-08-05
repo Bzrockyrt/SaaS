@@ -25,6 +25,10 @@ namespace SaaS.Domain.Identity
         [ValidateNever]
         public virtual Department Department { get; set; }
 
+        [ValidateNever]
         public IList<User> Users { get; set; } = new List<User>();
+
+        [ValidateNever]
+        public IList<Job_CompanyFunctionnalities> Job_CompanyFunctionnalities { get; set; }
     }
 }

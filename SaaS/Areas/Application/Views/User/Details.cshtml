@@ -1,0 +1,88 @@
+﻿@using SaaS.ViewModels.Application.User;
+@model DetailsUserViewModel
+
+<div class="container">
+    <div class="header">
+        <h1 class="header-title">@Model.User.Fullname</h1>
+        <a class="header-button delete" asp-area="application" asp-controller="user" asp-action="delete" asp-route-id="@Model.User.Id">
+            Supprimer
+        </a>
+    </div>
+
+    <form method="post" asp-area="application" asp-controller="user" asp-action="details" class="form-floating">
+        <div class="body">
+            <input asp-for="User.Id" hidden />
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="User.Firstname" class="form-control" disabled/>
+                <label asp-for="User.Firstname" class="ms-2"></label>
+                <span asp-validation-for="User.Firstname" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="User.Lastname" class="form-control" disabled/>
+                <label asp-for="User.Lastname" class="ms-2"></label>
+                <span asp-validation-for="User.Lastname" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="User.Email" class="form-control" disabled/>
+                <label asp-for="User.Email" class="ms-2"></label>
+                <span asp-validation-for="User.Email" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="User.PhoneNumber" class="form-control" disabled />
+                <label asp-for="User.PhoneNumber" class="ms-2"></label>
+                <span asp-validation-for="User.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="date" asp-for="User.BirthDate" class="form-control" disabled />
+                <label asp-for="User.BirthDate" class="ms-2"></label>
+                <span asp-validation-for="User.BirthDate" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="User.BirthLocation" class="form-control" disabled />
+                <label asp-for="User.BirthLocation" class="ms-2"></label>
+                <span asp-validation-for="User.BirthLocation" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="number" asp-for="User.StreetNumber" class="form-control" disabled />
+                <label asp-for="User.StreetNumber" class="ms-2"></label>
+                <span asp-validation-for="User.StreetNumber" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="User.StreetName" class="form-control" disabled />
+                <label asp-for="User.StreetName" class="ms-2"></label>
+                <span asp-validation-for="User.StreetName" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="number" asp-for="User.PostalCode" class="form-control" disabled />
+                <label asp-for="User.PostalCode" class="ms-2"></label>
+                <span asp-validation-for="User.PostalCode" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="User.State" class="form-control" disabled />
+                <label asp-for="User.State" class="ms-2"></label>
+                <span asp-validation-for="User.State" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <select id="subsidiarySelect" name="subsidiaryId" asp-items="@Model.SubsidiaryList" class="form-select border-0 shadow" required>
+                    <option disabled selected>--Sélectionner une filliale--</option>
+                </select>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <select id="departmentSelect" name="departmentId" class="form-select border-0 shadow" required>
+                    <option disabled selected>--Sélectionner un service--</option>
+                </select>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <select id="jobSelect" name="jobId" asp-for="User.JobId" class="form-select border-0 shadow" required>
+                    <option disabled selected>--Sélectionner un poste--</option>
+                </select>
+            </div>
+        </div>
+        <div class="footer">
+            <button type="submit" class="footer-button-valid" style="width: 150px;">Créer</button>
+            <a class="footer-button-cancel" asp-area="application" asp-controller="user" asp-action="index">
+                Annuler
+            </a>
+        </div>
+    </form>
+</div>

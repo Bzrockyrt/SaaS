@@ -16,49 +16,50 @@
             all = "active text-white bg-primary";
             break;
     }
+
+    var canFilterCloturedWorkSites = true;
 }
 
-@section BootstrapSelect{
-    <!-- DataTables -->
-    <link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-    <link rel="stylesheet" href="~/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-
-}
-
-<div class="header">
-    <h1 class="header-title">Chantiers</h1>
-    <a class="header-button" asp-area="application" asp-controller="worksite" asp-action="create">
-        Créer un chantier
-    </a>
-</div>
 <div class="container">
-    <div class="d-flex justify-content-between pb-5 pt-2">
-        <span></span>
-        <ul class="list-group list-group-horizontal-sm">
-            <a style="text-decoration:none;" asp-area="application" asp-controller="worksite" asp-action="index" asp-route-status="all">
-                <li class="list-group-item @all">Tous</li>
-            </a>
-            <a style="text-decoration:none;" asp-area="application" asp-controller="worksite" asp-action="index" asp-route-status="unClotured">
-                <li class="list-group-item @unClotured">Non clotûrés</li>
-            </a>
-            <a style="text-decoration:none;" asp-area="application" asp-controller="worksite" asp-action="index" asp-route-status="clotured">
-                <li class="list-group-item @clotured">Clôturés</li>
-            </a>
-        </ul>
+    <div class="header">
+        <h1 class="header-title">Chantiers</h1>
+        <a class="header-button add" asp-area="application" asp-controller="worksite" asp-action="create">
+            Créer un chantier
+        </a>
     </div>
-    <table id="tableWorkSites" class="table table-bordered table-striped table-hover dataTable text-center" style="width: 100%">
-        <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Description</th>
-                <th>Actif</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+    <div class="body">
+        @if (canFilterCloturedWorkSites)
+        {
+            <div class="d-flex justify-content-between pb-5 pt-2">
+                <ul class="list-group list-group-horizontal-sm">
+                    <a style="text-decoration:none;" asp-area="application" asp-controller="worksite" asp-action="index" asp-route-status="all">
+                    <li class="list-group-item @all">Tous</li>
+                    </a>
+                    <a style="text-decoration:none;" asp-area="application" asp-controller="worksite" asp-action="index" asp-route-status="unClotured">
+                    <li class="list-group-item @unClotured">Non clotûrés</li>
+                    </a>
+                    <a style="text-decoration:none;" asp-area="application" asp-controller="worksite" asp-action="index" asp-route-status="clotured">
+                    <li class="list-group-item @clotured">Clôturés</li>
+                    </a>
+                </ul>
+            </div>
+        }
+        <table id="tableWorkSites" class="display" style="width: 100%; font-size: 16px;">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Code</th>
+                    <th>Description</th>
+                    <th>Créateur</th>
+                    <th>Actif</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
+    </div>
 </div>
 
 @section Scripts{

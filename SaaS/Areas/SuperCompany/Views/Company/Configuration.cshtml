@@ -2,11 +2,33 @@
 @using SaaS.ViewModels.SuperCompany.Company;
 @model ConfigurationCompanyViewModel
 
+@{
+    <style>
+        #sortable1, #sortable2 {
+            border: 1px solid #eee;
+            width: 142px;
+            min-height: 20px;
+            list-style-type: none;
+            margin: 0;
+            padding: 5px 0 0 0;
+            float: left;
+            margin-right: 10px;
+        }
+
+            #sortable1 li, #sortable2 li {
+                margin: 0 5px 5px 5px;
+                padding: 5px;
+                font-size: 1.2em;
+                width: 120px;
+            }
+    </style>
+}
+
 <div class="header">
     <h1 class="header-title">Panel de l'entreprise @Model.Company.Name</h1>
 </div>
 <div class="container">
-    <div class="functionnalities">
+    <div style="display: flex; justify-content: space-between;">
         <div>Ne possède pas</div>
         <ul id="sortable1" class="connectedSortable">
             @foreach (CompanyFunctionnalities functionnality in Model.DontHaveFunctionnalities)

@@ -16,7 +16,7 @@ function loadCompanyDataTable() {
                 "render": function (data) {
                     if (data.name != null) {
                         return `
-                            <a href="/supercompany/company/gocompany?id=${data.id}">${data.name}</a>
+                            <a style="color: #0000FF; text-decoration: underline;" href="/supercompany/company/details?id=${data.id}">${data.name}</a>
                         `
                     }
                 },
@@ -55,16 +55,13 @@ function loadCompanyDataTable() {
                 "render": function (data) {
                     return `
                         <div role="group">
-                            <a href="/supercompany/company/edit?id=${data}" class="btn btn-primary mx-2">
-                                <i class='bx bxs-edit' style='color:#ffffff'></i>
-                            </a>
-                            <a onClick=deleteCompany('/supercompany/company/delete/${data}') class="btn btn-danger mx-2">
-                                <i class='bx bx-trash' style='color:#ffffff'  ></i>
+                            <a href="/supercompany/company/configuration?id=${data}" class="btn btn-primary mx-2">
+                                <i class='bx bx-cog' style='color:#ffffff;'></i>
                             </a>
                         </div>
                     `
                 },
-                "width": "20%"
+                "width": "10%"
             }
         ],
         "language": {

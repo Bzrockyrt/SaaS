@@ -10,10 +10,19 @@ function loadDataTable() {
         "ajax": { url: '/supercompany/functionnality/getallfunctionnalities' },
         /*columns : permet de configurer les colonnes de la table avec différents paramètres*/
         "columns": [
-            { "data": "name", "width": "10%" },
-            { "data": "code", "width": "10%" },
-            { "data": "description", "width": "10%" },
-            { "data": "createdBy", "width": "10%" },
+            {
+                "data": { id: "id", name: "name" },
+                "render": function (data) {
+                    if (data.name != null) {
+                        return `
+                            <a style="color: #0000FF; text-decoration: underline;" href="/supercompany/functionnality/details?id=${data.id}">${data.name}</a>
+                        `
+                    }
+                },
+                "width": "25%"
+            },
+            { "data": "code", "width": "15%" },
+            { "data": "description", "width": "30%" },
             {
                 "data": "createdOn",
                 //"render": function (data) {
@@ -22,7 +31,7 @@ function loadDataTable() {
                 //        <span>${tempsFormaté}</span>
                 //    `
                 //},
-                "width": "10%"
+                "width": "20%"
             },
             {
                 "data": { id: "id", isEnable: "isEnable" },
@@ -45,22 +54,6 @@ function loadDataTable() {
                     }
                 },
                 "width": "10%"
-            },
-            {
-                "data": "id",
-                "render": function (data) {
-                    return `
-                        <div role="group">
-                            <a href="/supercompany/functionnality/edit?id=${data}" class="btn btn-primary mx-2">
-                                <i class='bx bxs-edit' style='color:#ffffff'></i>
-                            </a>
-                            <a onClick=deleteFunctionnality('/supercompany/functionnality/delete/${data}') class="btn btn-danger mx-2">
-                                <i class='bx bx-trash' style='color:#ffffff'  ></i>
-                            </a>
-                        </div>
-                    `
-                },
-                "width": "20%"
             }
         ],
         "language": {

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SaaS.DataAccess.Exceptions.SuperCompany.Functionnality;
 using SaaS.DataAccess.Repository.PIPL.IRepository;
-using SaaS.DataAccess.Services;
 using SaaS.Domain;
 using SaaS.Domain.PIPL;
+using SaaS.ViewModels.SuperCompany.Functionnality;
 
 namespace SaaS.Areas.SuperCompany.Controllers
 {
@@ -12,6 +12,7 @@ namespace SaaS.Areas.SuperCompany.Controllers
     {
         private readonly ISuperCompanyUnitOfWork superCompanyUnitOfWork;
 
+        public static DetailsFunctionnalityViewModel detailsFunctionnalityViewModel = new DetailsFunctionnalityViewModel();
         public FunctionnalityController(ISuperCompanyUnitOfWork superCompanyUnitOfWork)
         {
             this.superCompanyUnitOfWork = superCompanyUnitOfWork;
@@ -25,37 +26,40 @@ namespace SaaS.Areas.SuperCompany.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            Functionnality functionnality = new Functionnality();
-            return View(functionnality);
+            CreateFunctionnalityViewModel createFunctionnalityViewModel = new CreateFunctionnalityViewModel()
+            {
+                Functionnality = new Functionnality()
+            };
+            return View(createFunctionnalityViewModel);
         }
 
         [HttpPost]
-        public IActionResult Create(Functionnality functionnality)
+        public IActionResult Create(CreateFunctionnalityViewModel createFunctionnalityViewModel)
         {
             /*Avant d'ajouter une nouvelle entreprise à la base, il faut vérifier que son nom, son SIRET, son CompanyCode 
              * et son Company_Tenant_Description ne soient pas déjà enregistrés dans la base de données.*/
             if (ModelState.IsValid)
             {
                 if (User?.Identity?.Name is null)
-                    functionnality.CreatedBy = "IPPOLITI Pierre-Louis";
+                    createFunctionnalityViewModel.Functionnality.CreatorId = string.Empty;
                 else
-                    functionnality.CreatedBy = User?.Identity?.Name;
+                    createFunctionnalityViewModel.Functionnality.CreatorId = this.superCompanyUnitOfWork.User.GetAll().FirstOrDefault(u => u.UserName == User?.Identity?.Name).Id;
                 try
                 {
                     IEnumerable<Functionnality> functs = this.superCompanyUnitOfWork.Functionnality.GetAll();
                     foreach (Functionnality func in functs)
                     {
-                        if (func.Name == functionnality.Name)
+                        if (func.Name == createFunctionnalityViewModel.Functionnality.Name)
                         {
                             throw new FunctionnalityNameAlreadyExistsException();
                         }
-                        if (func.Code == functionnality.Code)
+                        if (func.Code == createFunctionnalityViewModel.Functionnality.Code)
                         {
                             throw new FunctionnalityCodeAlreadyExistsException();
                         }
                     }
 
-                    this.superCompanyUnitOfWork.Functionnality.Add(functionnality);
+                    this.superCompanyUnitOfWork.Functionnality.Add(createFunctionnalityViewModel.Functionnality);
                     this.superCompanyUnitOfWork.Save();
                     this.superCompanyUnitOfWork.Log.CreateNewEventInlog(null, User, $"La fonctionnalité a bien été ajoutée à la base de données", "", LogType.Success);
                     TempData["success-title"] = "Création fonctionnalité";
@@ -66,57 +70,60 @@ namespace SaaS.Areas.SuperCompany.Controllers
                 {
                     TempData["warning-title"] = "Création fonctionnalité";
                     TempData["warning-message"] = "Le nom de cette fonctionnalité existe déjà";
-                    return View(functionnality);
+                    return View(createFunctionnalityViewModel);
                 }
                 catch (FunctionnalityCodeAlreadyExistsException ex)
                 {
                     TempData["warning-title"] = "Création fonctionnalité";
                     TempData["warning-message"] = "Le code de cette fonctionnalité existe déjà";
-                    return View(functionnality);
+                    return View(createFunctionnalityViewModel);
                 }
                 catch (Exception ex)
                 {
                     this.superCompanyUnitOfWork.Log.CreateNewEventInlog(ex, User, "Erreur lors de l'ajout d'une fonctionnalité dans la base de données", "Exception", LogType.Error);
                     TempData["warning-title"] = "Création fonctionnalité";
                     TempData["warning-message"] = "Erreur lors de la création d'une fonctionnalité";
-                    return View(functionnality);
+                    return View(createFunctionnalityViewModel);
                 }
             }
             return View();
         }
 
         [HttpGet]
-        public IActionResult Edit(string? id)
+        public IActionResult Details(string? id)
         {
             if (id == null || string.IsNullOrEmpty(id))
             {
                 return NotFound();
             }
 
-            //Modifier l'entreprise
-            Functionnality functionnality = this.superCompanyUnitOfWork.Functionnality.Get(c => c.Id == id);
+            detailsFunctionnalityViewModel.Functionnality = this.superCompanyUnitOfWork.Functionnality.Get(s => s.Id == id);
 
-            if (functionnality is null)
+            if (detailsFunctionnalityViewModel.Functionnality is null)
             {
                 return NotFound();
             }
-            return View(functionnality);
+
+            return View(detailsFunctionnalityViewModel);
         }
 
         [HttpPost]
-        public IActionResult Edit(Functionnality functionnality)
+        public IActionResult Details(DetailsFunctionnalityViewModel detailsFunctionnalityViewModel)
         {
             if (ModelState.IsValid)
             {
-                this.superCompanyUnitOfWork.Functionnality.Update(functionnality);
+                detailsFunctionnalityViewModel.Functionnality.CreatorId = "";
+                detailsFunctionnalityViewModel.Functionnality.UpdatedOn = DateTime.Now;
+                detailsFunctionnalityViewModel.Functionnality.UpdatedBy = User?.Identity.Name;
+                this.superCompanyUnitOfWork.Functionnality.Update(detailsFunctionnalityViewModel.Functionnality);
                 this.superCompanyUnitOfWork.Save();
 
-                this.superCompanyUnitOfWork.Log.CreateNewEventInlog(null, User, $"La fonctionnalité a bien été modifiée", "", LogType.Success);
-                TempData["success-title"] = "Modification fonctionnalité";
-                TempData["success-message"] = $"La fonctionnalité a bien été modifiée";
+                this.superCompanyUnitOfWork.Log.CreateNewEventInlog(null, User, $"Le poste a bien été modifié", "", LogType.Success);
+                TempData["success-title"] = "Modification poste";
+                TempData["success-message"] = $"Le poste a bien été modifié";
                 return RedirectToAction("Index");
             }
-            return View(functionnality);
+            return View(detailsFunctionnalityViewModel);
         }
 
         #region API CALLS

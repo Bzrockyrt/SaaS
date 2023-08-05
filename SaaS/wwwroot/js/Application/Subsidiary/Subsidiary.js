@@ -8,8 +8,18 @@ function loadSubsidiaryDataTable() {
     subsidiaryDataTable = $('#tableSubsidiaries').DataTable({
         "ajax": { url: '/application/subsidiary/getallsubsidiaries' },
         "columns": [
-            { "data": "name", "width": "35%" },
-            { "data": "code", "width": "10%" },
+            {
+                "data": { id: "id", name: "name" },
+                "render": function (data) {
+                    if (data.name != null) {
+                        return `
+                            <a style="color: #0000FF; text-decoration: underline;" href="/application/subsidiary/details?id=${data.id}">${data.name}</a>
+                        `
+                    }
+                },
+                "width": "35%"
+            },
+            { "data": "code", "width": "25%" },
             { "data": "departmentsNumber", "width": "10%" },
             { "data": "jobsNumber", "width": "10%" },
             { "data": "employeesNumber", "width": "10%" },
@@ -34,22 +44,6 @@ function loadSubsidiaryDataTable() {
                     }
                 },
                 "width": "10%"
-            },
-            {
-                "data": "id",
-                "render": function (data) {
-                    return `
-                        <div role="group">
-                            <a href="/application/subsidiary/edit?id=${data}" class="btn btn-primary mx-2">
-                                <i class='bx bxs-edit' style='color:#ffffff'></i>
-                            </a>
-                            <a onClick=deleteSubsidiary('/application/subsidiary/delete/${data}') class="btn btn-danger mx-2">
-                                <i class='bx bx-trash' style='color:#ffffff'  ></i>
-                            </a>
-                        </div>
-                    `
-                },
-                "width": "15%"
             }
         ],
         "language": {

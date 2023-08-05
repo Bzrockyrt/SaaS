@@ -1,31 +1,41 @@
-﻿@using SaaS.Domain.PIPL;
-@model Functionnality
-
-<div class="header">
-    <h1 class="header-title">Créer une fonctionnalité</h1>
-</div>
+﻿@using SaaS.ViewModels.SuperCompany.Functionnality;
+@model CreateFunctionnalityViewModel
 
 <div class="container">
-    <form method="post" asp-area="SuperCompany" asp-controller="Functionnality" asp-action="Create" class="form-floating">
-        <input asp-for="Id" hidden />
-        <div class="form-floating py-2 col-12">
-            <input type="text" asp-for="Name" class="form-control" />
-            <label asp-for="Name" class="ms-2"></label>
-            <span asp-validation-for="Name" class="text-danger"></span>
+    <div class="header">
+        <h1 class="header-title">Créer une fonctionnalité</h1>
+    </div>
+
+    <form method="post" asp-area="supercompany" asp-controller="functionnality" asp-action="create" class="form-floating">
+        <div class="body">
+            <input asp-for="Functionnality.Id" hidden />
+            <input asp-for="Functionnality.CreatorId" hidden />
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="Functionnality.Name" class="form-control" />
+                <label asp-for="Functionnality.Name" class="ms-2"></label>
+                <span asp-validation-for="Functionnality.Name" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="Functionnality.NormalizedName" class="form-control" />
+                <label asp-for="Functionnality.NormalizedName" class="ms-2"></label>
+                <span asp-validation-for="Functionnality.NormalizedName" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="Functionnality.Description" class="form-control" />
+                <label asp-for="Functionnality.Description" class="ms-2"></label>
+                <span asp-validation-for="Functionnality.Description" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="Functionnality.Code" class="form-control" />
+                <label asp-for="Functionnality.Code" class="ms-2"></label>
+                <span asp-validation-for="Functionnality.Code" class="text-danger"></span>
+            </div>
         </div>
-        <div class="form-floating py-2 col-12">
-            <input type="text" asp-for="Description" class="form-control" />
-            <label asp-for="Description" class="ms-2"></label>
-            <span asp-validation-for="Description" class="text-danger"></span>
+        <div class="footer">
+            <button type="submit" class="footer-button-valid" style="width: 150px;">Créer</button>
+            <a class="footer-button-cancel" asp-area="supercompany" asp-controller="functionnality" asp-action="index">
+                Annuler
+            </a>
         </div>
-        <div class="form-floating py-2 col-12">
-            <input type="text" asp-for="Code" class="form-control" />
-            <label asp-for="Code" class="ms-2"></label>
-            <span asp-validation-for="Code" class="text-danger"></span>
-        </div>
-        <button type="submit" class="btn btn-primary form-control" style="width: 150px;">Créer</button>
-        <a asp-area="supercompany" asp-controller="functionnality" asp-action="index">
-            Annuler
-        </a>
     </form>
 </div>

@@ -8,5 +8,8 @@ namespace SaaS.DataAccess.Repository.Identity.IRepository
     {
         public void Update(User user);
         public bool CanUserAccessFunctionnality(string functionnalityCode, ClaimsPrincipal user);
+        public string GetSubsidiaryPrimaryColor(ClaimsPrincipal user);
+        public string GetSubsidiarySecondaryColor(ClaimsPrincipal user);
+        public string GetSubsidiaryTertiaryColor(ClaimsPrincipal user);
     }
 }

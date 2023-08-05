@@ -14,15 +14,15 @@ function loadUserDataTable() {
                 "render": function (data) {
                     if (data.userName != null) {
                         return `
-                            <a href="/application/user/gouserdetails?id=${data.id}">${data.userName}</a>
+                            <a style="color: #0000FF; text-decoration: underline;" href="/application/user/details?id=${data.id}">${data.userName}</a>
                         `
                     }
                 },
-                "width": "10%"
+                "width": "15%"
             },
-            { "data": "email", "width": "15%" },
+            { "data": "email", "width": "20%" },
             { "data": "phoneNumber", "width": "10%" },
-            { "data": "jobName", "width": "10%" },
+            { "data": "jobName", "width": "15%" },
             { "data": "departmentName", "width": "15%" },
             { "data": "subsidiaryName", "width": "15%" },
             {
@@ -46,22 +46,6 @@ function loadUserDataTable() {
                     }
                 },
                 "width": "10%"
-            },
-            {
-                "data": "id",
-                "render": function (data) {
-                    return `
-                        <div role="group">
-                            <a href="/application/user/edit?id=${data}" class="btn btn-primary mx-2">
-                                <i class='bx bxs-edit' style='color:#ffffff'></i>
-                            </a>
-                            <a onClick=deleteUser('/application/user/delete/${data}') class="btn btn-danger mx-2">
-                                <i class='bx bx-trash' style='color:#ffffff'  ></i>
-                            </a>
-                        </div>
-                    `
-                },
-                "width": "15%"
             }
         ],
         "language": {
@@ -93,7 +77,7 @@ function loadUserDataTable() {
 function deleteUser(url) {
     /*Ouvre une fenêtre modale pour confirmer la suppression de l'entreprise*/
     Swal.fire({
-        title: 'Êtes-vous sûr?',
+        title: '\u00CAtes-vous s\u00FBr de supprimer cet utilisateur?',
         text: "Vous ne serez plus capable d'annuler votre suppression!",
         icon: 'warning',
         showCancelButton: true,
@@ -133,7 +117,7 @@ function lockUnlockUser(id) {
                     "onclick": null,
                 };
 
-                toastr.success("Modification de l'état de l'utilisateur réussie", "Modification état utilisateur");
+                toastr.success("Modification de l'\u00E9tat de l'utilisateur r\u00E9ussie", "Modification \u00E9tat utilisateur");
                 userDataTable.ajax.reload();
             }
         }

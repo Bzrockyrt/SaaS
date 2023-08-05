@@ -1,0 +1,112 @@
+﻿@using SaaS.ViewModels.Application.WorkHour;
+@model CreateWorkHourViewModel
+
+<div class="container">
+    <div class="header">
+        <h1 class="header-title">Ajouter vos heures journalières</h1>
+    </div>
+
+    <form method="post" asp-area="application" asp-controller="workhour" asp-action="create">
+        <div class=" body">
+            <div class="input-group mb-3">
+                <input asp-for="WorkHour.WorkDay" type="text" id="datepicker" placeholder="Sélectionner une date" data-input>
+                <span class="input-group-text" style="background-color: transparent; border: 0px solid">Ico</span>
+            </div>
+            <div class="card">
+                <div class="card-head">
+                    <h2 class="card-title">Matin</h2>
+                    <i class="bx bx-minus icon"></i>
+                </div>
+                <div class="card-body">
+                    <div class="morninghours">
+                        <h3>Début :</h3>
+                        <div class="input-group mb-3">
+                            @*Utiliser Toast UI en cas de problème avec cette librairie pour les timepicker*@
+                            <input asp-for=WorkHour.MorningStart type="text" id="timepickerMorningStart" placeholder="Sélectionnez un horaire" date-input />
+                        </div>
+                        <h3>Fin :</h3>
+                        <div class="input-group mb-3">
+                            <input asp-for=WorkHour.MorningEnd type="text" id="timepickerMorningEnd" placeholder="Sélectionnez un horaire" date-input />
+                        </div>
+                        @*<div class="form-floating py-2 col-12">
+                            <select asp-for="@Model.MorningWorkSiteId" asp-items="@Model.WorkSitesList" class="form-select border-0 shadow">
+                                <option disabled selected>--Sélectionner un chantier--</option>
+                            </select>
+                            <label asp-for="Department.SubsidiaryId" class="ms-2">Filliale</label>
+                            <span asp-validation-for="Department.SubsidiaryId" class="text-danger"></span>
+                        </div>*@
+                    </div>
+                    ﻿@*<select asp-for=Test class="js-example-basic-single" name="state" style="width: 200px">
+                    <option>Alabama</option>
+                    <option>Wyoming</option>
+                    <option>Ain</option>
+                    <option>Bourgogne</option>
+                    </select>*@
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-head">
+                    <h2 class="card-title">Après-midi</h2>
+                    <i class="bx bx-minus icon"></i>
+                </div>
+                <div class="card-body">
+                    <div class="morninghours">
+                        <h3>Début :</h3>
+                        <div class="input-group mb-3">
+                            <input asp-for=WorkHour.EveningStart type="text" id="timepickerEveningStart" placeholder="Sélectionnez un horaire" date-input />
+                        </div>
+                        <h3>Fin :</h3>
+                        <div class="input-group mb-3">
+                            <input asp-for=WorkHour.EveningEnd type="text" id="timepickerEveningEnd" placeholder="Sélectionnez un horaire" date-input />
+                        </div>
+                        @*<div class="form-floating py-2 col-12">
+                            <select asp-for="@Model.EveningWorkSiteId" asp-items="@Model.WorkSitesList" class="form-select border-0 shadow">
+                                <option disabled selected>--Sélectionner un chantier--</option>
+                            </select>
+                            <label asp-for="Department.SubsidiaryId" class="ms-2">Filliale</label>
+                            <span asp-validation-for="Department.SubsidiaryId" class="text-danger"></span>
+                        </div>*@
+                        @*<div class="input-group mb-3">
+                            <div id="workSiteList">
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="text" id="nameInput" placeholder="Nom du chantier" required style="color: black;" />
+                            <button id="submitButton" type="button">Enregistrer</button>
+                        </div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-head">
+                    <h2 class="card-title">Informations complémentaires</h2>
+                    <i class="bx bx-minus icon"></i>
+                </div>
+                <div class="card-body">
+                    <div>
+                        <textarea style="width: 100%;" asp-for="WorkHour.Comment">
+
+                        </textarea>
+                    </div>
+                    <div>
+                        <p>Panier repas ?</p>
+                        <label class="switch">
+                            <input type="checkbox" asp-for="WorkHour.LunchBox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <button type="submit" class="footer-button-valid" style="width: 150px;">Créer</button>
+            <a class="footer-button-cancel" asp-area="application" asp-controller="workhour" asp-action="index">
+                Annuler
+            </a>
+        </div>
+    </form>
+</div>
+
+@section Scripts{
+    <script src="~/js/Application/WorkHour/WorkHour.js"></script>
+} 

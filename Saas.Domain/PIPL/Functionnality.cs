@@ -2,7 +2,7 @@
 
 namespace SaaS.Domain.PIPL
 {
-    public class Functionnality : ModelBase
+    public class Functionnality : PIPLModelBase
     {
         public Functionnality() : base()
         {
@@ -14,10 +14,6 @@ namespace SaaS.Domain.PIPL
         [MaxLength(50, ErrorMessage = "Le nom de la fonctionnalité ne peut comporter plus de 25 caractères")]
         public string Name { get; set; } = string.Empty;
 
-        [Required]
-        [Display(Name = "Nom normalisé")]
-        [MinLength(5, ErrorMessage = "Le nom normalisé doit contenir au moins 3 caractères")]
-        [MaxLength(50, ErrorMessage = "Le nom normalisé ne peut contenir plus de 50 catactères")]
         public string NormalizedName { get; set; } = string.Empty;
 
         [Required]

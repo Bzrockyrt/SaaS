@@ -8,17 +8,18 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\js\SuperCompany\Company\Company.js" />
-    <Content Remove="wwwroot\js\Application\DailyHours\DailyHours.js" />
     <Content Remove="wwwroot\js\Components\Combobox.js" />
     <Content Remove="wwwroot\js\Components\TimePicker.js" />
     <Content Remove="wwwroot\js\Page.js" />
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\css\Layout.css" />
     <_ContentIncludedByDefault Remove="wwwroot\js\Page.js" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.20.0" />
     <PackageReference Include="jQuery.UI.Combined" Version="1.13.2" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0-preview.3.23177.8" />
@@ -44,7 +45,6 @@
     <Folder Include="ViewModels\Application\Home\" />
     <Folder Include="ViewModels\Application\Messaging\" />
     <Folder Include="ViewModels\Application\NewFolder\" />
-    <Folder Include="ViewModels\Application\Worksite\" />
     <Folder Include="ViewModels\Application\Role\" />
     <Folder Include="ViewModels\WebSite\" />
     <Folder Include="wwwroot\css\Application\Account\" />
@@ -71,7 +71,6 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="wwwroot\js\SuperCompany\Company\Company.js" />
-    <TypeScriptCompile Include="wwwroot\js\Application\DailyHours\DailyHours.js" />
     <TypeScriptCompile Include="wwwroot\js\Components\Combobox.js" />
     <TypeScriptCompile Include="wwwroot\js\Components\TimePicker.js" />
   </ItemGroup>

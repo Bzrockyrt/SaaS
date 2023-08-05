@@ -19,11 +19,13 @@ namespace SaaS.DataAccess.Repository
         public IDepartmentRepository Department { get; private set; }
         public IEmploymentContractRepository EmploymentContract { get; private set; }
         public IJobRepository Job { get; private set; }
+        public IJob_CompanyFunctionnalitiesRepository Job_CompanyFunctionnalities { get; private set; }
         public ILogRepository Log { get; private set; }
         public ISubsidiaryRepository Subsidiary { get; private set; }
         public ISupplierRepository Supplier { get; private set; }
         public IUserRepository User { get; private set; }
         public IWorkHourRepository WorkHour { get; private set; }
+        public IWorkHour_WorkSiteRepository WorkHour_WorkSite { get; private set; }
         public IWorkSiteRepository WorkSite { get; private set; }
 
 
@@ -38,11 +40,13 @@ namespace SaaS.DataAccess.Repository
             Department = new DepartmentRepository(this.context);
             EmploymentContract = new EmploymentContractRepository(this.context);
             Job = new JobRepository(this.context);
+            Job_CompanyFunctionnalities = new Job_CompanyFunctionnalititesRepository(this.context);
             Log = new LogRepository(this.context);
             Subsidiary = new SubsidiaryRepository(this.context);
             Supplier = new SupplierRepository(this.context);
             User = new UserRepository(this.context);
             WorkHour = new WorkHourRepository(this.context);
+            WorkHour_WorkSite = new WorkHour_WorkSiteRepository(this.context);
             WorkSite = new WorkSiteRepository(this.context);
         }
 

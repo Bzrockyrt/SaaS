@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace SaaS.Domain
 {
@@ -13,8 +14,9 @@ namespace SaaS.Domain
         [Key]
         public string Id { get; set; } = string.Empty;
 
-        [Display(Name = "Créateur")]
-        public string CreatedBy { get; set; } = string.Empty;
+        [ValidateNever]
+        public virtual string CreatorId { get; set; }
+
 
         [Display(Name = "Date et heure de création")]
         public DateTime CreatedOn { get; set; } = DateTime.Now;

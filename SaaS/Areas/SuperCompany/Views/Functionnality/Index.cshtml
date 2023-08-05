@@ -1,28 +1,27 @@
-﻿<div class="header">
-    <h1 class="header-title">Fonctionnalités</h1>
-    <a class="header-button" asp-area="SuperCompany" asp-controller="Functionnality" asp-action="Create">
-        Créer une fonctionnalité
-    </a>
-</div>
-<div class="container">
-    @*Afficher l'ensemble des fonctionnalités dans un tableau 
-      Il faut pouvoir ajouter une fonctionnalité et modifier ou supprimer une fonctionnalité sélectionnée
-    *@
-    <table id="tableFunctionnalities" class="table table-striped" style="width: 100%">
-        <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Code</th>
-                <th>Description</th>
-                <th>Créé Par</th>
-                <th>Créé à</th>
-                <th>Actif</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+﻿<div class="container">
+    <div class="header">
+        <h1 class="header-title">Fonctionnalités</h1>
+        <a class="header-button add" asp-area="supercompany" asp-controller="functionnality" asp-action="create">
+            Créer une fonctionnalité
+        </a>
+    </div>
+    <div class="body">
+        <table id="tableFunctionnalities" class="display" style="width: 100%; font-size: 16px;">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Code</th>
+                    <th>Description</th>
+                    <th>Créé à</th>
+                    <th>Actif</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
+    </div>
 </div>
 
 @section Scripts{

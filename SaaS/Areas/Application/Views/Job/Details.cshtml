@@ -1,0 +1,92 @@
+﻿@using SaaS.Domain.Company;
+@using SaaS.ViewModels.Application.Job;
+@model DetailsJobViewModel
+
+@{
+    <style>
+        #sortable1, #sortable2 {
+            border: 1px solid #eee;
+            width: 142px;
+            min-height: 20px;
+            list-style-type: none;
+            margin: 0;
+            padding: 5px 0 0 0;
+            float: left;
+            margin-right: 10px;
+        }
+
+            #sortable1 li, #sortable2 li {
+                margin: 0 5px 5px 5px;
+                padding: 5px;
+                font-size: 1.2em;
+                width: 120px;
+            }
+    </style>
+}
+
+<div class="container">
+    <div class="header">
+        <h1 class="header-title">@Model.Job.Name</h1>
+        <a class="header-button delete" asp-area="application" asp-controller="job" asp-action="delete">
+            Supprimer
+        </a>
+    </div>
+
+    <form method="post" asp-area="application" asp-controller="job" asp-action="details" class="form-floating">
+        <div class="body">
+            <input asp-for="Job.Id" hidden />
+            <input asp-for="Job.CreatorId" hidden />
+            <input asp-for="Job.DepartmentId" hidden />
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="Job.Name" class="form-control" />
+                <label asp-for="Job.Name" class="ms-2">Nom</label>
+                <span asp-validation-for="Job.Name" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="Job.Description" class="form-control" />
+                <label asp-for="Job.Description" class="ms-2">Description</label>
+                <span asp-validation-for="Job.Description" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="Job.Code" class="form-control" />
+                <label asp-for="Job.Code" class="ms-2">Code</label>
+                <span asp-validation-for="Job.Code" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <select asp-for="@Model.Job.DepartmentId" asp-items="@Model.DepartmentList" class="form-select border-0 shadow">
+                    <option disabled selected>--Sélectionner un département--</option>
+                </select>
+                <label asp-for="Job.DepartmentId" class="ms-2">Département</label>
+                <span asp-validation-for="Job.DepartmentId" class="text-danger"></span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+                <div>Ne possède pas</div>
+                <ul id="sortable1" class="connectedSortable" style="width:550px;">
+                    @foreach (CompanyFunctionnalities functionnality in Model.DontHaveFunctionnalities)
+                    {
+                        <li class="ui-state-default" style="width:400px;">@functionnality.Name</li>
+                    }
+                </ul>
+
+                <div>Possède</div>
+                <ul id="sortable2" class="connectedSortable">
+                    @foreach (CompanyFunctionnalities functionnality in Model.HaveFunctionnalities)
+                    {
+                        <li class="ui-state-default" style="width:400px;">@functionnality.Name</li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="footer">
+            <button type="submit" class="footer-button-valid" style="width: 150px;">Enregistrer</button>
+            <a class="footer-button-cancel" asp-area="application" asp-controller="job" asp-action="index">
+                Annuler
+            </a>
+        </div>
+    </form>
+</div>
+
+
+@section Scripts{
+    <script src="~/js/Application/Job/Job.js"></script>
+}

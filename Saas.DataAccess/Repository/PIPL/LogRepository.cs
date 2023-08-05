@@ -36,7 +36,8 @@ namespace SaaS.DataAccess.Repository.PIPL
                 DevNote = devNote,
                 LogType = logType,
                 CreatedOn = DateTime.Now,
-                CreatedBy = user is not null ? "Non renseigné" : user?.Identity.Name,
+                CreatorId = this.context.User.FirstOrDefault(u => u.UserName == user.Identity.Name).Id,
+                /*CreatedBy = user is not null ? "Non renseigné" : user?.Identity.Name,*/
                 IsEnable = true,
             });
             this.context.SaveChanges();

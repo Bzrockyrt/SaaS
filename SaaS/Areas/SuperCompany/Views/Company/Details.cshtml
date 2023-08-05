@@ -1,0 +1,103 @@
+﻿@using SaaS.Domain.Company;
+@using SaaS.ViewModels.SuperCompany.Company;
+@model DetailsCompanyViewModel
+
+@{
+    <style>
+        #sortable1, #sortable2 {
+            border: 1px solid #eee;
+            width: 142px;
+            min-height: 20px;
+            list-style-type: none;
+            margin: 0;
+            padding: 5px 0 0 0;
+            float: left;
+            margin-right: 10px;
+        }
+
+            #sortable1 li, #sortable2 li {
+                margin: 0 5px 5px 5px;
+                padding: 5px;
+                font-size: 1.2em;
+                width: 120px;
+            }
+    </style>
+}
+
+<div class="container">
+    <div class="header">
+        <h1 class="header-title">@Model.Company.Name</h1>
+        <a class="header-button delete" asp-area="supercompany" asp-controller="company" asp-action="delete">
+            Supprimer
+        </a>
+    </div>
+
+    <form method="post" asp-area="supercompany" asp-controller="company" asp-action="details" class="form-floating">
+        <div class="body">
+            <input asp-for="Company.Id" hidden />
+            <input asp-for="Company.IsEnable" hidden />
+            <input asp-for="Company.CreatorId" hidden />
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="Company.Name" class="form-control" />
+                <label asp-for="Company.Name" class="ms-2"></label>
+                <span asp-validation-for="Company.Name" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="Company.Description" class="form-control" />
+                <label asp-for="Company.Description" class="ms-2"></label>
+                <span asp-validation-for="Company.Description" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="number" asp-for="Company.StreetNumber" class="form-control" />
+                <label asp-for="Company.StreetNumber" class="ms-2"></label>
+                <span asp-validation-for="Company.StreetNumber" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="Company.StreetName" class="form-control" />
+                <label asp-for="Company.StreetName" class="ms-2"></label>
+                <span asp-validation-for="Company.StreetName" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="Company.State" class="form-control" />
+                <label asp-for="Company.State" class="ms-2"></label>
+                <span asp-validation-for="Company.State" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="number" asp-for="Company.PostalCode" class="form-control" />
+                <label asp-for="Company.PostalCode" class="ms-2"></label>
+                <span asp-validation-for="Company.PostalCode" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="number" asp-for="Company.SIRET" class="form-control" />
+                <label asp-for="Company.SIRET" class="ms-2"></label>
+                <span asp-validation-for="Company.SIRET" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="Company.Email" class="form-control" />
+                <label asp-for="Company.Email" class="ms-2"></label>
+                <span asp-validation-for="Company.Email" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="number" asp-for="Company.PhoneNumber" class="form-control" />
+                <label asp-for="Company.PhoneNumber" class="ms-2"></label>
+                <span asp-validation-for="Company.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="Company.CompanyCode" class="form-control" />
+                <label asp-for="Company.CompanyCode" class="ms-2"></label>
+                <span asp-validation-for="Company.CompanyCode" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="Company.TenantCode" class="form-control" />
+                <label asp-for="Company.TenantCode" class="ms-2"></label>
+                <span asp-validation-for="Company.TenantCode" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="footer">
+            <button type="submit" class="footer-button-valid" style="width: 150px;">Enregistrer</button>
+            <a class="footer-button-cancel" asp-area="supercompany" asp-controller="company" asp-action="index">
+                Annuler
+            </a>
+        </div>
+    </form>
+</div>

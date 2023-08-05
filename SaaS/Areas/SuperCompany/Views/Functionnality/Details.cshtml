@@ -1,0 +1,45 @@
+﻿@using SaaS.ViewModels.SuperCompany.Functionnality;
+@model DetailsFunctionnalityViewModel
+
+<div class="container">
+    <div class="header">
+        <h1 class="header-title">@Model.Functionnality.Name</h1>
+        <a class="header-button delete" asp-area="supercompany" asp-controller="functionnality" asp-action="delete">
+            Supprimer
+        </a>
+    </div>
+
+    <form method="post" asp-area="supercompany" asp-controller="functionnality" asp-action="details" class="form-floating">
+        <div class="body">
+            <input asp-for="Functionnality.Id" hidden />
+            <input asp-for="Functionnality.IsEnable" hidden />
+            <input asp-for="Functionnality.CreatorId" hidden />
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="Functionnality.Name" class="form-control" />
+                <label asp-for="Functionnality.Name" class="ms-2"></label>
+                <span asp-validation-for="Functionnality.Name" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="Functionnality.NormalizedName" class="form-control" />
+                <label asp-for="Functionnality.NormalizedName" class="ms-2"></label>
+                <span asp-validation-for="Functionnality.NormalizedName" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="Functionnality.Description" class="form-control" />
+                <label asp-for="Functionnality.Description" class="ms-2"></label>
+                <span asp-validation-for="Functionnality.Description" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="Functionnality.Code" class="form-control" />
+                <label asp-for="Functionnality.Code" class="ms-2"></label>
+                <span asp-validation-for="Functionnality.Code" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="footer">
+            <button type="submit" class="footer-button-valid" style="width: 150px;">Enregistrer</button>
+            <a class="footer-button-cancel" asp-area="supercompany" asp-controller="functionnality" asp-action="index">
+                Annuler
+            </a>
+        </div>
+    </form>
+</div>

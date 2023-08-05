@@ -1,38 +1,42 @@
 ﻿@using SaaS.ViewModels.Application.Department;
 @model CreateDepartmentViewModel
 
-<div class="header">
-    <h1 class="header-title">Créer un département</h1>
-</div>
-
 <div class="container">
+    <div class="header">
+        <h1 class="header-title">Créer un département</h1>
+    </div>
+
     <form method="post" asp-area="application" asp-controller="department" asp-action="create" class="form-floating">
-        <input asp-for="Department.Id" hidden />
-        <div class="form-floating py-2 col-12">
-            <input type="text" asp-for="Department.Name" class="form-control" />
-            <label asp-for="Department.Name" class="ms-2"></label>
-            <span asp-validation-for="Department.Name" class="text-danger"></span>
+        <div class="body">
+            <input asp-for="Department.Id" hidden />
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="Department.Name" class="form-control" />
+                <label asp-for="Department.Name" class="ms-2"></label>
+                <span asp-validation-for="Department.Name" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="Department.Description" class="form-control" />
+                <label asp-for="Department.Description" class="ms-2"></label>
+                <span asp-validation-for="Department.Description" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="text" asp-for="Department.Code" class="form-control" />
+                <label asp-for="Department.Code" class="ms-2"></label>
+                <span asp-validation-for="Department.Code" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <select asp-for="@Model.Department.SubsidiaryId" asp-items="@Model.SubsidiaryList" class="form-select border-0 shadow">
+                    <option disabled selected>--Sélectionner une filliale--</option>
+                </select>
+                <label asp-for="Department.SubsidiaryId" class="ms-2">Filliale</label>
+                <span asp-validation-for="Department.SubsidiaryId" class="text-danger"></span>
+            </div>
         </div>
-        <div class="form-floating py-2 col-12">
-            <input type="text" asp-for="Department.Description" class="form-control" />
-            <label asp-for="Department.Description" class="ms-2"></label>
-            <span asp-validation-for="Department.Description" class="text-danger"></span>
+        <div class="footer">
+            <button type="submit" class="footer-button-valid" style="width: 150px;">Créer</button>
+            <a class="footer-button-cancel" asp-area="application" asp-controller="department" asp-action="index">
+                Annuler
+            </a>
         </div>
-        <div class="form-floating py-2 col-12">
-            <input type="text" asp-for="Department.Code" class="form-control" />
-            <label asp-for="Department.Code" class="ms-2"></label>
-            <span asp-validation-for="Department.Code" class="text-danger"></span>
-        </div>
-        <div class="form-floating py-2 col-12">
-            <select asp-for="@Model.Department.SubsidiaryId" asp-items="@Model.SubsidiaryList" class="form-select border-0 shadow">
-                <option disabled selected>--Sélectionner une filliale--</option>
-            </select>
-            <label asp-for="Department.SubsidiaryId" class="ms-2">Filliale</label>
-            <span asp-validation-for="Department.SubsidiaryId" class="text-danger"></span>
-        </div>
-        <button type="submit" class="btn btn-primary form-control" style="width: 150px;">Créer</button>
-        <a asp-area="application" asp-controller="department" asp-action="index">
-            Annuler
-        </a>
     </form>
 </div>

@@ -1,0 +1,41 @@
+﻿@{
+    bool canAccessAddDailyHours = true;
+    bool canDisplayCommentInTable = true;
+    bool canDisplayLunchBoxInTable = true;
+    bool canDisplayEditButton = true;
+}
+
+<div class="container">
+    <div class="header">
+        <h1 class="header-title">Heures de travail</h1>
+        @if (canAccessAddDailyHours)
+        {
+            <a class="header-button add" asp-area="application" asp-controller="workhour" asp-action="create">
+                Ajouter une journée
+            </a>
+        }
+    </div>
+    <div class="body">
+        <table id="tableWorkHours" class="display" style="width: 100%; font-size: 16px;">
+            <thead>
+                <tr>
+                    <th>Jour</th>
+                    <th>Début matin</th>
+                    <th>Fin matin</th>
+                    <th>Total</th>
+                    <th>Début après-midi</th>
+                    <th>Fin après-midi</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/Application/WorkHour/WorkHour.js"></script>
+}
